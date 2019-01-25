@@ -1,0 +1,10 @@
+<?php 
+	// Abrir conexão
+	//$conecta = mysqli_connect("localhost", "phpmyadmin", "Lagosta1@", "about_solution");
+	$conecta = mysqli_connect("localhost", "root", "", "aboutsolution");
+
+	// Testar conexão
+	if (mysqli_connect_errno() ){
+		die("Conexão falhou: " . mysqli_connect_errno());
+	}
+?>
