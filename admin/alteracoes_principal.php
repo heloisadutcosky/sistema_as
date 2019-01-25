@@ -1,9 +1,14 @@
-<?php require_once("../conexao/conexao.php"); ?>
-
-<?php  
-	$tabelas = "";
+<?php 
 	// Iniciar sessão
 	session_start();
+
+	//Verificar permissão de acesso (só para administradores)
+	require_once("_incluir/verificacao_acesso.php");
+
+	//Estabelecer conexão a base de dados
+	require_once("../conexao/conexao.php");
+
+	$tabelas = "";
 
 	// Abrir consulta ao banco de dados
 	if (isset($_POST["tabelas"])) {

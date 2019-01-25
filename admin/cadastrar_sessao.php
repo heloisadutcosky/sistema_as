@@ -1,14 +1,20 @@
 <?php 
-		//Estabelecer conexão com base de dados
+	// Iniciar sessão
+	session_start();
+
+	//Verificar permissão de acesso (só para administradores)
+	require_once("_incluir/verificacao_acesso.php");
+
+	//Estabelecer conexão com base de dados
 	require_once("../conexao/conexao.php"); 
 
-		// Projeto selecionado
+	// Projeto selecionado
 	$projeto_id = isset($_POST["codigo"]) ? $_POST["codigo"] : 0
 
-		// Inputs
+	// Inputs
 	$sessao = isset($_POST["sessao"]) ? $_POST["sessao"] : isset($_GET["sessao"]) ? $_GET["sessao"] : "";
 
-		// Cadastrar
+	// Cadastrar
 	$consulta = "SELECT * FROM " . $tabelas;
 	$acesso = mysqli_query($conecta, $consulta);
 ?>

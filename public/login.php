@@ -57,6 +57,7 @@
 		} else {
 			$_SESSION["user_id"] = $dados["user_id"];
 			$_SESSION["usuario"] = $dados["nome"];
+			$_SESSION["funcao"] = $dados["funcao"];
 			header("location:sessoes.php"); // Redireciona
 		}
 

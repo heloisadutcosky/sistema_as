@@ -1,6 +1,13 @@
-<?php require_once("../conexao/conexao.php"); ?>
+<?php 
+	// Iniciar sessão
+	session_start();
 
-<?php  
+	//Verificar permissão de acesso (só para administradores)
+	require_once("_incluir/verificacao_acesso.php");
+
+	//Estabelecer conexão a base de dados
+	require_once("../conexao/conexao.php");
+
 	// Iniciar sessão
 	session_start();
 
