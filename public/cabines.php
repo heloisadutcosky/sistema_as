@@ -26,7 +26,7 @@
 			for ($i=0; $i < $_SESSION["n_atributos"]; $i++) {
 
 				$atributo_completo = $_SESSION["atributo_completo"][$i];
-				$nota = $_POST[$_SESSION["atributo_completo"][$i]];
+				$nota = $_POST[$_SESSION["atributo_completo"][$i]]*10;
 
 				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo_completo', $nota)";
 
