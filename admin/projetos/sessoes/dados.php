@@ -112,7 +112,7 @@
 		<p>Ainda não existe uma sessão cadastradas pra esse projeto</p><br><br>
 
 		<div class="botao">
-			<a href="cadastro.php">Adicionar sessão</a>
+			<a href="cadastro.php?codigo=<?php echo($projeto_id); ?>">Adicionar sessão</a>
 		</div>
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>

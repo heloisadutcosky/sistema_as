@@ -15,7 +15,7 @@
 
 	if ($rows == 1) {
 		$dados = mysqli_fetch_assoc($acesso);
-		$_SESSION["produto"] = $dados["produto"]);
+		$_SESSION["produto"] = $dados["produto"];
 		header("location:sessoes.php?codigo=" . $dados["projeto_id"]);
 	}
 	
