@@ -1,6 +1,9 @@
-<?php require_once("../conexao/conexao.php"); ?>
-
 <?php 
+
+	$caminho =  "../";
+	require_once($caminho . "conexao/conexao.php");
+	
+	// Iniciar sessão
 	session_start();
 
 	if (isset($_GET["first"])) {
@@ -82,7 +85,17 @@
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="../_css/estilo_aparencia.css">
+
+	<style type="text/css">
+		.amostra {
+			float: left;
+			width: 60px;
+			margin: 18px 0 0 18px;
+			font-size: 120%;
+			font-weight: bold;
+			color: #C2534B;
+		}
+	</style>
 
 </head>
 <body>
@@ -110,11 +123,11 @@
 								<form action="aparencia.php?pagina=<?php echo($pagina + 1); ?>" method="post" align="">
 									<input type="range" id="nota" name="<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" required>
 									<input type="checkbox" name="teste" required>
-									<div class="ticks">
+									<div class="ticks" style="padding-left: <?php echo($dados["escala_min"]*60); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60); ?>px">
 										<span class="tick"></span>
 										<span class="tick"></span>
 									</div>
-									<div class="afterticks">
+									<div class="afterticks" style="padding-left: <?php echo($dados["escala_min"]*60+90); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60+50); ?>px">
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_baixo"]); ?></span>
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_alto"]); ?></span>
 									</div>

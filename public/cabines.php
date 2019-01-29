@@ -1,6 +1,9 @@
-<?php require_once("../conexao/conexao.php"); ?>
-
 <?php 
+
+	$caminho =  "../";
+	require_once($caminho . "conexao/conexao.php");
+
+	// Iniciar sessão
 	session_start();
 
 	if (isset($_GET["first"])) {
@@ -85,21 +88,35 @@
 			<meta charset="utf-8">
 			
 			<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
-			<link rel="stylesheet" type="text/css" href="../_css/estilo_cabines.css">
+			
+			<style>
+				.amostra {
+				  font-size: 120%;
+				  font-weight: bold;
+				  color: #C2534B;
+				}
+			</style>
 
 		</head>
 		<body>
 			<main>
 				<?php include_once("../_incluir/topo.php"); ?>
-				<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
+
+				<article>
+					<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
+					<br>
+					<h3 style="color: #8B0000">CABINES</h3>
+
+					<p>Favor solicitar à atendente a amostra <b class="amostra"><?php echo $_SESSION["amostras"][$n]; ?></b></p>
+					<br>
+
+					<div class="botao" style="margin-left: -20px">
+						<a href="cabines.php?pagina=0&n=<?php echo($n); ?>">Continuar</a>
+					</div>
+				</article>
+				<br>
 				<br>
 
-				<p>Favor solicitar à atendente a amostra <?php echo $_SESSION["amostras"][$n]; ?></p>
-				<br>
-
-				<a href="cabines.php?pagina=0&n=<?php echo($n); ?>">Continuar</a>
-				<br>
-				<br>
 				<?php include_once("../_incluir/rodape.php"); ?>
 
 			</main>
@@ -135,15 +152,13 @@
 	<title>PDQ - Cabines</title>
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="_css/estilo_cabines.css">
+	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
 	
 	<style>
-		.afterticks {
-			padding-left: 75px;
-			display: flex;
-			justify-content: space-between;
-			width: 530px;
+		.amostra {
+		  font-size: 120%;
+		  font-weight: bold;
+		  color: #C2534B;
 		}
 	</style>
 
@@ -176,11 +191,11 @@
 						<form action="cabines.php?pagina=<?php echo($pagina + 1); ?>&n=<?php echo($n); ?>&amostra=<?php echo($_SESSION["amostras"][$n]); ?>" method="post" align="">
 							<input type="range" id="nota" name="<?php echo $linhas["atributo_completo"]; ?>" min="0" max="10" value="0" step="0.01" required>
 							<input type="checkbox" name="teste" required>
-							<div class="ticks">
+							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*60); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*60); ?>px">
 								<span class="tick"></span>
 								<span class="tick"></span>
 							</div>
-							<div class="afterticks">
+							<div class="afterticks" style="padding-left: <?php echo($linhas["escala_min"]*60+25); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*60+25); ?>px">
 								<span class="aftertick"><?php echo utf8_encode($linhas["escala_baixo"]); ?></span>
 								<span class="aftertick"><?php echo utf8_encode($linhas["escala_alto"]); ?></span>
 							</div>

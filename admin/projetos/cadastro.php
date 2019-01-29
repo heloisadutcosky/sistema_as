@@ -1,12 +1,15 @@
-<?php 
+<?php
+
+	$caminho =  "../../";
+	
 	// Iniciar sessão
 	session_start();
 
 	//Verificar permissão de acesso (só para administradores)
-	require_once("../../_incluir/verificacao_acesso.php");
+	require_once($caminho . "_incluir/verificacao_acesso.php");
 
-	//Estabelecer conexão com base de dados
-	require_once("../../conexao/conexao.php"); 
+	//Estabelecer conexão a base de dados
+	require_once($caminho . "conexao/conexao.php");
 
 	// Inputs
 
@@ -49,12 +52,12 @@
 		<title>Cadastro Projeto</title>
 		<meta charset="utf-8">
 
-		<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
+		<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 
 		</head>
 		<body>
 			<main>
-				<?php include_once("../../_incluir/topo.php"); ?>
+				<?php include_once($caminho . "_incluir/topo.php"); ?>
 				<h2 class="espaco">CADASTRO PROJETO</h2>
 
 				<form action="cadastro.php" method="post">
@@ -87,7 +90,7 @@
 
 				<br>
 				<br>
-				<?php include_once("../../_incluir/rodape.php"); ?>
+				<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 			</main>
 		</body>

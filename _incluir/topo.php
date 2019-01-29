@@ -6,7 +6,7 @@
 
 	<div class="saudacao">
 		<p>Olá, <?php echo utf8_encode($_SESSION["usuario"]); ?>
-			<a class="logout" href="sistema_as/logout.php">Logout</a>
+			<a class="logout" href="<?php echo($caminho); ?>logout.php">Logout</a>
 		</p>
 	</div>
 </header>

@@ -69,19 +69,20 @@ input {
 
 .botao a{
   text-decoration: none;
-  background-color: #A9A9A9;
+  background-color: #778899;
   margin-left: 20px;
   margin-bottom: 1px;
   padding: 5px 15px;
   color: #FFF;
-  border-color: #808080;
+  border: 1px solid #696969;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
 
 .botao a:hover {
   background-color: #DCDCDC;
   margin: 0 auto;
   margin-left: 20px;
-  border-color: #808080;
+  border: 1px solid #696969;
 }
 
 /* ################################################################################# */
@@ -125,18 +126,21 @@ input[type=range]::-webkit-slider-thumb {
 }
 
 .ticks {
-	padding-left: 60px;
-	margin-top: -24px;
-  	display: flex;
-  	justify-content: space-between;
-  	width: 480px;
-}
+      margin-top: -40px;
+        display: flex;
+        justify-content: space-between;
+    }
 
 .tick {
   	justify-content: center;
   	width: 1px;
   	background: gray;
   	height: 36px;
+}
+
+.afterticks {
+    display: flex;
+    justify-content: space-between;
 }
 
 .aftertick {

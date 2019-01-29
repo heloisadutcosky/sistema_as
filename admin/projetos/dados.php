@@ -1,12 +1,14 @@
 <?php 
+	$caminho =  "../../";
+	
 	// Iniciar sessão
 	session_start();
 
 	//Verificar permissão de acesso (só para administradores)
-	require_once("../../_incluir/verificacao_acesso.php");
+	require_once($caminho . "_incluir/verificacao_acesso.php");
 
 	//Estabelecer conexão a base de dados
-	require_once("../../conexao/conexao.php");
+	require_once($caminho . "conexao/conexao.php");
 
 	$consulta = "SELECT * FROM projetos";
 	$acesso = mysqli_query($conecta, $consulta);
@@ -19,9 +21,9 @@
 	<title>Projetos About Solution</title>
 	
 	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="../../_css/estilo_tabelas.css">
-	<link rel="stylesheet" type="text/css" href="../../_css/estilo_tabelas_topo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas_topo.css">
 
 	<style type="text/css">
 		li a {
@@ -34,7 +36,7 @@
 </head>
 <body>
 	<main>
-		<?php include_once("../../_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<h2 class="espaco">PROJETOS ABOUT SOLUTION</h2>
 		
 		<div id="cima_tabela" class="projetos">
@@ -70,7 +72,7 @@
 			<a href="../principal.php">Voltar</a><br><br>
 		</div><br><br>
 		
-		<?php include_once("../../_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 	</main>
 </body>

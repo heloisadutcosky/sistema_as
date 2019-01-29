@@ -1,14 +1,20 @@
-<?php 
+<?php
+
+	$caminho =  "../../";
+	
 	// Iniciar sessão
 	session_start();
 
 	//Verificar permissão de acesso (só para administradores)
-	require_once("../../_incluir/verificacao_acesso.php");
+	require_once($caminho . "_incluir/verificacao_acesso.php");
 
 	//Estabelecer conexão a base de dados
-	require_once("../../conexao/conexao.php");
+	require_once($caminho . "conexao/conexao.php");
 
-	// Abrir consulta ao banco de dados
+	//Definir a ação a ser realizada
+	$acao = isset($_GET["acao"]) ? $_GET["acao"] : "";
+
+	// Abrir consulta ao banco de dados para pegar informações do usuário selecionado
 	if (isset($_GET["codigo"])) {
 		$user_id = $_GET["codigo"];
 		$_SESSION["user_id"] = $user_id;
@@ -24,8 +30,10 @@
 	}
 
 	$dados = mysqli_fetch_assoc($acesso);
+	// ------------------------------------------------------------------------------
 
-
+	
+	// Informações preenchidas ------------------------------------------------------
 	if (isset($_POST["cpf"])) {
 		$user_id = $_SESSION["user_id"];
 		$cpf = $_POST["cpf"];
@@ -36,17 +44,53 @@
 		$email = $_POST["email"];
 		$telefone = $_POST["telefone"];
 		$funcao = "Painelista";
-	
-		$alterar = "UPDATE usuarios SET cpf = '{$cpf}', nome = '{$nome}', sexo = '{$sexo}', nascimento = '{$nascimento}', escolaridade = '{$escolaridade}', email = '{$email}', telefone = '{$telefone}', funcao = '{$funcao}' WHERE user_id = {$_SESSION["user_id"]}";
 
-		$operacao_alterar = mysqli_query($conecta, $alterar);
+		// Alterar cadastro ---------------------------------------------------------
+		if ($acao == "alteracao") {
+				
+			$alterar = "UPDATE usuarios SET cpf = '{$cpf}', nome = '{$nome}', sexo = '{$sexo}', nascimento = '{$nascimento}', escolaridade = '{$escolaridade}', email = '{$email}', telefone = '{$telefone}', funcao = '{$funcao}' WHERE user_id = {$_SESSION["user_id"]}";
 
-		if (!$operacao_alterar) {
-			die("Falha na alteração dos dados.");
-		} else {
-			header("location:../dados.php");
+			$operacao_alterar = mysqli_query($conecta, $alterar);
+
+			if (!$operacao_alterar) {
+				die("Falha na alteração dos dados.");
+			} else {
+				header("location:dados.php");
+			}
 		}
+		// --------------------------------------------------------------------------
+
+		// Cadastrar ----------------------------------------------------------------
+		if ($acao == "cadastro") {
+				
+			$cadastrar = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao')";
+
+			$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
+
+			if (!$operacao_cadastrar) {
+				die("Falha no cadastro dos dados.");
+			} else {
+				header("location:dados.php");
+			}
+		}
+		// --------------------------------------------------------------------------
+
+		// Excluir cadastro ---------------------------------------------------------
+		if ($acao == "exclusao") {
+				
+			$excluir = "DELETE FROM usuarios WHERE user_id = {$_SESSION["user_id"]}";
+
+			$operacao_excluir = mysqli_query($conecta, $excluir);
+
+			if (!$operacao_excluir) {
+				die("Falha na exclusão dos dados.");
+			} else {
+				header("location:dados.php");
+			}
+		}
+		// --------------------------------------------------------------------------
 	}
+	// ------------------------------------------------------------------------------
 
 	// Liberar dados da memória
 	mysqli_free_result($acesso);
@@ -59,45 +103,28 @@
 	
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 
 </head>
 <body>
 	<main>
-		<?php include_once("../../_incluir/topo.php"); ?>
-		<h2 class="espaco">ALTERAÇÃO DE CADASTRO</h2>
-
-		<?php  
-			if (isset($mensagem)) {
-		?>
-			<p class="errado"><?php echo $mensagem;  ?></p>
-			<br>
-			<a href="../../login.php">Realizar login</a>
-			<br>
-			<br>
-		<?php 
-			}
-		?>
+		<?php include_once($caminho . "_incluir/topo.php"); ?>
+		<h2 class="espaco"><?php 
+			if ($acao == "alteracao") echo "ALTERAÇÃO DE ";
+			if ($acao == "exclusao") echo "EXCLUSÃO DE "; 
+			?>CADASTRO</h2>
 
 		<br>
-		<form action="alteracao.php" method="post">
+		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $user_id; ?>" method="post">
 
 			<label for="cpf">CPF</label>
 			<input type="text" id="cpf" name="cpf" value="<?php echo $dados["cpf"] ?>"><br>
 
 			<label for="nome">Nome</label>
-			<input type="text" id="nome" name="nome" value="<?php echo $dados["nome"] ?>"><br>
+			<input type="text" id="nome" name="nome" value="<?php echo utf8_encode($dados["nome"]) ?>"><br>
 
 			<label for="nascimento">Data de nascimento</label>
 			<input type="date" id="nascimento" name="nascimento" value="<?php echo $dados["nascimento"] ?>"><br>
-
-			<!--
-			<label for="sexo">Sexo</label>			
-			<select id="sexo" name="sexo" value="<?php echo $dados["sexo"] ?>">
-				<option value="Feminino">Feminino</option>
-				<option value="Masculino">Masculino</option>
-			</select><br><br>
-			-->
 
 			<label for="sexo">Sexo</label>			
 			<select list="sexos" id="sexo" name="sexo" selected="<?php echo $dados["sexo"] ?>">
@@ -153,7 +180,11 @@
 			<input type="tel" id="telefone" name="telefone" value="<?php echo $dados["telefone"] ?>"><br>
 			<br>
 
-			<input type="submit" id="botao" value="Alterar cadastro"><br>
+			<input type="submit" id="botao" value="<?php 
+				if ($acao == "alteracao") echo "Alterar cadastro";
+				if ($acao == "exclusao") echo "Excluir cadastro";
+				if ($acao == "cadastro") echo "Cadastrar";
+			?>"><br>
 			<br>
 
 		</form>
@@ -163,7 +194,7 @@
 		</div>
 		<br>
 
-		<?php include_once("../../_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 	</main>
 </body>

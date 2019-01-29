@@ -40,15 +40,11 @@ body {
 	    border-bottom:1px solid #EDEDDC;
 	}
 
-	div#janela ul:first-child {
-	    background:#FF8C00;
-	}
-
 	div#janela ul:last-child {
 	    border-bottom:none;
 	}
 
-	div#janela ul:nth-child(even) {
+	div#janela ul:nth-child(odd) {
 	    background:#EDEDDC;   
 	}
 

@@ -48,7 +48,8 @@
 
 				$_SESSION["user_id"] = $dados["user_id"];
 				$_SESSION["usuario"] = utf8_encode($dados["nome"]);
-				header("location:public/sessoes.php"); // Redireciona
+				$_SESSION["funcao"] = $dados["funcao"];
+				header("location:public/questionarios.php"); // Redireciona
 
 			}
 				

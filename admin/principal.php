@@ -1,12 +1,15 @@
 <?php 
+
+	$caminho =  "../";
+	
 	// Iniciar sessão
 	session_start();
 
 	//Verificar permissão de acesso (só para administradores)
-	require_once("../_incluir/verificacao_acesso.php");
+	require_once($caminho . "_incluir/verificacao_acesso.php");
 
 	//Estabelecer conexão a base de dados
-	require_once("../conexao/conexao.php");
+	require_once($caminho . "conexao/conexao.php");
 
 ?>
 
@@ -16,12 +19,12 @@
 	<title>Sessões</title>
 	<meta charset="utf-8">
 	
-	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 
 </head>
 <body>
 	<main>
-		<?php include_once("../_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 		<article>
 			<p>Bem vindo(a), <?php echo utf8_encode($_SESSION["usuario"]); ?>! <u>O que você deseja fazer?</u></p>
@@ -31,13 +34,13 @@
 			<ul>
 				<li class="menu"><a href="usuarios/dados.php">Consultar usuários</a></li>
 				<li class="menu"><a href="projetos/dados.php">Consultar projetos</a></li>
-				<li class="menu"><a href="../public/questionarios.php">Revisar questionários</a></li>
+				<li class="menu"><a href="<?php echo($caminho); ?>public/questionarios.php">Revisar questionários</a></li>
 				<li class="menu"><a href="resultados.php">Visualizar resultados</a></li>
 			</ul>
 		</nav>
 		<br>
 
-		<?php include_once("../_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 	</main>
 </body>

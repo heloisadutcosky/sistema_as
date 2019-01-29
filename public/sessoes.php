@@ -1,12 +1,14 @@
-<?php require_once("../conexao/conexao.php"); ?>
-
 <?php 
+
+	$caminho =  "../";
+	require_once($caminho . "conexao/conexao.php");
+	
 	// Iniciar sessão
 	session_start();
 	
 	if(isset($_SESSION["usuario"])) {
 		} else {
-			Header("Location:../login.php");
+			Header("Location:<?php echo($caminho); ?>login.php");
 		}
 
 	$_SESSION["produto"] = isset($_GET["produto"]) ? $_GET["produto"] : $_SESSION["produto"];
@@ -54,12 +56,12 @@
 	<title>Sessões</title>
 	<meta charset="utf-8">
 	
-	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 
 </head>
 <body>
 	<main>
-		<?php include_once("../_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
 
 		<article>
@@ -90,7 +92,7 @@
 			<br>
 		<?php } ?>
 
-		<?php include_once("../_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 	</main>
 </body>
