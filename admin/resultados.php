@@ -100,7 +100,7 @@
 					    <li><?php echo $linha["sessao"] ?></li>
 					    <li><?php echo $linha["user_id"] ?></li>
 					    <li><?php echo $linha["amostra_codigo"] ?></li>
-					    <li><?php echo $linha["atributo"] ?></li>
+					    <li><?php echo $linha["atributo_completo"] ?></li>
 					    <li><?php echo $linha["nota"] ?></li>
 					</ul>
 					<?php } ?>	
