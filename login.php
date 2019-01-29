@@ -1,4 +1,4 @@
-<?php require_once("../conexao/conexao.php"); ?>
+<?php require_once("conexao/conexao.php"); ?>
 
 <?php  
 	// Iniciar sessão
@@ -48,7 +48,7 @@
 
 				$_SESSION["user_id"] = $dados["user_id"];
 				$_SESSION["usuario"] = utf8_encode($dados["nome"]);
-				header("location:sessoes.php"); // Redireciona
+				header("location:public/sessoes.php"); // Redireciona
 
 			}
 				
@@ -58,7 +58,12 @@
 			$_SESSION["user_id"] = $dados["user_id"];
 			$_SESSION["usuario"] = $dados["nome"];
 			$_SESSION["funcao"] = $dados["funcao"];
-			header("location:sessoes.php"); // Redireciona
+			
+			if($_SESSION["funcao"]=="Administrador") { 
+				header("location:admin/principal.php"); // Redireciona
+			} else {
+				header("location:public/questionarios.php");
+			}
 		}
 
 	} 
@@ -88,11 +93,11 @@
 	<main>
 		<header>
 			<a href="http://aboutsolution.com.br/novo/" target="_blank">
-				<img src="http://aboutsolution.com.br/novo/wp-content/uploads/2017/12/Logo_About-Solution.png" width="210" height="70"
+			<img src="http://aboutsolution.com.br/novo/wp-content/uploads/2017/12/Logo_About-Solution.png" width="210" height="70"
 				title="logo About Solution">
 			</a>
-			<h2 class="espaco">ACESSO AO SISTEMA</h2>
 		</header>
+		<h2 class="espaco">ACESSO AO SISTEMA</h2>
 		<br>
 
 		

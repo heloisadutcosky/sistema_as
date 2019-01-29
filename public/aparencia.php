@@ -19,7 +19,7 @@
 		$user_id = $_SESSION["user_id"];
 
 	} else {
-		Header("Location: login.php");
+		Header("Location:../login.php");
 	}
 
 
@@ -81,13 +81,13 @@
 	<title>PDQ - Aparência</title>
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="_css/estilo_aparencia.css">
+	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../_css/estilo_aparencia.css">
 
 </head>
 <body>
 	<main>
-		<?php include_once("_incluir/topo.php"); ?>
+		<?php include_once("../_incluir/topo.php"); ?>
 
 		<article>
 			<!-- Título do atributo avaliado -->
@@ -130,7 +130,7 @@
 			</div>
 		</article>
 
-		<?php include_once("_incluir/rodape.php"); ?>
+		<?php include_once("../_incluir/rodape.php"); ?>
 
 	</main>
 </body>

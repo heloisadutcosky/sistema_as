@@ -1,4 +1,4 @@
-<?php require_once("../conexao/conexao.php"); ?>
+<?php require_once("conexao/conexao.php"); ?>
 
 <?php 
 	session_start();
@@ -69,8 +69,8 @@
 	<title>PDQ - Aparência</title>
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="_css/estilo_aparencia.css">
+	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../_css/estilo_aparencia.css">
 
 </head>
 <body>

@@ -5,11 +5,8 @@
 	</a>
 
 	<div class="saudacao">
-		<p>Olá, <?php echo $_SESSION["usuario"]; ?>
-			<a class="logout" href="logout.php">Logout</a>
+		<p>Olá, <?php echo utf8_encode($_SESSION["usuario"]); ?>
+			<a class="logout" href="../logout.php">Logout</a>
 		</p>
 	</div>
-	
-	<!-- Título do teste -->
-	<h2 class="espaco">PDQ SUCO DE MORANGO</h2>
 </header>

@@ -3,20 +3,20 @@
 	session_start();
 
 	//Verificar permissão de acesso (só para administradores)
-	require_once("_incluir/verificacao_acesso.php");
+	require_once("../../_incluir/verificacao_acesso.php");
 
 	//Estabelecer conexão a base de dados
-	require_once("../conexao/conexao.php");
+	require_once("../../conexao/conexao.php");
 
 	// Abrir consulta ao banco de dados
 	if (isset($_GET["codigo"])) {
-		$userID = $_GET["codigo"];
-		$_SESSION["userID"] = $userID;
+		$user_id = $_GET["codigo"];
+		$_SESSION["user_id"] = $user_id;
 	} else {
-		$userID = 1;
+		$user_id = 0;
 	}
 
-	$consulta = "SELECT * FROM avaliadores WHERE userID = {$userID}";
+	$consulta = "SELECT * FROM usuarios WHERE user_id = {$user_id}";
 	$acesso = mysqli_query($conecta, $consulta);
 
 	if (!$acesso) {
@@ -27,14 +27,14 @@
 
 
 	if (isset($_POST["cpf"])) {
-		$excluir = "DELETE FROM avaliadores WHERE userID = {$_SESSION["userID"]}";
+		$excluir = "DELETE FROM usuarios WHERE user_id = {$_SESSION["user_id"]}";
 
 		$operacao_excluir = mysqli_query($conecta, $excluir);
 
 		if (!$operacao_excluir) {
 			die("Falha na exclusão dos dados.");
 		} else {
-			header("location:avaliadores.php");
+			header("location:../dados.php");
 		}
 	}
 
@@ -45,22 +45,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Exclusão de avaliadores</title>
+	<title>Exclusão de usuários</title>
 	
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="../public/_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../../public/_css/estilo.css">
 
 </head>
 <body>
 	<main>
-		<header>
-			<a href="http://aboutsolution.com.br/novo/" target="_blank">
-				<img src="../public/imagens/logo.jpg" width="210" height="70"
-				title="logo About Solution">
-			</a>
-			<h2 class="espaco">EXCLUSÃO DE CADASTRO</h2>
-		</header>
+		<?php include_once("../../_incluir/topo.php"); ?>
+		<h2 class="espaco">USUÁRIO <?php echo $user_id; ?></h2>
 
 		<?php  
 			if (isset($mensagem)) {
@@ -153,7 +148,7 @@
 
 		</form>
 
-		<?php include_once("../public/_incluir/rodape.php"); ?>
+		<?php include_once("../../_incluir/rodape.php"); ?>
 
 	</main>
 </body>

@@ -3,20 +3,20 @@
 	session_start();
 
 	//Verificar permissão de acesso (só para administradores)
-	require_once("_incluir/verificacao_acesso.php");
+	require_once("../../_incluir/verificacao_acesso.php");
 
 	//Estabelecer conexão a base de dados
-	require_once("../conexao/conexao.php");
+	require_once("../../conexao/conexao.php");
 
 	// Abrir consulta ao banco de dados
 	if (isset($_GET["codigo"])) {
-		$userID = $_GET["codigo"];
-		$_SESSION["userID"] = $userID;
+		$user_id = $_GET["codigo"];
+		$_SESSION["user_id"] = $user_id;
 	} else {
-		$userID = 1;
+		$user_id = 0;
 	}
 
-	$consulta = "SELECT * FROM avaliadores WHERE userID = {$userID}";
+	$consulta = "SELECT * FROM usuarios WHERE user_id = {$user_id}";
 	$acesso = mysqli_query($conecta, $consulta);
 
 	if (!$acesso) {
@@ -27,7 +27,7 @@
 
 
 	if (isset($_POST["cpf"])) {
-		$userID = $_SESSION["userID"];
+		$user_id = $_SESSION["user_id"];
 		$cpf = $_POST["cpf"];
 		$nome = utf8_decode($_POST["nome"]);
 		$sexo = $_POST["sexo"];
@@ -37,14 +37,14 @@
 		$telefone = $_POST["telefone"];
 		$funcao = "Painelista";
 	
-		$alterar = "UPDATE avaliadores SET cpf = '{$cpf}', nome = '{$nome}', sexo = '{$sexo}', nascimento = '{$nascimento}', escolaridade = '{$escolaridade}', email = '{$email}', telefone = '{$telefone}', funcao = '{$funcao}' WHERE userID = {$_SESSION["userID"]}";
+		$alterar = "UPDATE usuarios SET cpf = '{$cpf}', nome = '{$nome}', sexo = '{$sexo}', nascimento = '{$nascimento}', escolaridade = '{$escolaridade}', email = '{$email}', telefone = '{$telefone}', funcao = '{$funcao}' WHERE user_id = {$_SESSION["user_id"]}";
 
 		$operacao_alterar = mysqli_query($conecta, $alterar);
 
 		if (!$operacao_alterar) {
 			die("Falha na alteração dos dados.");
 		} else {
-			header("location:avaliadores.php");
+			header("location:../dados.php");
 		}
 	}
 
@@ -55,29 +55,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Alteração de cadastro de avaliadores</title>
+	<title>Alteração de usuário</title>
 	
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="../public/_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../../public/_css/estilo.css">
 
 </head>
 <body>
 	<main>
-		<header>
-			<a href="http://aboutsolution.com.br/novo/" target="_blank">
-				<img src="../public/imagens/logo.jpg" width="210" height="70"
-				title="logo About Solution">
-			</a>
-			<h2 class="espaco">ALTERAÇÃO DE CADASTRO</h2>
-		</header>
+		<?php include_once("../../_incluir/topo.php"); ?>
+		<h2 class="espaco">ALTERAÇÃO DE CADASTRO</h2>
 
 		<?php  
 			if (isset($mensagem)) {
 		?>
 			<p class="errado"><?php echo $mensagem;  ?></p>
 			<br>
-			<a href="cadastro.php">Realizar login</a>
+			<a href="../../login.php">Realizar login</a>
 			<br>
 			<br>
 		<?php 
@@ -163,7 +158,7 @@
 
 		</form>
 
-		<?php include_once("../public/_incluir/rodape.php"); ?>
+		<?php include_once("../../_incluir/rodape.php"); ?>
 
 	</main>
 </body>

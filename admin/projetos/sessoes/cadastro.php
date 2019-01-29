@@ -3,14 +3,13 @@
 	session_start();
 
 	//Verificar permissão de acesso (só para administradores)
-	require_once("_incluir/verificacao_acesso.php");
+	require_once("../../_incluir/verificacao_acesso.php");
 
 	//Estabelecer conexão com base de dados
-	require_once("../conexao/conexao.php"); 
+	require_once("../../../conexao/conexao.php");
 
 	// Projeto selecionado
-	$projeto_id = isset($_GET["codigo"]) ? $_GET["codigo"] : 0;
-
+	$projeto_id = isset($_GET["codigo"]) ? $_GET["codigo"] : 0; 
 
 	// Inputs
 	if (isset($_POST["sessao"])) {
@@ -39,25 +38,20 @@
 		<!DOCTYPE html>
 		<html lang="pt-BR">
 		<head>
-		<title>Sessões</title>
+		<title>Cadastro Sessão</title>
 		<meta charset="utf-8">
 
-		<link rel="stylesheet" type="text/css" href="../public/_css/estilo.css">
+		<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
 
 		</head>
 		<body>
 		<main>
-			<header>
-				<a href="http://aboutsolution.com.br/novo/" target="_blank">
-					<img src="http://aboutsolution.com.br/novo/wp-content/uploads/2017/12/Logo_About-Solution.png" width="210" height="70"
-					title="logo About Solution">
-				</a>
-				<h2 class="espaco"></h2>
-			</header>
-			<br>
-				<h4>Cadastro de sessão e amostras</h4>
+			<?php include_once("../../../public/_incluir/topo.php"); ?>
+			<h2 class="espaco">PROJETO <?php echo $projeto_id; ?></h2>
+			
+				<h4>Cadastro da sessão e das amostras</h4><br>
 				<p>Qual vai ser o número da sessão e em que data ela será realizada?</p>
-				<form action="cadastrar_sessao.php?codigo=<?php echo($projeto_id); ?>" method="post">
+				<form action="cadastro.php?codigo=<?php echo($projeto_id); ?>" method="post">
 						<label for="sessao">Sessão: </label>
 						<input type="number" id="sessao" name="sessao" value="<?php echo $sessao; ?>" required><br>
 
@@ -72,12 +66,14 @@
 						<label for="amostra_codigo">Código: </label>
 						<input type="text" id="amostra_codigo" name="amostra_codigo" value="" required><br>
 
-						<input type="submit" id="botao" value="Cadastrar"><br>
+						<input type="submit" id="botao" value="Cadastrar">
 				</form>
+
+				<a href="../../dados.php">Voltar</a>
 
 				<br>
 				<br>
-				<?php include_once("../public/_incluir/rodape.php"); ?>
+				<?php include_once("../../../public/_incluir/rodape.php"); ?>
 
 			</main>
 		</body>
