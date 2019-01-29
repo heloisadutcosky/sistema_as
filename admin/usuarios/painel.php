@@ -62,6 +62,34 @@
 
 		// Cadastrar ----------------------------------------------------------------
 		if ($acao == "cadastro") {
+
+			// Verificar existência do cpf na base ----------------------------------
+
+			$consulta_usuario = "SELECT * FROM usuarios WHERE cpf = " . $cpf;
+
+			$acesso = mysqli_query($conecta, $consulta_usuario);
+			$existe_usuario = mysqli_fetch_assoc($acesso);
+
+			if (!empty($existe_usuario)) { ?>
+				<p>Já existe um cadastro com esse cpf</p>
+			<?php } 
+
+			// ----------------------------------------------------------------------
+				
+			else {
+				$cadastrar = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao')";
+
+				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
+
+				if (!$operacao_cadastrar) {
+					die("Falha no cadastro dos dados.");
+				} else {
+					header("location:dados.php");
+				}
+			}
+
+			
+			// ----------------------------------------------------------------------
 				
 			$cadastrar = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao')";
 
@@ -139,7 +167,6 @@
 
 			<label for="escolaridade">Escolaridade</label>
 			<select id="escolaridade" name="escolaridade"><br>
-
 				<?php switch ($dados["escolaridade"]) {
 
 					case 'Ensino Médio': ?>

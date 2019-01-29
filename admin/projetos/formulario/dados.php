@@ -11,10 +11,11 @@
 	//Estabelecer conexão a base de dados
 	require_once($caminho . "conexao/conexao.php");
 
+	$produto = isset($_GET["produto"]) ? $_GET["produto"] : "";
+
 	// Abrir consulta ao banco de dados
 	if (isset($_GET["codigo"])) {
 		$projeto_id = $_GET["codigo"];
-		$produto = $_GET["produto"];
 
 		$consulta = "SELECT * FROM formularios WHERE projeto_id = " . $projeto_id;
 		$acesso = mysqli_query($conecta, $consulta);
@@ -27,7 +28,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Formulário</title>
+	<title>Formulários</title>
 	
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
@@ -40,6 +41,20 @@
 	    display:inline-block;
 	    background-color: none;	    
 	}
+
+	div#janela li:nth-child(1) {
+	    padding:5px 5px;
+	}
+
+	div#janela li:nth-child(2) {
+	    width:280px;  
+	    padding:5px 2px;
+	}    
+
+	div#janela li:nth-child(3) {
+	    width:0px;  
+	    padding:5px 2px;
+	}
 	</style>
 
 </head>
@@ -47,12 +62,18 @@
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
+		<br>
+
+		<div class="botao">
+			<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar atributo</a>
+		</div>
+		<br>
 
 		<div id="cima_tabela" class="usuarios">
 			<ul>
 			    <li><b>Conjunto</b></li>
 			    <li><b>Atributos</b></li>
-			    <li><b>Escala</b></li>
+			    <li><b></b></li>
 			</ul>
 		</div>
 		<div id="janela" class="usuarios">
@@ -62,18 +83,13 @@
 			<ul>
 			    <li><?php echo utf8_encode($linha["conjunto_atributos"]) ?></li>
 			    <li><?php echo utf8_encode($linha["atributo"]) ?></li>
-			    <li><?php echo utf8_encode($linha["escala_min"]) ?> - <?php echo utf8_encode($linha["escala_max"]) ?></li>
-			    <li><a href="alteracao.php?codigo=<?php echo $linha["projeto_id"] ?>">Alterar</a> </li>
-			    <li><a href="exclusao.php?codigo=<?php echo $linha["projeto_id"] ?>">Excluir</a> </li>
+			    <li></li>
+			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Alterar</a> </li>
+			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Excluir</a> </li>
 			</ul>
 			<?php } ?>	
 		</div>
-		<br>
-		<br>
 
-		<div class="botao">
-			<a href="cadastro.php?codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar atributo</a>
-		</div>
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>
 		</div>
@@ -91,7 +107,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Formulário</title>
+	<title>Formulários</title>
 	
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
@@ -109,12 +125,12 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco">Formulário do projeto <?php echo $projeto_id; ?></h2>
+		<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
 
 		<p>Ainda não existe um formulário pra esse projeto</p><br><br>
 
 		<div class="botao">
-			<a href="cadastro.php?codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
+			<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
 		</div>
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>

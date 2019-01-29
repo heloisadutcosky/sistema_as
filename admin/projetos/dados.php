@@ -38,6 +38,12 @@
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<h2 class="espaco">PROJETOS ABOUT SOLUTION</h2>
+		<br>
+
+		<div class="botao">
+			<a class="espaco" href="painel.php?acao=cadastro">Adicionar projeto</a><br>
+		</div>
+		<br>
 		
 		<div id="cima_tabela" class="projetos">
 			<ul>
@@ -56,8 +62,8 @@
 			    <li><?php echo utf8_encode($linha["produto"]) ?></li>
 			    <li><a href="formulario/dados.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto=<?php echo $linha["produto"]; ?>">Formulário</a> </li>
 			    <li><a href="sessoes/dados.php?codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $linha["produto"]; ?>">Sessão</a> </li>
-			    <li><a href="alteracao.php?codigo=<?php echo $linha["projeto_id"] ?>">Alterar</a> </li>
-			    <li><a href="exclusao.php?codigo=<?php echo $linha["projeto_id"] ?>">Excluir</a> </li>
+			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>">Alterar</a> </li>
+			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>">Excluir</a> </li>
 			</ul>
 			<?php
 			    }
@@ -65,9 +71,6 @@
 		</div>
 		<br>
 
-		<div class="botao">
-			<a class="espaco" href="cadastro.php">Adicionar projeto</a><br>
-		</div>
 		<div class="direita">
 			<a href="../principal.php">Voltar</a><br><br>
 		</div><br><br>
