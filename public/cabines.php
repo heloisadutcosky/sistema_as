@@ -91,6 +91,8 @@
 		<body>
 			<main>
 				<?php include_once("../_incluir/topo.php"); ?>
+				<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
+				<br>
 
 				<p>Favor solicitar à atendente a amostra <?php echo $_SESSION["amostras"][$n]; ?></p>
 				<br>
@@ -149,6 +151,7 @@
 <body>
 	<main>
 		<?php include_once("../_incluir/topo.php"); ?>
+		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
 		
 		<br>	
 		<article>

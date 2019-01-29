@@ -59,7 +59,7 @@
 	
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="../../public/_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
 
 </head>
 <body>
@@ -157,6 +157,11 @@
 			<br>
 
 		</form>
+
+		<div class="direita">
+			<a href="dados.php">Voltar</a><br><br>
+		</div>
+		<br>
 
 		<?php include_once("../../_incluir/rodape.php"); ?>
 

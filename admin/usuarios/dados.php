@@ -19,8 +19,9 @@
 	<title>Projetos About Solution</title>
 	
 	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="../_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../../_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="../../_css/estilo_tabelas_topo.css">
 
 	<style type="text/css">
 		li a {
@@ -36,7 +37,13 @@
 		<?php include_once("../../_incluir/topo.php"); ?>
 		<h2 class="espaco">USUÁRIOS ABOUT SOLUTION</h2>
 
-		<h4>Usuários</h4>
+		<div id="cima_tabela" class="usuarios">
+			<ul>
+			    <li><b>CPF</b></li>
+			    <li><b>Nome</b></li>
+			    <li><b>Classificação</b></li>
+			</ul>
+		</div>
 		<div id="janela" class="usuarios">
 			<?php
 			    while($linha = mysqli_fetch_assoc($acesso)) {
@@ -51,6 +58,11 @@
 			<?php
 			    }
 			?>
+		</div>
+		
+
+		<div class="direita">
+			<a href="../principal.php">Voltar</a><br><br>
 		</div>
 		<br>
 		

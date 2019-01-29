@@ -9,6 +9,8 @@
 			Header("Location:../login.php");
 		}
 
+	$_SESSION["produto"] = isset($_GET["produto"]) ? $_GET["produto"] : $_SESSION["produto"];
+
 	if (isset($_GET["codigo"])) {
 		$_SESSION["projeto_id"] = $_GET["codigo"];
 
@@ -58,6 +60,7 @@
 <body>
 	<main>
 		<?php include_once("../_incluir/topo.php"); ?>
+		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
 
 		<article>
 			<p>Qual sessão você vai realizar hoje?</p>

@@ -31,7 +31,7 @@
 			<ul>
 				<li class="menu"><a href="usuarios/dados.php">Consultar usuários</a></li>
 				<li class="menu"><a href="projetos/dados.php">Consultar projetos</a></li>
-				<li class="menu"><a href="../public/questionarios.php">Preview questionários</a></li>
+				<li class="menu"><a href="../public/questionarios.php">Revisar questionários</a></li>
 				<li class="menu"><a href="resultados.php">Visualizar resultados</a></li>
 			</ul>
 		</nav>

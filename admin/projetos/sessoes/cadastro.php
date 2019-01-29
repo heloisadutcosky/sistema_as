@@ -3,7 +3,7 @@
 	session_start();
 
 	//Verificar permissão de acesso (só para administradores)
-	require_once("../../_incluir/verificacao_acesso.php");
+	require_once("../../../_incluir/verificacao_acesso.php");
 
 	//Estabelecer conexão com base de dados
 	require_once("../../../conexao/conexao.php");
@@ -41,12 +41,12 @@
 		<title>Cadastro Sessão</title>
 		<meta charset="utf-8">
 
-		<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
+		<link rel="stylesheet" type="text/css" href="../../../_css/estilo.css">
 
 		</head>
 		<body>
 		<main>
-			<?php include_once("../../../public/_incluir/topo.php"); ?>
+			<?php include_once("../../../_incluir/topo.php"); ?>
 			<h2 class="espaco">PROJETO <?php echo $projeto_id; ?></h2>
 			
 				<h4>Cadastro da sessão e das amostras</h4><br>
@@ -69,11 +69,13 @@
 						<input type="submit" id="botao" value="Cadastrar">
 				</form>
 
-				<a href="../../dados.php">Voltar</a>
+				<div class="direita">
+					<a href="../dados.php">Voltar</a><br><br>
+				</div>
 
 				<br>
 				<br>
-				<?php include_once("../../../public/_incluir/rodape.php"); ?>
+				<?php include_once("../../../_incluir/rodape.php"); ?>
 
 			</main>
 		</body>

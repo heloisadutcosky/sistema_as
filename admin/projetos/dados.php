@@ -19,8 +19,9 @@
 	<title>Projetos About Solution</title>
 	
 	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="../_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../../_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="../../_css/estilo_tabelas_topo.css">
 
 	<style type="text/css">
 		li a {
@@ -35,9 +36,14 @@
 	<main>
 		<?php include_once("../../_incluir/topo.php"); ?>
 		<h2 class="espaco">PROJETOS ABOUT SOLUTION</h2>
-
-		<a class="espaco" href="projetos/cadastro.php">Adicionar projeto</a><br>
-		<h4>Projetos</h4>
+		
+		<div id="cima_tabela" class="projetos">
+			<ul>
+			    <li><b>Empresa</b></li>
+			    <li><b>Tipo de teste</b></li>
+			    <li><b>Produto</b></li>
+			</ul>
+		</div>
 		<div id="janela" class="projetos">
 			<?php
 			    while($linha = mysqli_fetch_assoc($acesso)) {
@@ -56,6 +62,13 @@
 			?>
 		</div>
 		<br>
+
+		<div class="botao">
+			<a class="espaco" href="cadastro.php">Adicionar projeto</a><br>
+		</div>
+		<div class="direita">
+			<a href="../principal.php">Voltar</a><br><br>
+		</div><br><br>
 		
 		<?php include_once("../../_incluir/rodape.php"); ?>
 

@@ -27,8 +27,9 @@
 	<title>Formulário</title>
 	
 	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="../../_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="../../../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../../../_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="../../../_css/estilo_tabelas_topo.css">
 
 	<style type="text/css">
 		li a {
@@ -44,12 +45,15 @@
 		<?php include_once("../../../_incluir/topo.php"); ?>
 		<h2 class="espaco">Sessões e amostras - <?php echo $produto; ?></h2>
 
-		<div id="janela" class="usuarios">
+		
+		<div id="cima_tabela" class="usuarios">
 			<ul>
 			    <li><b>SESSÃO</b></li>
 			    <li><b>AMOSTRA</b></li>
 			    <li><b>CÓDIGO</b></li>
 			</ul>
+		</div>
+		<div id="janela" class="usuarios">
 			<?php
 			    while($linha = mysqli_fetch_assoc($acesso)) {
 			?>
@@ -62,6 +66,15 @@
 			</ul>
 			<?php } ?>	
 		</div>
+		<br>
+
+		<div class="botao">
+			<a href="cadastro.php?codigo=<?php echo($projeto_id); ?>">Adicionar sessão ou amostra</a>
+		</div>
+		<div class="direita">
+			<a href="../dados.php">Voltar</a><br><br>
+		</div>
+		<br>
 		<br>		
 
 

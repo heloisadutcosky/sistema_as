@@ -64,7 +64,7 @@
 		if ($_SESSION["first"] == 1) {
 			header("location:cabines.php?first=0");
 		} else {
-			header("location:logout.php");
+			header("location:../logout.php");
 		}
 	} 
 
@@ -88,6 +88,7 @@
 <body>
 	<main>
 		<?php include_once("../_incluir/topo.php"); ?>
+		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
 
 		<article>
 			<!-- Título do atributo avaliado -->

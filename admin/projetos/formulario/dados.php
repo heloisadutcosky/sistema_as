@@ -27,8 +27,9 @@
 	<title>Formulário</title>
 	
 	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="../../_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="../../_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="../../../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="../../../_css/estilo_tabelas.css">
+	<link rel="stylesheet" type="text/css" href="../../../_css/estilo_tabelas_topo.css">
 
 	<style type="text/css">
 		li a {
@@ -44,6 +45,13 @@
 		<?php include_once("../../../_incluir/topo.php"); ?>
 		<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
 
+		<div id="cima_tabela" class="usuarios">
+			<ul>
+			    <li><b>Conjunto</b></li>
+			    <li><b>Atributos</b></li>
+			    <li><b>Escala</b></li>
+			</ul>
+		</div>
 		<div id="janela" class="usuarios">
 			<?php
 			    while($linha = mysqli_fetch_assoc($acesso)) {
@@ -57,7 +65,6 @@
 			</ul>
 			<?php } ?>	
 		</div>
-		<br>
 		<br>
 		<br>
 

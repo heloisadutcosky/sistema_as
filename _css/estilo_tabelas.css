@@ -20,7 +20,7 @@ body {
 	}
 
 	div#janela {
-	    margin:20px;
+	    margin: 0 20px;
 	    border:1px solid #EDEDDC;
 	    font-family:sans-serif;
 	    font-size:13px;
