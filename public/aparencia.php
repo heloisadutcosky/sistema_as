@@ -10,7 +10,7 @@
 	// Variáveis
 
 	// Variáveis constantes na sessão
-	$projeto_id = 888;
+	$projeto_id = $_SESSION["projeto_id"];
 	$conjunto_atributos = 'Aparencia';
 
 

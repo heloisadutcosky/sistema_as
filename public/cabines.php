@@ -7,7 +7,7 @@
 		$_SESSION["first"] = $_GET["first"];
 	}
 
-	$projeto_id = 888;
+	$projeto_id = $_SESSION["projeto_id"];
 	$sessao = $_SESSION["sessao"];
 
 
