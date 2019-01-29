@@ -145,16 +145,16 @@
 		<br>
 		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $user_id; ?>" method="post">
 
-			<label for="cpf">CPF</label>
+			<label for="cpf">CPF: </label>
 			<input type="text" id="cpf" name="cpf" value="<?php echo $dados["cpf"] ?>"><br>
 
-			<label for="nome">Nome</label>
+			<label for="nome">Nome: </label>
 			<input type="text" id="nome" name="nome" value="<?php echo utf8_encode($dados["nome"]) ?>"><br>
 
-			<label for="nascimento">Data de nascimento</label>
+			<label for="nascimento">Data de nascimento: </label>
 			<input type="date" id="nascimento" name="nascimento" value="<?php echo $dados["nascimento"] ?>"><br>
 
-			<label for="sexo">Sexo</label>			
+			<label for="sexo">Sexo: </label>			
 			<select list="sexos" id="sexo" name="sexo" selected="<?php echo $dados["sexo"] ?>">
 				<?php if($dados["sexo"] == "Feminino") { ?>
 					<option value="Feminino" selected>Feminino</option>
@@ -165,7 +165,7 @@
 				<?php } ?>
 			</select><br><br>
 
-			<label for="escolaridade">Escolaridade</label>
+			<label for="escolaridade">Escolaridade: </label>
 			<select id="escolaridade" name="escolaridade"><br>
 				<?php switch ($dados["escolaridade"]) {
 
@@ -200,17 +200,50 @@
 
 			</select><br><br>
 
-			<label for="email">E-mail</label>
+			<label for="email">E-mail: </label>
 			<input type="email" id="email" name="email" value="<?php echo $dados["email"] ?>"><br>
 
-			<label for="telefone">Telefone</label>
+			<label for="telefone">Telefone: </label>
 			<input type="tel" id="telefone" name="telefone" value="<?php echo $dados["telefone"] ?>"><br>
-			<br>
+
+			<label for="funcao">Tipo de avaliador: </label>
+			<select id="funcao" name="funcao"><br>
+				<?php switch ($dados["funcao"]) {
+
+					case 'Painelista': ?>
+						<option value="Consumidor">Consumidor</option>
+						<option value="Painelista" selected>Painelista</option>
+						<option value="Candidato">Candidato</option>
+						<option value="Administrador">Administrador</option>
+						<?php break;
+
+					case 'Candidato': ?>
+						<option value="Consumidor">Consumidor</option>
+						<option value="Painelista">Painelista</option>
+						<option value="Candidato" selected>Candidato</option>
+						<option value="Administrador">Administrador</option>
+						<?php break;
+
+					case 'Administrador': ?>
+						<option value="Consumidor">Consumidor</option>
+						<option value="Painelista">Painelista</option>
+						<option value="Candidato">Candidato</option>
+						<option value="Administrador" selected>Administrador</option>
+						<?php break;
+
+					default: ?>
+						<option value="Consumidor">Consumidor</option>
+						<option value="Painelista" selected>Painelista</option>
+						<option value="Candidato">Candidato</option>
+						<option value="Administrador">Administrador</option>
+						<?php break; 
+					}?>
+			</select><br><br><br>
 
 			<input type="submit" id="botao" value="<?php 
 				if ($acao == "alteracao") echo "Alterar cadastro";
-				if ($acao == "exclusao") echo "Excluir cadastro";
-				if ($acao == "cadastro") echo "Cadastrar";
+				elseif ($acao == "exclusao") echo "Excluir cadastro";
+				else echo "Cadastrar";
 			?>"><br>
 			<br>
 
