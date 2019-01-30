@@ -43,7 +43,7 @@
 		$escolaridade = utf8_decode($_POST["escolaridade"]);
 		$email = $_POST["email"];
 		$telefone = $_POST["telefone"];
-		$funcao = "Painelista";
+		$funcao = $_POST["funcao"];
 
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
@@ -86,19 +86,6 @@
 				} else {
 					header("location:dados.php");
 				}
-			}
-
-			
-			// ----------------------------------------------------------------------
-				
-			$cadastrar = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao')";
-
-			$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
-
-			if (!$operacao_cadastrar) {
-				die("Falha no cadastro dos dados.");
-			} else {
-				header("location:dados.php");
 			}
 		}
 		// --------------------------------------------------------------------------

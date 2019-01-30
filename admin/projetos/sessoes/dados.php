@@ -46,13 +46,18 @@
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<h2 class="espaco">Sessões e amostras - <?php echo $produto; ?></h2>
+		<br>
 
+		<div class="botao">
+			<a href="painel.php?acao=cadastro&codigo=<?php echo($projeto_id); ?>&produto=<?php echo $produto; ?>">Adicionar sessão ou amostra</a>
+		</div>
+		<br>
 		
 		<div id="cima_tabela" class="usuarios">
 			<ul>
-			    <li><b>SESSÃO</b></li>
-			    <li><b>AMOSTRA</b></li>
-			    <li><b>CÓDIGO</b></li>
+			    <li><b>Sessão</b></li>
+			    <li><b>Amostra</b></li>
+			    <li><b>Código</b></li>
 			</ul>
 		</div>
 		<div id="janela" class="usuarios">
@@ -63,16 +68,13 @@
 			    <li><?php echo utf8_encode($linha["sessao"]) ?></li>
 			    <li><?php echo utf8_encode($linha["amostra_descricao"]) ?></li>
 			    <li><?php echo utf8_encode($linha["amostra_codigo"]) ?></li>
-			    <li><a href="alteracao.php?codigo=<?php echo $linha["projeto_id"] ?>">Alterar</a> </li>
-			    <li><a href="exclusao.php?codigo=<?php echo $linha["projeto_id"] ?>">Excluir</a> </li>
+			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Alterar</a> </li>
+			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Excluir</a> </li>
 			</ul>
 			<?php } ?>	
 		</div>
 		<br>
 
-		<div class="botao">
-			<a href="cadastro.php?codigo=<?php echo($projeto_id); ?>">Adicionar sessão ou amostra</a>
-		</div>
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>
 		</div>
@@ -114,7 +116,7 @@
 		<p>Ainda não existe uma sessão cadastradas pra esse projeto</p><br><br>
 
 		<div class="botao">
-			<a href="cadastro.php?codigo=<?php echo($projeto_id); ?>">Adicionar sessão</a>
+			<a href="painel.php?acao=cadastro&codigo=<?php echo($projeto_id); ?>&produto=<?php echo $produto; ?>">Adicionar sessão</a>
 		</div>
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>

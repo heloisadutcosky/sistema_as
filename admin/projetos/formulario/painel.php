@@ -52,14 +52,14 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = {$escala_min}, escala_max = {$escala_max} WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}' AND atributo = '{$atributo}'";
+			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = {$escala_min}, escala_max = {$escala_max} WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}' AND atributo = '{$atributo}'";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
 			if (!$operacao_alterar) {
 				die("Falha na alteração dos dados.");
 			} else {
-				header("location:dados.php");
+				header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
 			}
 		}
 		// --------------------------------------------------------------------------
@@ -88,7 +88,7 @@
 				if (!$operacao_cadastrar) {
 					die("Falha no cadastro dos dados.");
 				} else {
-					header("location:dados.php");
+					header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
 				}
 			}
 		}
@@ -97,14 +97,14 @@
 		// Excluir cadastro ---------------------------------------------------------
 		if ($acao == "exclusao") {
 				
-			$excluir = "DELETE FROM formularios WHERE AND conjunto_atributos = '{$conjunto_atributos}' AND atributo = '{$atributo}'";
+			$excluir = "DELETE FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}' AND atributo = '{$atributo}'";
 
 			$operacao_excluir = mysqli_query($conecta, $excluir);
 
 			if (!$operacao_excluir) {
 				die("Falha na exclusão dos dados.");
 			} else {
-				header("location:dados.php");
+				header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
 			}
 		}
 		// --------------------------------------------------------------------------
@@ -180,7 +180,7 @@
 		</form>
 
 		<div class="direita">
-			<a href="dados.php?codigo=<?php echo $projeto_id; ?>">Voltar</a><br><br>
+			<a href="dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>">Voltar</a><br><br>
 		</div>
 		<br>
 

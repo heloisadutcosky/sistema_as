@@ -74,6 +74,10 @@
 			</select>
 			<input type="submit" id="botao" value="Visualizar resultados"><br>
 		</form>
+
+		<div class="direita">
+			<a href="principal.php">Voltar</a><br><br>
+		</div>
 		<br>
 
 		<?php 
@@ -107,9 +111,6 @@
 				</div>
 		<?php } ?>	
 
-		<div class="direita">
-			<a href="principal.php">Voltar</a><br><br>
-		</div>
 		<br>
 		<br>
 		<br>		
