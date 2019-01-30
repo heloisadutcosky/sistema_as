@@ -44,13 +44,13 @@
 		$escala_max = $_POST["escala_max"];
 		$data_inicio = $_POST["data_inicio"];
 		$data_fim = $_POST["data_fim"];
-		$form_ativo = $_POST["form_ativo"];
+		$form_ativo = isset($_POST["form_ativo"]) ? 1 : 0;
 		$tipo_consumidor = $_POST["tipo_consumidor"];
 
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = {$escala_min}, escala_max = {$escala_max}, data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = {$form_ativo}, tipo_consumidor = '{$tipo_consumidor}' WHERE projeto_id = {$_SESSION["projeto_id"]}";
+			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = {$escala_min}, escala_max = {$escala_max}, data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = {$form_ativo}, tipo_consumidor = '{$tipo_consumidor}' WHERE projeto_id = {$projeto_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -127,9 +127,10 @@
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<h2 class="espaco"><?php 
-			if ($acao == "alteracao") echo "ALTERAÇÃO DE ";
-			if ($acao == "exclusao") echo "EXCLUSÃO DE "; 
-			?>CADASTRO</h2>
+			if ($acao == "alteracao") echo "ALTERAÇÃO DE CADASTRO DE PROJETO";
+			elseif ($acao == "exclusao") echo "EXCLUSÃO DE PROJETO";
+			else echo "CADASTRO DE PROJETO"; 
+			?></h2>
 
 		<br>
 		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>" method="post">
@@ -174,7 +175,9 @@
 			<input type="date" id="data_fim" name="data_fim" value="<?php echo $dados["data_fim"]; ?>"><br>
 
 			<label for="form_ativo">Habilitar formulário: </label>
-			<input type="checkbox" id="form_ativo" name="form_ativo" value="<?php echo $dados["form_ativo"]; ?>"><br>
+			<input type="checkbox" id="form_ativo" name="form_ativo" <?php if ($dados["form_ativo"] == 1) { ?> 
+				checked
+			<?php } ?>><br>
 
 			<input type="submit" id="botao" value="<?php 
 				if ($acao == "alteracao") echo "Alterar cadastro";
