@@ -59,7 +59,7 @@
 			if (!$operacao_alterar) {
 				die("Falha na alteração dos dados.");
 			} else {
-				header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
+				header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
 			}
 		}
 		// --------------------------------------------------------------------------
@@ -88,7 +88,7 @@
 				if (!$operacao_cadastrar) {
 					die("Falha no cadastro dos dados.");
 				} else {
-					header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
+					header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
 				}
 			}
 		}
@@ -104,7 +104,7 @@
 			if (!$operacao_excluir) {
 				die("Falha na exclusão dos dados.");
 			} else {
-				header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
+				header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
 			}
 		}
 		// --------------------------------------------------------------------------
