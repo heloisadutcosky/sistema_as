@@ -7,6 +7,7 @@
 	session_start();
 	
 	if(isset($_SESSION["usuario"])) {
+		$funcao = $_SESSION["funcao"] == "Administrador" ? $_GET["funcao"] : $_SESSION["funcao"];
 		} else {
 			Header("Location:<?php echo($caminho); ?>login.php");
 		}
@@ -27,7 +28,7 @@
 		$sessoes = array_values(array_unique($sessoes));
 
 	} else {
-		header("location:questionarios.php");
+		header("location:../principal.php");
 	}
 	
 	if (isset($_GET["sessao"])) { 

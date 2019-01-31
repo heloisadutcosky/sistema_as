@@ -80,24 +80,24 @@
 				</div>
 				<br>
 
-				<div id="cima_tabela" style="width: 430px">
+				<div id="cima_tabela" style="width: 480px">
 					<ul>
-					    <li style="width: 100px"><b>Produto</b></li>
-					    <li style="width: 100px"><b>Categoria</b></li>
-					    <li style="width: 70px"><b>Sabor</b></li>
+					    <li style="width: 120px"><b>Produto</b></li>
+					    <li style="width: 120px"><b>Categoria</b></li>
+					    <li style="width: 80px"><b>Sabor</b></li>
 					    <li style="width: 70px"><b>Marca</b></li>
 					</ul>
 				</div>
 
-				<div id="janela" style="width: 430px">
+				<div id="janela" style="width: 480px">
 					<?php while($linha = mysqli_fetch_assoc($acesso)) { 
 						$consulta2 = "SELECT * FROM categorias WHERE categoria_id = '{$linha["categoria_id"]}'";
 						$acesso2 = mysqli_query($conecta, $consulta2);
 						$dados = mysqli_fetch_assoc($acesso2);?>
 					<ul>
-					    <li style="width: 100px"><?php echo utf8_encode($linha["produto"]); ?></li>
-						<li style="width: 100px"><?php echo utf8_encode($dados["categoria"]); ?></li>
-						<li style="width: 70px"><?php echo utf8_encode($linha["sabor"]); ?></li>
+					    <li style="width: 120px"><?php echo utf8_encode($linha["produto"]); ?></li>
+						<li style="width: 120px"><?php echo utf8_encode($dados["categoria"]); ?></li>
+						<li style="width: 80px"><?php echo utf8_encode($linha["sabor"]); ?></li>
 						<li style="width: 70px"><?php echo utf8_encode($linha["marca"]); ?></li>
 						<li style="width: 50px"><a href="produtos.php?acao=exclusao&codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($dados["categoria"]); ?>&produto_id=<?php echo $linha["produto_id"] ?>">Excluir</a>
 					</ul>

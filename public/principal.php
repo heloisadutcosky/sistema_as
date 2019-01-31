@@ -17,7 +17,7 @@
 		if ($rows == 1) {
 			$dados = mysqli_fetch_assoc($acesso);
 			$_SESSION["produto"] = $dados["produto"];
-			header("location:" . strtolower($funcao) . "/principal.php?codigo=" . $dados["projeto_id"]);
+			header("location:" . strtolower($funcao) . "/principal.php?codigo={$dados["projeto_id"]}");
 		}
 
 	} else {
@@ -45,7 +45,7 @@
 		<nav>
 			<ul>
 			<?php while($linha = mysqli_fetch_assoc($acesso)) { ?>
-				<li class="menu"><a href="<?php echo strtolower($funcao); ?>/consumo.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>"><?php echo $linha["produto"]; ?></a></li>
+				<li class="menu"><a href="<?php echo strtolower($funcao); ?>/principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>"><?php echo $linha["produto"]; ?></a></li>
 			<?php } ?>
 			</ul>
 		</nav>
