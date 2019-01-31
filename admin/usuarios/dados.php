@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Projetos About Solution</title>
+	<title>Usuários About Solution</title>
 	
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">

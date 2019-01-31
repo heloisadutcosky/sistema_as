@@ -13,6 +13,7 @@
 
 	//Definir a ação a ser realizada
 	$acao = isset($_GET["acao"]) ? $_GET["acao"] : "";
+	$atributo_completo = isset($_GET["atributo_completo"]) ? $_GET["atributo_completo"] : "";
 
 	// Abrir consulta ao banco de dados para pegar informações do projeto selecionado
 	if (isset($_GET["codigo"])) {
@@ -26,7 +27,7 @@
 		$complemento = "";
 	}
 
-	$consulta = "SELECT * FROM formularios" . $complemento;
+	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo = '{$atributo_completo}'";
 	$acesso = mysqli_query($conecta, $consulta);
 
 	if (!$acesso) {
@@ -69,7 +70,7 @@
 
 			// Verificar existência do projeto na base ------------------------------
 
-			$consulta_atributo = "SELECT * FROM formularios WHERE projeto_id = " . $projeto_id . " AND atributo_completo = " . $atributo_completo;
+			$consulta_atributo = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo '{$atributo_completo}'";
 
 			$acesso = mysqli_query($conecta, $consulta_atributo);
 			$existe_atributo = mysqli_fetch_assoc($acesso);
@@ -93,11 +94,12 @@
 			}
 		}
 		// --------------------------------------------------------------------------
+		
 
 		// Excluir cadastro ---------------------------------------------------------
 		if ($acao == "exclusao") {
 				
-			$excluir = "DELETE FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}' AND atributo = '{$atributo}'";
+			$excluir = "DELETE FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo = '{$atributo_completo}'";
 
 			$operacao_excluir = mysqli_query($conecta, $excluir);
 

@@ -85,7 +85,7 @@
 			    <li><?php echo utf8_encode($linha["atributo"]) ?></li>
 			    <li></li>
 			    <li></li>
-			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Excluir</a> </li>
+			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_completo=<?php echo  $linha["atributo_completo"]; ?>">Excluir</a> </li>
 			</ul>
 			<?php } ?>	
 		</div>

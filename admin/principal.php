@@ -20,6 +20,7 @@
 	<meta charset="utf-8">
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
+	<style type="text/css"></style>
 
 </head>
 <body>
