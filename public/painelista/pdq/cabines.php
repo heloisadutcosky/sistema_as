@@ -1,6 +1,6 @@
 <?php 
 
-	$caminho =  "../";
+	$caminho =  "../../../";
 	require_once($caminho . "conexao/conexao.php");
 
 	// Iniciar sessão
@@ -17,7 +17,7 @@
 	if(isset($_SESSION["usuario"])) {
 		$user_id = $_SESSION["user_id"];
 	} else {
-		Header("Location:../login.php");
+		Header("Location:" . $caminho . "login.php");
 	}
 
 	if (isset($_GET["amostra"]))	 {
@@ -71,7 +71,7 @@
 			if ($_SESSION["first"] == 1) {
 				header("location:aparencia.php?first=0");
 			} else {
-				header("location:../logout.php");
+				header("location:" . $caminho . "logout.php?mensagem=1");
 			}
 		}
 
@@ -87,7 +87,7 @@
 			<title>PDQ - Cabines</title>
 			<meta charset="utf-8">
 			
-			<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
+			<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 			
 			<style>
 				.amostra {
@@ -100,7 +100,7 @@
 		</head>
 		<body>
 			<main>
-				<?php include_once("../_incluir/topo.php"); ?>
+				<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 				<article>
 					<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
@@ -117,7 +117,7 @@
 				<br>
 				<br>
 
-				<?php include_once("../_incluir/rodape.php"); ?>
+				<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 			</main>
 		</body>
@@ -152,7 +152,7 @@
 	<title>PDQ - Cabines</title>
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 	
 	<style>
 		.amostra {
@@ -165,7 +165,7 @@
 </head>
 <body>
 	<main>
-		<?php include_once("../_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
 		
 		<br>	
@@ -209,7 +209,7 @@
 			</div>
 		</article>
 
-		<?php include_once("../_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 		
 	</main>
 </body>

@@ -35,22 +35,21 @@
 	
 	// Informações preenchidas ------------------------------------------------------
 	if (isset($_POST["empresa"])) {
-		$projeto_id = $_SESSION["projeto_id"];
-		$empresa = $_POST["empresa"];
-		$produto = $_POST["produto"];
-		$descricao_projeto = $_POST["descricao_projeto"];
-		$tipo_avaliacao = $_POST["tipo_avaliacao"];
+		$empresa = utf8_decode($_POST["empresa"]);
+		$produto = utf8_decode($_POST["produto_id"]);
+		$descricao_projeto = utf8_decode($_POST["descricao_projeto"]);
+		$tipo_avaliacao = utf8_decode($_POST["tipo_avaliacao"]);
 		$escala_min = $_POST["escala_min"];
 		$escala_max = $_POST["escala_max"];
 		$data_inicio = $_POST["data_inicio"];
 		$data_fim = $_POST["data_fim"];
 		$form_ativo = isset($_POST["form_ativo"]) ? 1 : 0;
-		$tipo_consumidor = $_POST["tipo_consumidor"];
+		$tipo_avaliador = $_POST["tipo_avaliador"];
 
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = {$escala_min}, escala_max = {$escala_max}, data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = {$form_ativo}, tipo_consumidor = '{$tipo_consumidor}' WHERE projeto_id = {$projeto_id}";
+			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = {$escala_min}, escala_max = {$escala_max}, data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = {$form_ativo}, tipo_avaliador = '{$tipo_avaliador}' WHERE projeto_id = {$projeto_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -67,7 +66,7 @@
 
 			// Verificar existência do projeto na base ------------------------------
 
-			$consulta_projeto = "SELECT * FROM projetos WHERE empresa = " . $empresa . " AND produto = " . $produto . " AND tipo_avaliacao = " . $tipo_avaliacao;
+			$consulta_projeto = "SELECT * FROM projetos WHERE empresa = '{$empresa}' AND produto = '{$produto}' AND tipo_avaliacao = '{$tipo_avaliacao}'";
 
 			$acesso = mysqli_query($conecta, $consulta_projeto);
 			$existe_projeto = mysqli_fetch_assoc($acesso);
@@ -79,7 +78,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO projetos (empresa, produto, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_consumidor) VALUES ('$empresa', '$produto', '$descricao_projeto', '$tipo_avaliacao', $escala_min, $escala_max, '$data_inicio', '$data_fim', '$form_ativo', '$tipo_consumidor')";
+				$cadastrar = "INSERT INTO projetos (empresa, produto, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto}', '{$descricao_projeto}', '{$tipo_avaliacao}', {$escala_min}, {$escala_max}, '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
@@ -136,17 +135,29 @@
 		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>" method="post">
 
 			<label for="empresa">Empresa: </label>
-			<input type="text" id="empresa" name="empresa" value="<?php echo $dados["empresa"]; ?>" required><br>
+			<input type="text" id="empresa" name="empresa" value="<?php echo utf8_encode($dados["empresa"]); ?>" required><br>
 
-			<label for="produto">Produto: </label>
-			<input type="text" id="produto" name="produto" value="<?php echo $dados["produto"]; ?>" required><br>
+			<label for="produto_id">Produto: </label>
+			<select id="produto_id" name="produto_id"><br>
+				<?php 
+				$consulta2 = "SELECT * FROM produtos";
+				$acesso2 = mysqli_query($conecta, $consulta2);
+				while($linha = mysqli_fetch_assoc($acesso2)) { ?>
+					<?php if($dados["produto"] == $linha["produto"]) { ?>
+						<option value="<?php echo $linha["produto"]; ?>" selected><?php echo utf8_encode($linha["produto"]); ?></option>
+					<?php } else { ?>
+						<option value="<?php echo $linha["produto"]; ?>"><?php echo utf8_encode($linha["produto"]); ?></option>
+					<?php } ?>
+				<?php } ?>
+			</select>
+			<br>
 
 			<label for="tipo_avaliacao">Tipo de avaliação sensorial: </label>
-			<input type="text" id="tipo_avaliacao" name="tipo_avaliacao" value="<?php echo $dados["tipo_avaliacao"]; ?>" required><br>
+			<input type="text" id="tipo_avaliacao" name="tipo_avaliacao" value="<?php echo utf8_encode($dados["tipo_avaliacao"]); ?>" required>
 
-			<label for="tipo_consumidor">Tipo de avaliadores: </label>
-			<select id="tipo_consumidor" name="tipo_consumidor"><br>
-				<?php switch ($dados["tipo_consumidor"]) {
+			<label for="tipo_avaliador">Tipo de avaliadores: </label>
+			<select id="tipo_avaliador" name="tipo_avaliador"><br>
+				<?php switch ($dados["tipo_avaliador"]) {
 					case 'Painelista': ?>
 						<option value="Consumidor">Consumidor</option>
 						<option value="Painelista" selected>Painelista</option>
@@ -157,16 +168,16 @@
 						<option value="Painelista">Painelista</option>
 						<?php break; 
 				}?>
-			</select><br><br>
+			</select><br>
 
 			<label for="escala_min">Escala mínima: </label>
-			<input type="number" id="escala_min" name="escala_min" value="<?php echo $dados["escala_min"]; ?>">
+			<input type="number" id="escala_min" name="escala_min" value="<?php echo $dados["escala_min"]; ?>" size="10">
 
 			<label for="escala_max">Escala máxima: </label>
-			<input type="number" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>"><br>
+			<input type="number" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>" size="10"><br>
 
 			<label for="descricao_projeto">Descrição do projeto: </label>
-			<input type="text" id="descricao_projeto" name="descricao_projeto" value="<?php echo $dados["descricao_projeto"]; ?>" required><br>
+			<input type="text" id="descricao_projeto" name="descricao_projeto" value="<?php echo utf8_encode($dados["descricao_projeto"]); ?>" style="width: 360px; height: 40px; text-indent: 2px"><br>
 
 			<label for="data_inicio">Data de início: </label>
 			<input type="date" id="data_inicio" name="data_inicio" value="<?php echo $dados["data_inicio"]; ?>">

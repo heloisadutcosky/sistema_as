@@ -13,20 +13,19 @@
 
 	//Definir a ação a ser realizada
 	$acao = isset($_GET["acao"]) ? $_GET["acao"] : "";
+	$projeto_id = isset($_GET["codigo"]) ? $_GET["codigo"] : 0;
+	$produto = isset($_GET["produto"]) ? $_GET["produto"] : "";
 
 	// Abrir consulta ao banco de dados para pegar informações do projeto selecionado
-	if (isset($_GET["codigo"])) {
-		$projeto_id = $_GET["codigo"];
-		$_SESSION["projeto_id"] = $projeto_id;
-		$produto = $_GET["produto"];
-		$complemento = " WHERE projeto_id = {$projeto_id}";
+	if (isset($_GET["amostra"])) {
+		$sessao = $_GET["sessao"];
+		$amostra_codigo = $_GET["amostra"];
 	} else {
-		$projeto_id = 0;
-		$produto = "";
-		$complemento = "";
+		$sessao = 0;
+		$amostra_codigo = "";
 	}
 
-	$consulta = "SELECT * FROM amostras" . $complemento;
+	$consulta = "SELECT * FROM amostras WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND amostra_codigo = '{$amostra_codigo}'";
 	$acesso = mysqli_query($conecta, $consulta);
 
 	if (!$acesso) {
@@ -41,50 +40,20 @@
 	if (isset($_POST["amostra_descricao"])) {
 		$sessao = $_POST["sessao"];
 		$data = $_POST["data"];
-		$amostra_descricao = $_POST["amostra_descricao"];
+		$amostra_descricao = utf8_decode($_POST["amostra_descricao"]);
 		$amostra_codigo = $_POST["amostra_codigo"];
-
-		// Alterar cadastro ---------------------------------------------------------
-		if ($acao == "alteracao") {
-				
-			$alterar = "UPDATE amostras SET projeto_id = {$projeto_id}, sessao = {$sessao}, data = '{$data}', amostra_descricao = '{$amostra_descricao}', amostra_codigo = '{$amostra_codigo}' WHERE projeto_id = {$projeto_id} AND sessao = {$sessao}";
-
-			$operacao_alterar = mysqli_query($conecta, $alterar);
-
-			if (!$operacao_alterar) {
-				die("Falha na alteração dos dados.");
-			} else {
-				header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
-			}
-		}
-		// --------------------------------------------------------------------------
 
 		// Cadastrar ----------------------------------------------------------------
 		if ($acao == "cadastro") {
 
-			// Verificar existência da sessão na base ------------------------------
+			$cadastrar = "INSERT INTO amostras (projeto_id, sessao, data, amostra_descricao, amostra_codigo) VALUES ($projeto_id, $sessao, '$data', '$amostra_descricao', '$amostra_codigo')";
 
-			$consulta_sessao = "SELECT * FROM amostras WHERE projeto_id = " . $projeto_id . " AND sessao = " . $sessao;
+			$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
-			$acesso = mysqli_query($conecta, $consulta_sessao);
-			$existe_sessao = mysqli_fetch_assoc($acesso);
-
-			if (!empty($existe_sessao)) { ?>
-				<p>Essa sessão já foi cadastrada nesse projeto</p>
-			<?php } 
-
-			// ----------------------------------------------------------------------
-				
-			else {
-				$cadastrar = "INSERT INTO amostras (projeto_id, sessao, data, amostra_descricao, amostra_codigo) VALUES ($projeto_id, $sessao, '$data', '$amostra_descricao', '$amostra_codigo')";
-
-				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
-
-				if (!$operacao_cadastrar) {
-					die("Falha no cadastro dos dados.");
-				} else {
-					header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
-				}
+			if (!$operacao_cadastrar) {
+				die("Falha no cadastro dos dados.");
+			} else {
+				header("location:dados.php?codigo=" . $projeto_id . "&produto=" . $produto);
 			}
 		}
 		// --------------------------------------------------------------------------
@@ -92,14 +61,14 @@
 		// Excluir cadastro ---------------------------------------------------------
 		if ($acao == "exclusao") {
 				
-			$excluir = "DELETE FROM amostras WHERE projeto_id = {$projeto_id} AND sessao = {$sessao}";
+			$excluir = "DELETE FROM amostras WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND amostra_codigo = {$amostra_codigo}";
 
 			$operacao_excluir = mysqli_query($conecta, $excluir);
 
 			if (!$operacao_excluir) {
 				die("Falha na exclusão dos dados.");
 			} else {
-				header("location:dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>");
+				header("location:dados.php?codigo=" . $projeto_id . "&produto=" . $produto);
 			}
 		}
 		// --------------------------------------------------------------------------
@@ -133,7 +102,7 @@
 		<h3 style="margin: 30px 0; color: #8B0000"><b>Sessões e amostras - <?php echo $produto; ?></b></h3>
 
 		
-		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>" method="post">
+		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>&sessao=<?php echo $sessao; ?>&amostra=<?php echo $amostra_codigo; ?>" method="post">
 
 			<label for="sessao">Sessão: </label>
 			<input type="number" id="sessao" name="sessao" value="<?php echo $dados["sessao"]; ?>" required><br>
@@ -144,7 +113,7 @@
 			<p>Favor cadastrar as amostras e os códigos que serão utilizados</p>
 			
 			<label for="amostra_descricao">Descrição: </label>
-			<input type="text" id="amostra_descricao" name="amostra_descricao" value="<?php echo $dados["amostra_descricao"]; ?>" required><br>
+			<input type="text" id="amostra_descricao" name="amostra_descricao" value="<?php echo utf8_encode($dados["amostra_descricao"]); ?>" required><br>
 
 			<label for="amostra_codigo">Código: </label>
 			<input type="text" id="amostra_codigo" name="amostra_codigo" value="<?php echo $dados["amostra_codigo"]; ?>" required><br>

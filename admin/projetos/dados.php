@@ -45,21 +45,21 @@
 		</div>
 		<br>
 		
-		<div id="cima_tabela" class="projetos">
+		<div id="cima_tabela" style="width: 720px;">
 			<ul>
 			    <li><b>Empresa</b></li>
 			    <li><b>Tipo de teste</b></li>
 			    <li><b>Produto</b></li>
 			</ul>
 		</div>
-		<div id="janela" class="projetos">
+		<div id="janela" style="width: 720px;">
 			<?php
 			    while($linha = mysqli_fetch_assoc($acesso)) {
 			?>
 			<ul>
 			    <li><?php echo utf8_encode($linha["empresa"]) ?></li>
 			    <li><?php echo utf8_encode($linha["tipo_avaliacao"]) ?></li>
-			    <li><?php echo utf8_encode($linha["produto"]) ?></li>
+			    <li style="width: 120px;"><?php echo utf8_encode($linha["produto"]) ?></li>
 			    <li><a href="formulario/dados.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto=<?php echo $linha["produto"]; ?>">Formulário</a> </li>
 			    <li><a href="sessoes/dados.php?codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $linha["produto"]; ?>">Sessão</a> </li>
 			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>">Alterar</a> </li>

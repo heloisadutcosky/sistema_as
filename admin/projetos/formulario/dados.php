@@ -84,7 +84,7 @@
 			    <li><?php echo utf8_encode($linha["conjunto_atributos"]) ?></li>
 			    <li><?php echo utf8_encode($linha["atributo"]) ?></li>
 			    <li></li>
-			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Alterar</a> </li>
+			    <li></li>
 			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Excluir</a> </li>
 			</ul>
 			<?php } ?>	

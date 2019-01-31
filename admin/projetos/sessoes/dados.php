@@ -68,8 +68,8 @@
 			    <li><?php echo utf8_encode($linha["sessao"]) ?></li>
 			    <li><?php echo utf8_encode($linha["amostra_descricao"]) ?></li>
 			    <li><?php echo utf8_encode($linha["amostra_codigo"]) ?></li>
-			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Alterar</a> </li>
-			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Excluir</a> </li>
+			    <li></li>
+			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&sessao=<?php echo $linha["sessao"]; ?>&amostra=<?php echo $linha["amostra_codigo"]; ?>">Excluir</a> </li>
 			</ul>
 			<?php } ?>	
 		</div>

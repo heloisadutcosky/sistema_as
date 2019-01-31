@@ -1,6 +1,6 @@
 <?php 
 
-	$caminho =  "../";
+	$caminho =  "../../";
 	require_once($caminho . "conexao/conexao.php");
 	
 	// Iniciar sessão
@@ -71,7 +71,7 @@
 		<nav>
 			<ul>
 				<?php foreach ($sessoes as $sessao) { ?>
-					<li class="menu"><a href="sessoes.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>">Sessão <?php echo $sessao; ?></a></li>
+					<li class="menu"><a href="principal.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>">Sessão <?php echo $sessao; ?></a></li>
 				<?php } ?>
 			</ul>
 		</nav>
@@ -85,8 +85,8 @@
 				
 			<nav>
 				<ul>
-					<li class="menu"><a href="aparencia.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Aparência</a></li>
-					<li class="menu"><a href="cabines.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Cabines</a></li>
+					<li class="menu"><a href="pdq/aparencia.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Aparência</a></li>
+					<li class="menu"><a href="pdq/cabines.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Cabines</a></li>
 				</ul>
 			</nav>
 			<br>

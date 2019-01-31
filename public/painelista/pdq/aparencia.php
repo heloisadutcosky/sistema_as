@@ -1,18 +1,33 @@
-<?php require_once("conexao/conexao.php"); ?>
-
 <?php 
+
+	$caminho =  "../../../";
+	require_once($caminho . "conexao/conexao.php");
+	
+	// Iniciar sessão
 	session_start();
 
-	$projeto_id = 888;
+	if (isset($_GET["first"])) {
+		$_SESSION["first"] = $_GET["first"];
+	}
+	
+	// Variáveis
+
+	// Variáveis constantes na sessão
+	$projeto_id = $_SESSION["projeto_id"];
 	$conjunto_atributos = 'Aparencia';
 
+
 	if(isset($_SESSION["usuario"])) {
+
 		$user_id = $_SESSION["user_id"];
+
 	} else {
-		Header("Location: login.php");
+		Header("Location:" . $caminho . "login.php");
 	}
 
+
 	$sessao = $_SESSION["sessao"];
+
 
 	// Abrir consulta ao banco de dados
 	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}'";
@@ -52,7 +67,7 @@
 		if ($_SESSION["first"] == 1) {
 			header("location:cabines.php?first=0");
 		} else {
-			header("location:logout.php");
+			header("location:" . $caminho . "logout.php?mensagem=1");
 		}
 	} 
 
@@ -69,13 +84,24 @@
 	<title>PDQ - Aparência</title>
 	<meta charset="utf-8">
 
-	<link rel="stylesheet" type="text/css" href="../_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="../_css/estilo_aparencia.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
+
+	<style type="text/css">
+		.amostra {
+			float: left;
+			width: 60px;
+			margin: 18px 0 0 18px;
+			font-size: 120%;
+			font-weight: bold;
+			color: #C2534B;
+		}
+	</style>
 
 </head>
 <body>
 	<main>
-		<?php include_once("_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/topo.php"); ?>
+		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
 
 		<article>
 			<!-- Título do atributo avaliado -->
@@ -97,11 +123,11 @@
 								<form action="aparencia.php?pagina=<?php echo($pagina + 1); ?>" method="post" align="">
 									<input type="range" id="nota" name="<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" required>
 									<input type="checkbox" name="teste" required>
-									<div class="ticks">
+									<div class="ticks" style="padding-left: <?php echo($dados["escala_min"]*60); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60); ?>px">
 										<span class="tick"></span>
 										<span class="tick"></span>
 									</div>
-									<div class="afterticks">
+									<div class="afterticks" style="padding-left: <?php echo($dados["escala_min"]*60+90); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60+50); ?>px">
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_baixo"]); ?></span>
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_alto"]); ?></span>
 									</div>
@@ -118,7 +144,7 @@
 			</div>
 		</article>
 
-		<?php include_once("_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 	</main>
 </body>

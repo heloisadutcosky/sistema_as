@@ -24,9 +24,13 @@ session_destroy(); // Destrói todas as variáveis de sessão
 		<h2 class="espaco"></h2>
 		<br>
 
-		<p>Você finalizou a análise com sucesso.</p>
-		<p>Muito obrigado!</p>
-		<br>
+		<?php if (isset($_GET["mensagem"])){ ?>
+			<p>Você finalizou a análise com sucesso.</p>
+			<p>Muito obrigado!</p>
+			<br>
+		<?php } ?>
+
+		<p>Volte sempre à About Solution!</p>
 
 		<a href="login.php">Login</a>
 		<br>
