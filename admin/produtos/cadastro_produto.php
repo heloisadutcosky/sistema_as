@@ -12,40 +12,6 @@
 	require_once($caminho . "conexao/conexao.php");
 
 	$acao = isset($_GET["acao"]) ? $_GET["acao"] : "";
-
-	if (isset($_POST["produto"])) {
-		$categoria_id = $_POST["categoria_id"];
-		$produto = utf8_decode($_POST["produto"]);
-		$sabor = utf8_decode($_POST["sabor"]);
-		$marca = utf8_decode($_POST["marca"]);
-
-	// Cadastrar ----------------------------------------------------------------
-
-		// Verificar existência do projeto na base ------------------------------
-
-		$consulta_produto = "SELECT * FROM produtos WHERE categoria_id = {$categoria_id} AND marca = '{$marca}' AND sabor = '{$sabor}'";
-
-		$acesso = mysqli_query($conecta, $consulta_produto);
-		$existe_produto = mysqli_fetch_assoc($acesso);
-
-		if (!empty($existe_produto)) { ?>
-			<p>Esse produto já foi cadastrado</p>
-		<?php } 
-
-		// ----------------------------------------------------------------------
-			
-		else {
-			$cadastrar = "INSERT INTO produtos (categoria_id, produto, sabor, marca) VALUES ({$categoria_id}, '{$produto}', '{$sabor}', '{$marca}')";
-
-			$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
-
-			if (!$operacao_cadastrar) {
-				die("Falha no cadastro da marca.");
-			} else {
-				header("location:dados.php?tipo=produtos");
-			}
-		}
-	}
 ?>
 
 <!DOCTYPE html>
@@ -83,48 +49,95 @@
 
 		<article>
 			<h2 class="espaco">Cadastro produto</h2>
+
+			<?php
+				if (isset($_POST["produto"])) {
+					$categoria_id = $_POST["categoria_id"];
+					$produto = utf8_decode($_POST["produto"]);
+					$sabor = utf8_decode($_POST["sabor"]);
+					$marca = utf8_decode($_POST["marca"]);
+
+				// Cadastrar ----------------------------------------------------------------
+
+					// Verificar existência do projeto na base ------------------------------
+
+					$consulta_produto = "SELECT * FROM produtos WHERE categoria_id = {$categoria_id} AND marca = '{$marca}' AND sabor = '{$sabor}'";
+
+					$acesso = mysqli_query($conecta, $consulta_produto);
+					$existe_produto = mysqli_fetch_assoc($acesso);
+
+					if (!empty($existe_produto)) { ?>
+						<p style="margin-left: 10px">Esse produto já foi cadastrado</p>
+					<?php } 
+
+					// ----------------------------------------------------------------------
+						
+					else {
+						$cadastrar = "INSERT INTO produtos (categoria_id, produto, sabor, marca) VALUES ({$categoria_id}, '{$produto}', '{$sabor}', '{$marca}')";
+
+						$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
+
+						if (!$operacao_cadastrar) {
+							die("Falha no cadastro da marca.");
+						} else {
+							header("location:dados.php?tipo=produtos");
+						}
+					}
+				}
+			?>
 			<br>
 
 			<?php if(isset($_GET["categoria_id"])) { ?>
 			<form action="cadastro_produto.php" method="post">
-				<label for="produto">Nome produto: </label>
-				<input type="text" id="produto" name="produto" value="<?php echo $_GET["produto"]; ?>" required>
+				<div style="float: left; margin-right: 30px;">
+					<label for="produto">Nome produto: </label>
+					<input type="text" id="produto" name="produto" value="<?php echo $_GET["produto"]; ?>" required>
+				</div>
 
-				<label for="categoria_id">Tabela: </label>
-				<select id="categoria_id" name="categoria_id"><br>
-					<?php 
-					$consulta = "SELECT * FROM categorias";
-					$acesso = mysqli_query($conecta, $consulta);
-					while($linha = mysqli_fetch_assoc($acesso)) { ?>
-						<?php if($linha["categoria_id"] == $_GET["categoria_id"]) { ?>
-							<option value="<?php echo $linha["categoria_id"]; ?>" selected><?php echo utf8_encode($linha["categoria"]); ?></option>
-						<?php } else { ?>
-							<option value="<?php echo $linha["categoria_id"]; ?>"><?php echo utf8_encode($linha["categoria"]); ?></option>
+				<div>
+				<label for="categoria_id">Categoria: </label>
+					<select id="categoria_id" name="categoria_id"><br>
+						<?php 
+						$consulta = "SELECT * FROM categorias";
+						$acesso = mysqli_query($conecta, $consulta);
+						while($linha = mysqli_fetch_assoc($acesso)) { ?>
+							<?php if($linha["categoria_id"] == $_GET["categoria_id"]) { ?>
+								<option value="<?php echo $linha["categoria_id"]; ?>" selected><?php echo utf8_encode($linha["categoria"]); ?></option>
+							<?php } else { ?>
+								<option value="<?php echo $linha["categoria_id"]; ?>"><?php echo utf8_encode($linha["categoria"]); ?></option>
+							<?php } ?>
 						<?php } ?>
-					<?php } ?>
-				</select>
+					</select>
+				</div><br>
 
-				<label for="sabor">Sabor: </label>
-				<select id="sabor" name="sabor"><br>
-					<?php
-					$consulta = "SELECT * FROM sabores where categoria_id = " . $_GET["categoria_id"];
-					$acesso = mysqli_query($conecta, $consulta);
-					while($linha = mysqli_fetch_assoc($acesso)) { ?>
-						<option value="<?php echo $linha["sabor"]; ?>"><?php echo utf8_encode($linha["sabor"]); ?></option>
-					<?php } ?>
-				</select>
+				<div style="float: left; margin-right: 35px;">
+					<label for="sabor">Sabor: </label>
+					<select id="sabor" name="sabor"><br>
+						<option value="NULL" selected></option>
+						<?php
+						$consulta = "SELECT * FROM sabores where categoria_id = " . $_GET["categoria_id"];
+						$acesso = mysqli_query($conecta, $consulta);
+						while($linha = mysqli_fetch_assoc($acesso)) { ?>
+							<option value="<?php echo $linha["sabor"]; ?>"><?php echo utf8_encode($linha["sabor"]); ?></option>
+						<?php } ?>
+					</select>
+				</div>
 
-				<label for="marca">Marca: </label>
-				<select id="marca" name="marca"><br>
-					<?php
-					$consulta = "SELECT * FROM marcas where categoria_id = " . $_GET["categoria_id"];
-					$acesso = mysqli_query($conecta, $consulta);
-					while($linha = mysqli_fetch_assoc($acesso)) { ?>
-						<option value="<?php echo $linha["marca"]; ?>"><?php echo utf8_encode($linha["marca"]); ?></option>
-					<?php } ?>
-				</select>
+				<div>
+					<label for="marca">Marca: </label>
+					<select id="marca" name="marca"><br>
+						<option value="NULL" selected></option>
+						<?php
+						$consulta = "SELECT * FROM marcas where categoria_id = " . $_GET["categoria_id"];
+						$acesso = mysqli_query($conecta, $consulta);
+						while($linha = mysqli_fetch_assoc($acesso)) { ?>
+							<option value="<?php echo $linha["marca"]; ?>"><?php echo utf8_encode($linha["marca"]); ?></option>
+						<?php } ?>
+					</select>
+				</div>
+				<br><br>
 				
-				<input type="submit" id="botao" value="Cadastrar">
+				<input type="submit" id="botao" value="Cadastrar" style="margin-left: 10px">
 			</form>
 			<?php } else { ?>
 
@@ -136,8 +149,9 @@
 
 
 				<div>
-					<label for="categoria_id">Tabela: </label>
+					<label for="categoria_id">Categoria: </label>
 					<select id="categoria_id" name="categoria_id"><br>
+						<option value="NULL" selected></option>
 						<?php 
 						$consulta = "SELECT * FROM categorias";
 						$acesso = mysqli_query($conecta, $consulta);

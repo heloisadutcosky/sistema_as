@@ -36,25 +36,19 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas_topo.css">
 
 	<style type="text/css">
-		li a {
-	    list-style:none;
-	    display:inline-block;
-	    background-color: none;	    
-	}
+		div#janela li:nth-child(1) {
+		    padding:5px 5px;
+		}
 
-	div#janela li:nth-child(1) {
-	    padding:5px 5px;
-	}
+		div#janela li:nth-child(2) {
+		    width:280px;  
+		    padding:5px 2px;
+		}    
 
-	div#janela li:nth-child(2) {
-	    width:280px;  
-	    padding:5px 2px;
-	}    
-
-	div#janela li:nth-child(3) {
-	    width:0px;  
-	    padding:5px 2px;
-	}
+		div#janela li:nth-child(3) {
+		    width:0px;  
+		    padding:5px 2px;
+		}
 	</style>
 
 </head>

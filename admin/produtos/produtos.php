@@ -85,8 +85,8 @@
 
 					<div id="cima_tabela" style="width: 480px">
 						<ul>
-						    <li style="width: 120px"><b>Produto</b></li>
-						    <li style="width: 120px"><b>Categoria</b></li>
+						    <li style="width: 140px"><b>Produto</b></li>
+						    <li style="width: 110px"><b>Categoria</b></li>
 						    <li style="width: 80px"><b>Sabor</b></li>
 						    <li style="width: 70px"><b>Marca</b></li>
 						</ul>
@@ -98,8 +98,8 @@
 							$acesso2 = mysqli_query($conecta, $consulta2);
 							$dados = mysqli_fetch_assoc($acesso2);?>
 						<ul>
-						    <li style="width: 120px"><?php echo utf8_encode($linha["produto"]); ?></li>
-							<li style="width: 120px"><?php echo utf8_encode($dados["categoria"]); ?></li>
+						    <li style="width: 140px"><?php echo utf8_encode($linha["produto"]); ?></li>
+							<li style="width: 110px"><?php echo utf8_encode($dados["categoria"]); ?></li>
 							<li style="width: 80px"><?php echo utf8_encode($linha["sabor"]); ?></li>
 							<li style="width: 70px"><?php echo utf8_encode($linha["marca"]); ?></li>
 							<li style="width: 50px"><a href="produtos.php?acao=exclusao&codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($dados["categoria"]); ?>&produto_id=<?php echo $linha["produto_id"] ?>">Excluir</a>

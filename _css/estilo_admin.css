@@ -31,21 +31,17 @@ ul.menulateral {
 
 li.menulateral a {
   text-decoration: none;
-  background-color: #C2534B;
-  margin-bottom: 1px;
-  padding: 2px 2px;
+  display: block;
   color: #FFF;
 }
 
-li.menulateral a:hover {
+li.menulateral:hover {
   background-color: #F99B95;
-  margin: 0 auto;
 }
 
 li.menulateral {
   width: 160px;
   margin: 3px;
-  text-decoration: none;
   list-style-type: none;
   background-color: #C2534B;
   padding: 5px 15px;
@@ -54,26 +50,30 @@ li.menulateral {
 
 li.submenulateral a {
   text-decoration: none;
-  background-color: #FEFEFE;
-  margin-bottom: 1px;
-  padding: 2px 2px;
-  color: #FFF;
+  color: #9A9191;
+  font-size: 90%;
+  font-family: serif;
+  font-weight: 90%;
+  display: block;
+  padding-left: 10px;
 }
 
-li.submenulateral a:hover {
-  background-color: #BABABA;
-  margin: 0 auto;
+li.submenulateral:hover {
+  background-color: #E3E3E3;
 }
 
 li.submenulateral {
-  width: 160px;
-  margin: 3px;
+  width: 173px;
+  margin: 2px;
+  margin-left: -34px;
   text-decoration: none;
   list-style-type: none;
-  background-color: #FEFEFE;
-  padding: 5px 15px;
-  color: #5B5B5A;
+  background-color: #FFF;
+  padding: 4px;
+  border: 1px solid #C1B7B7;
 }
+
+
 
 footer {
   position: absolute;

@@ -26,11 +26,6 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas_topo.css">
 
 	<style type="text/css">
-		li a {
-	    list-style:none;
-	    display:inline-block;
-	    background-color: none;	    
-	}
 	</style>
 
 </head>
