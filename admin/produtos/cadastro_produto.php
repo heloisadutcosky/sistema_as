@@ -57,6 +57,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas_topo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
 
 	<style type="text/css">
 		li a {
@@ -78,77 +79,84 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco">Cadastro produto</h2>
-		<br>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
-		<?php if(isset($_GET["categoria_id"])) { ?>
-		<form action="cadastro_produto.php" method="post">
-			<label for="produto">Nome produto: </label>
-			<input type="text" id="produto" name="produto" value="<?php echo $_GET["produto"]; ?>" required>
+		<article>
+			<h2 class="espaco">Cadastro produto</h2>
+			<br>
 
-			<label for="categoria_id">Tabela: </label>
-			<select id="categoria_id" name="categoria_id"><br>
-				<?php 
-				$consulta = "SELECT * FROM categorias";
-				$acesso = mysqli_query($conecta, $consulta);
-				while($linha = mysqli_fetch_assoc($acesso)) { ?>
-					<?php if($linha["categoria_id"] == $_GET["categoria_id"]) { ?>
-						<option value="<?php echo $linha["categoria_id"]; ?>" selected><?php echo utf8_encode($linha["categoria"]); ?></option>
-					<?php } else { ?>
-						<option value="<?php echo $linha["categoria_id"]; ?>"><?php echo utf8_encode($linha["categoria"]); ?></option>
+			<?php if(isset($_GET["categoria_id"])) { ?>
+			<form action="cadastro_produto.php" method="post">
+				<label for="produto">Nome produto: </label>
+				<input type="text" id="produto" name="produto" value="<?php echo $_GET["produto"]; ?>" required>
+
+				<label for="categoria_id">Tabela: </label>
+				<select id="categoria_id" name="categoria_id"><br>
+					<?php 
+					$consulta = "SELECT * FROM categorias";
+					$acesso = mysqli_query($conecta, $consulta);
+					while($linha = mysqli_fetch_assoc($acesso)) { ?>
+						<?php if($linha["categoria_id"] == $_GET["categoria_id"]) { ?>
+							<option value="<?php echo $linha["categoria_id"]; ?>" selected><?php echo utf8_encode($linha["categoria"]); ?></option>
+						<?php } else { ?>
+							<option value="<?php echo $linha["categoria_id"]; ?>"><?php echo utf8_encode($linha["categoria"]); ?></option>
+						<?php } ?>
 					<?php } ?>
-				<?php } ?>
-			</select>
+				</select>
 
-			<label for="sabor">Sabor: </label>
-			<select id="sabor" name="sabor"><br>
-				<?php
-				$consulta = "SELECT * FROM sabores where categoria_id = " . $_GET["categoria_id"];
-				$acesso = mysqli_query($conecta, $consulta);
-				while($linha = mysqli_fetch_assoc($acesso)) { ?>
-					<option value="<?php echo $linha["sabor"]; ?>"><?php echo utf8_encode($linha["sabor"]); ?></option>
-				<?php } ?>
-			</select>
+				<label for="sabor">Sabor: </label>
+				<select id="sabor" name="sabor"><br>
+					<?php
+					$consulta = "SELECT * FROM sabores where categoria_id = " . $_GET["categoria_id"];
+					$acesso = mysqli_query($conecta, $consulta);
+					while($linha = mysqli_fetch_assoc($acesso)) { ?>
+						<option value="<?php echo $linha["sabor"]; ?>"><?php echo utf8_encode($linha["sabor"]); ?></option>
+					<?php } ?>
+				</select>
 
-			<label for="marca">Marca: </label>
-			<select id="marca" name="marca"><br>
-				<?php
-				$consulta = "SELECT * FROM marcas where categoria_id = " . $_GET["categoria_id"];
-				$acesso = mysqli_query($conecta, $consulta);
-				while($linha = mysqli_fetch_assoc($acesso)) { ?>
-					<option value="<?php echo $linha["marca"]; ?>"><?php echo utf8_encode($linha["marca"]); ?></option>
-				<?php } ?>
-			</select>
-			
-			<input type="submit" id="botao" value="Cadastrar">
-		</form>
-		<?php } else { ?>
+				<label for="marca">Marca: </label>
+				<select id="marca" name="marca"><br>
+					<?php
+					$consulta = "SELECT * FROM marcas where categoria_id = " . $_GET["categoria_id"];
+					$acesso = mysqli_query($conecta, $consulta);
+					while($linha = mysqli_fetch_assoc($acesso)) { ?>
+						<option value="<?php echo $linha["marca"]; ?>"><?php echo utf8_encode($linha["marca"]); ?></option>
+					<?php } ?>
+				</select>
+				
+				<input type="submit" id="botao" value="Cadastrar">
+			</form>
+			<?php } else { ?>
 
-		<form action="cadastro_produto.php" method="get">
-			<label for="produto">Nome produto: </label>
-			<input type="text" id="produto" name="produto" required>
+			<form action="cadastro_produto.php" method="get">
+				<div style="float: left; margin-right: 30px;">
+					<label for="produto">Nome produto: </label>
+					<input type="text" id="produto" name="produto" required>
+				</div>
 
-			<label for="categoria_id">Tabela: </label>
-			<select id="categoria_id" name="categoria_id"><br>
-				<?php 
-				$consulta = "SELECT * FROM categorias";
-				$acesso = mysqli_query($conecta, $consulta);
-				while($linha = mysqli_fetch_assoc($acesso)) { ?>
-					<option value="<?php echo $linha["categoria_id"]; ?>"><?php echo utf8_encode($linha["categoria"]); ?></option>
-				<?php } ?>
-			</select>
 
-			<input type="submit" id="botao" value="continuar">
-		</form>
-		<br>
-		<?php } ?>
+				<div>
+					<label for="categoria_id">Tabela: </label>
+					<select id="categoria_id" name="categoria_id"><br>
+						<?php 
+						$consulta = "SELECT * FROM categorias";
+						$acesso = mysqli_query($conecta, $consulta);
+						while($linha = mysqli_fetch_assoc($acesso)) { ?>
+							<option value="<?php echo $linha["categoria_id"]; ?>"><?php echo utf8_encode($linha["categoria"]); ?></option>
+						<?php } ?>
+					</select><br>
+				</div>
+
+				<input type="submit" id="botao" value="Continuar" style="margin-left: 10px">
+			</form>
+			<br>
+			<?php } ?>
+			<br><br><br><br><br><br>
+		</article>
 
 		<div class="direita">
 			<a href="dados.php?tipo=produtos">Voltar</a><br><br>
 		</div>
-		
-		<br>
-		<br>
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

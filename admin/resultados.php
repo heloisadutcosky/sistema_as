@@ -24,6 +24,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas_topo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
 
 	<style type="text/css">
 		li a {
@@ -62,58 +63,64 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco">Resultados</h2>
-		<br>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
-		<form action="resultados.php" method="get">
-			<label for="codigo">Projeto: </label>
-			<select id="codigo" name="codigo"><br>
-				<?php while ($dados = mysqli_fetch_assoc($acesso1)) { ?>
-					<option value="<?php echo $dados["projeto_id"]; ?>"><?php echo $dados["empresa"]; ?> - <?php echo $dados["produto"]; ?></option>
-				<?php } ?>
-			</select>
-			<input type="submit" id="botao" value="Visualizar resultados"><br>
-		</form>
+		<article>
+			<h2 class="espaco">Resultados</h2>
+			<br>
 
-		<div class="direita">
-			<a href="principal.php">Voltar</a><br><br>
-		</div>
-		<br>
-
-		<?php 
-			if (isset($_GET["codigo"])) {
-				$projeto_id = $_GET["codigo"];
-
-				$consulta2 = "SELECT * FROM resultados WHERE projeto_id = " . $projeto_id;
-				$acesso2 = mysqli_query($conecta, $consulta2); ?>
-
-				<div id="cima_tabela" class="usuarios">
-					<ul>
-					    <li><b>Sessão</b></li>
-					    <li><b>Usuário</b></li>
-					    <li><b>Amostra</b></li>
-					    <li><b>Atributo</b></li>
-					    <li><b>Nota</b></li>
-					</ul>
+			<form action="resultados.php" method="get">
+				<div style="float: left; margin-right: 5px;">
+					<label for="codigo">Projeto: </label>
+					<select id="codigo" name="codigo"><br>
+						<?php while ($dados = mysqli_fetch_assoc($acesso1)) { ?>
+							<option value="<?php echo $dados["projeto_id"]; ?>"><?php echo $dados["empresa"]; ?> - <?php echo $dados["produto"]; ?></option>
+						<?php } ?>
+					</select>
 				</div>
-				<div id="janela" class="usuarios">
-					<?php
-					    while($linha = mysqli_fetch_assoc($acesso2)) {
-					?>
-					<ul>
-					    <li><?php echo $linha["sessao"] ?></li>
-					    <li><?php echo $linha["user_id"] ?></li>
-					    <li><?php echo $linha["amostra_codigo"] ?></li>
-					    <li><?php echo $linha["atributo_completo"] ?></li>
-					    <li><?php echo $linha["nota"] ?></li>
-					</ul>
-					<?php } ?>	
-				</div>
-		<?php } ?>	
 
-		<br>
-		<br>
-		<br>		
+				<div style="padding-top: 17px;">
+					<input type="submit" value="Ver resultados" style="width: 100px;"><br>
+				</div>
+			</form>
+
+			<div class="direita">
+				<a href="principal.php">Voltar</a><br><br>
+			</div>
+			<br>
+
+			<?php 
+				if (isset($_GET["codigo"])) {
+					$projeto_id = $_GET["codigo"];
+
+					$consulta2 = "SELECT * FROM resultados WHERE projeto_id = " . $projeto_id;
+					$acesso2 = mysqli_query($conecta, $consulta2); ?>
+
+					<div id="cima_tabela" class="usuarios">
+						<ul>
+						    <li><b>Sessão</b></li>
+						    <li><b>Usuário</b></li>
+						    <li><b>Amostra</b></li>
+						    <li><b>Atributo</b></li>
+						    <li><b>Nota</b></li>
+						</ul>
+					</div>
+					<div id="janela" class="usuarios">
+						<?php
+						    while($linha = mysqli_fetch_assoc($acesso2)) {
+						?>
+						<ul>
+						    <li><?php echo $linha["sessao"] ?></li>
+						    <li><?php echo $linha["user_id"] ?></li>
+						    <li><?php echo $linha["amostra_codigo"] ?></li>
+						    <li><?php echo $linha["atributo_completo"] ?></li>
+						    <li><?php echo $linha["nota"] ?></li>
+						</ul>
+						<?php } ?>	
+					</div>
+			<?php } ?>
+			<br><br><br><br><br><br>
+		</article>			
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

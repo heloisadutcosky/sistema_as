@@ -37,6 +37,9 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
+		
+		<article>
 		<h2 class="espaco">PROJETOS ABOUT SOLUTION</h2>
 		<br>
 
@@ -45,21 +48,21 @@
 		</div>
 		<br>
 		
-		<div id="cima_tabela" style="width: 720px;">
+		<div id="cima_tabela" style="width: 675px;">
 			<ul>
-			    <li><b>Empresa</b></li>
+			    <li style="width:80px;"><b>Empresa</b></li>
 			    <li><b>Tipo de teste</b></li>
 			    <li><b>Produto</b></li>
 			</ul>
 		</div>
-		<div id="janela" style="width: 720px;">
+		<div id="janela" style="width: 675px;">
 			<?php
 			    while($linha = mysqli_fetch_assoc($acesso)) {
 			?>
 			<ul>
-			    <li><?php echo utf8_encode($linha["empresa"]) ?></li>
+			    <li style="width:80px;"><?php echo utf8_encode($linha["empresa"]) ?></li>
 			    <li><?php echo utf8_encode($linha["tipo_avaliacao"]) ?></li>
-			    <li style="width: 120px;"><?php echo utf8_encode($linha["produto"]) ?></li>
+			    <li style="width: 110px;"><?php echo utf8_encode($linha["produto"]) ?></li>
 			    <li><a href="formulario/dados.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto=<?php echo $linha["produto"]; ?>">Formulário</a> </li>
 			    <li><a href="sessoes/dados.php?codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $linha["produto"]; ?>">Sessão</a> </li>
 			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>">Alterar</a> </li>
@@ -70,6 +73,7 @@
 			?>
 		</div>
 		<br>
+		</article>
 
 		<div class="direita">
 			<a href="../principal.php">Voltar</a><br><br>

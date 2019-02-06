@@ -120,11 +120,15 @@
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
 
 </head>
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
+
+		<article>
 		<h2 class="espaco"><?php 
 			if ($acao == "alteracao") echo "ALTERAÇÃO DE CADASTRO DE PROJETO";
 			elseif ($acao == "exclusao") echo "EXCLUSÃO DE PROJETO";
@@ -134,9 +138,12 @@
 		<br>
 		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>" method="post">
 
-			<label for="empresa">Empresa: </label>
-			<input type="text" id="empresa" name="empresa" value="<?php echo utf8_encode($dados["empresa"]); ?>" required><br>
+			<div style="float: left; margin-right: 30px;">
+				<label for="empresa">Empresa: </label>
+				<input type="text" id="empresa" name="empresa" value="<?php echo utf8_encode($dados["empresa"]); ?>" required>
+			</div>
 
+			<div>
 			<label for="produto_id">Produto: </label>
 			<select id="produto_id" name="produto_id"><br>
 				<?php 
@@ -151,53 +158,72 @@
 				<?php } ?>
 			</select>
 			<br>
+			</div>
 
-			<label for="tipo_avaliacao">Tipo de avaliação sensorial: </label>
-			<input type="text" id="tipo_avaliacao" name="tipo_avaliacao" value="<?php echo utf8_encode($dados["tipo_avaliacao"]); ?>" required>
+			<div>
+				<label for="descricao_projeto">Descrição do projeto: </label>
+				<input type="text" id="descricao_projeto" name="descricao_projeto" value="<?php echo utf8_encode($dados["descricao_projeto"]); ?>" style="width: 440px; height: 40px; text-indent: 2px"><br>
+			</div>
 
-			<label for="tipo_avaliador">Tipo de avaliadores: </label>
-			<select id="tipo_avaliador" name="tipo_avaliador"><br>
-				<?php switch ($dados["tipo_avaliador"]) {
-					case 'Painelista': ?>
-						<option value="Consumidor">Consumidor</option>
-						<option value="Painelista" selected>Painelista</option>
-						<?php break;
+			<div style="float: left; margin-right: 30px;">
+				<label for="data_inicio">Data de início: </label>
+				<input type="date" id="data_inicio" name="data_inicio" value="<?php echo $dados["data_inicio"]; ?>">
+			</div>
 
-					default: ?>
-						<option value="Consumidor" selected>Consumidor</option>
-						<option value="Painelista">Painelista</option>
-						<?php break; 
-				}?>
-			</select><br>
+			<div>
+				<label for="data_fim">Data de fim: </label>
+				<input type="date" id="data_fim" name="data_fim" value="<?php echo $dados["data_fim"]; ?>"><br>
+			</div>
 
-			<label for="escala_min">Escala mínima: </label>
-			<input type="number" id="escala_min" name="escala_min" value="<?php echo $dados["escala_min"]; ?>" size="10">
+			<div style="float: left; margin-right: 30px;">
+				<label for="tipo_avaliacao">Tipo de avaliação sensorial: </label>
+				<input type="text" id="tipo_avaliacao" name="tipo_avaliacao" value="<?php echo utf8_encode($dados["tipo_avaliacao"]); ?>" required>
+			</div>
 
-			<label for="escala_max">Escala máxima: </label>
-			<input type="number" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>" size="10"><br>
+			<div>
+				<label for="tipo_avaliador">Tipo de avaliadores: </label>
+				<select id="tipo_avaliador" name="tipo_avaliador"><br>
+					<?php switch ($dados["tipo_avaliador"]) {
+						case 'Painelista': ?>
+							<option value="Consumidor">Consumidor</option>
+							<option value="Painelista" selected>Painelista</option>
+							<?php break;
 
-			<label for="descricao_projeto">Descrição do projeto: </label>
-			<input type="text" id="descricao_projeto" name="descricao_projeto" value="<?php echo utf8_encode($dados["descricao_projeto"]); ?>" style="width: 360px; height: 40px; text-indent: 2px"><br>
+						default: ?>
+							<option value="Consumidor" selected>Consumidor</option>
+							<option value="Painelista">Painelista</option>
+							<?php break; 
+					}?>
+				</select><br>
+			</div>
 
-			<label for="data_inicio">Data de início: </label>
-			<input type="date" id="data_inicio" name="data_inicio" value="<?php echo $dados["data_inicio"]; ?>">
+			<div style="float: left; margin-right: 30px;">
+				<label for="escala_min">Escala mínima: </label>
+				<input type="number" id="escala_min" name="escala_min" value="<?php echo $dados["escala_min"]; ?>" size="10" style="width: 80px;">
+			</div>
 
-			<label for="data_fim">Data de fim: </label>
-			<input type="date" id="data_fim" name="data_fim" value="<?php echo $dados["data_fim"]; ?>"><br>
+			<div>
+				<label for="escala_max">Escala máxima: </label>
+				<input type="number" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>" size="10" style="width: 80px;"><br>
+			</div>
 
-			<label for="form_ativo">Habilitar formulário: </label>
-			<input type="checkbox" id="form_ativo" name="form_ativo" <?php if ($dados["form_ativo"] == 1) { ?> 
-				checked
-			<?php } ?>><br>
+			<div>
+				<label for="form_ativo">Habilitar formulário: </label>
+				<input type="checkbox" id="form_ativo" name="form_ativo" <?php if ($dados["form_ativo"] == 1) { ?> 
+				checked <?php } ?>><br>
+			</div>
 
-			<input type="submit" id="botao" value="<?php 
-				if ($acao == "alteracao") echo "Alterar cadastro";
-				if ($acao == "exclusao") echo "Excluir cadastro";
-				if ($acao == "cadastro") echo "Cadastrar";
-			?>"><br>
-			<br>
+				<div>
+				<input type="submit" id="botao" value="<?php 
+					if ($acao == "alteracao") echo "Alterar cadastro";
+					if ($acao == "exclusao") echo "Excluir cadastro";
+					if ($acao == "cadastro") echo "Cadastrar";
+				?>"><br>
+				<br>
+			</div>
 
 		</form>
+		</article>
 
 		<div class="direita">
 			<a href="dados.php">Voltar</a><br><br>

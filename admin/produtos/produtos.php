@@ -65,52 +65,54 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco">Produtos - <?php echo $_SESSION["categoria"]; ?></h2>
-		<br>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
-		<?php 
-			if (isset($_GET["codigo"])) {
-				$categoria_id = $_GET["codigo"];
+		<article>
+			<h2 class="espaco">Produtos - <?php echo $_SESSION["categoria"]; ?></h2>
+			<br>
 
-				$consulta = "SELECT * FROM produtos WHERE categoria_id = " . $categoria_id;
-				$acesso = mysqli_query($conecta, $consulta); ?>
+			<?php 
+				if (isset($_GET["codigo"])) {
+					$categoria_id = $_GET["codigo"];
 
-				<div class="botao">
-					<a class="espaco" href="cadastro_produto.php">Cadastrar produto</a><br>
-				</div>
-				<br>
+					$consulta = "SELECT * FROM produtos WHERE categoria_id = " . $categoria_id;
+					$acesso = mysqli_query($conecta, $consulta); ?>
 
-				<div id="cima_tabela" style="width: 480px">
-					<ul>
-					    <li style="width: 120px"><b>Produto</b></li>
-					    <li style="width: 120px"><b>Categoria</b></li>
-					    <li style="width: 80px"><b>Sabor</b></li>
-					    <li style="width: 70px"><b>Marca</b></li>
-					</ul>
-				</div>
+					<div class="botao">
+						<a class="espaco" href="cadastro_produto.php">Cadastrar produto</a><br>
+					</div>
+					<br>
 
-				<div id="janela" style="width: 480px">
-					<?php while($linha = mysqli_fetch_assoc($acesso)) { 
-						$consulta2 = "SELECT * FROM categorias WHERE categoria_id = '{$linha["categoria_id"]}'";
-						$acesso2 = mysqli_query($conecta, $consulta2);
-						$dados = mysqli_fetch_assoc($acesso2);?>
-					<ul>
-					    <li style="width: 120px"><?php echo utf8_encode($linha["produto"]); ?></li>
-						<li style="width: 120px"><?php echo utf8_encode($dados["categoria"]); ?></li>
-						<li style="width: 80px"><?php echo utf8_encode($linha["sabor"]); ?></li>
-						<li style="width: 70px"><?php echo utf8_encode($linha["marca"]); ?></li>
-						<li style="width: 50px"><a href="produtos.php?acao=exclusao&codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($dados["categoria"]); ?>&produto_id=<?php echo $linha["produto_id"] ?>">Excluir</a>
-					</ul>
-					<?php } ?>	
-				</div>
-			<?php } ?>
+					<div id="cima_tabela" style="width: 480px">
+						<ul>
+						    <li style="width: 120px"><b>Produto</b></li>
+						    <li style="width: 120px"><b>Categoria</b></li>
+						    <li style="width: 80px"><b>Sabor</b></li>
+						    <li style="width: 70px"><b>Marca</b></li>
+						</ul>
+					</div>
+
+					<div id="janela" style="width: 480px">
+						<?php while($linha = mysqli_fetch_assoc($acesso)) { 
+							$consulta2 = "SELECT * FROM categorias WHERE categoria_id = '{$linha["categoria_id"]}'";
+							$acesso2 = mysqli_query($conecta, $consulta2);
+							$dados = mysqli_fetch_assoc($acesso2);?>
+						<ul>
+						    <li style="width: 120px"><?php echo utf8_encode($linha["produto"]); ?></li>
+							<li style="width: 120px"><?php echo utf8_encode($dados["categoria"]); ?></li>
+							<li style="width: 80px"><?php echo utf8_encode($linha["sabor"]); ?></li>
+							<li style="width: 70px"><?php echo utf8_encode($linha["marca"]); ?></li>
+							<li style="width: 50px"><a href="produtos.php?acao=exclusao&codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($dados["categoria"]); ?>&produto_id=<?php echo $linha["produto_id"] ?>">Excluir</a>
+						</ul>
+						<?php } ?>	
+					</div>
+				<?php } ?>
+				<br><br><br><br><br><br>
+		</article>
 
 		<div class="direita">
 			<a href="dados.php?tipo=categorias">Voltar</a><br><br>
 		</div>
-		
-		<br>
-		<br>
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

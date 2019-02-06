@@ -24,29 +24,16 @@
 
 </head>
 <body>
-	<main>
+<main style="height:400px">
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
+
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
 		<article>
 			<p>Bem vindo(a), <?php echo utf8_encode($_SESSION["usuario"]); ?>! <u>O que você deseja fazer?</u></p>
 		</article>
 
-		<nav>
-			<ul>
-				<li class="menu"><a href="usuarios/dados.php">Consultar usuários</a></li>
-				<li class="menu"><a href="projetos/dados.php">Consultar projetos</a></li>
-				<li class="menu"><a href="produtos/dados.php">Consultar produtos</a></li>
-				<li class="menu"><a href="<?php echo($caminho); ?>public/principal.php?funcao=Painelista">Revisar questionários</a></li>
-				<li class="menu"><a href="resultados.php">Visualizar resultados</a></li>
-			</ul>
-		</nav>
-		<br>
-
-		<nav>
-			<ul>
-			</ul>
-		</nav>
-		<br>
+		
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

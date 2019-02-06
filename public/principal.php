@@ -45,7 +45,7 @@
 		<nav>
 			<ul>
 			<?php while($linha = mysqli_fetch_assoc($acesso)) { ?>
-				<li class="menu"><a href="<?php echo strtolower($funcao); ?>/principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>"><?php echo $linha["produto"]; ?></a></li>
+				<li class="menu"><a href="<?php echo strtolower($funcao); ?>/principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>&produto=<?php echo $linha["produto"]; ?>"><?php echo $linha["produto"]; ?></a></li>
 			<?php } ?>
 			</ul>
 		</nav>

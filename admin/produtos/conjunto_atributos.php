@@ -78,6 +78,9 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
+
+		<article>
 		<h2 class="espaco">Conjunto de atributos</h2>
 		<br>
 
@@ -150,15 +153,12 @@
 						<?php } ?>	
 					</div>
 				<?php } ?>
-		<?php } ?>	
+		<?php } ?>
+		</article>	
 
 		<div class="direita">
 			<a href="../principal.php">Voltar</a><br><br>
-		</div>
-
-		<br>
-		<br>
-		<br>		
+		</div>	
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

@@ -1,0 +1,48 @@
+input, select {
+  margin-bottom: 10px;
+  margin-right: 10px;
+  margin-left: 10px;
+  width: 200px;
+}
+
+input, label {
+  display:block;
+}
+
+select, label {
+  display:block;
+}
+
+label {
+	font-size: 80%;
+	margin-left: 10px;
+	margin-bottom: 2px;
+}
+
+
+input#botao {
+  text-decoration: none;
+  background-color: #778899;
+  margin-left: 20px;
+  margin-bottom: 1px;
+  padding: 5px 15px;
+  color: #FFF;
+  border: 1px solid #696969;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input#botao:hover {
+  background-color: #DCDCDC;
+  margin: 0 auto;
+  margin-left: 20px;
+  border: 1px solid #696969;
+}
+
+
+div#caixacadastros { 
+  width: 350px; 
+  background-color: #E3E3E3; 
+  padding-top: 10px; 
+  padding-left: 5px; height: 50px; 
+  margin-left: 20px;
+}

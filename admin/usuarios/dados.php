@@ -35,45 +35,44 @@
 
 </head>
 <body>
-	<main>
+	<main style="height: 450px">
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco">USUÁRIOS ABOUT SOLUTION</h2>
-		<br>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
+		<article>
+			<h2 class="espaco">USUÁRIOS ABOUT SOLUTION</h2>
+			<br>
 
-		<div class="botao">
-			<a href="painel.php?acao=cadastro">Cadastrar novo usuário</a>
-		</div>
-		<br>
+			
+			<div class="botao">
+				<a href="painel.php?acao=cadastro">Cadastrar novo usuário</a>
+			</div>
+			<br>
 
-		<div id="cima_tabela" class="usuarios">
-			<ul>
-			    <li><b>CPF</b></li>
-			    <li><b>Nome</b></li>
-			    <li><b>Classificação</b></li>
-			</ul>
-		</div>
-		<div id="janela" class="usuarios">
-			<?php
-			    while($linha = mysqli_fetch_assoc($acesso)) {
-			?>
-			<ul>
-			    <li><?php echo utf8_encode($linha["cpf"]) ?></li>
-			    <li><?php echo utf8_encode($linha["nome"]) ?></li>
-			    <li><?php echo utf8_encode($linha["funcao"]) ?></li>
-			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["user_id"] ?>">Alterar</a> </li>
-			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["user_id"] ?>">Excluir</a> </li>
-			</ul>
-			<?php
-			    }
-			?>
-		</div>
-		
+			<div id="cima_tabela" class="usuarios">
+				<ul>
+				    <li><b>CPF</b></li>
+				    <li><b>Nome</b></li>
+				    <li><b>Classificação</b></li>
+				</ul>
+			</div>
+			<div id="janela" class="usuarios">
+				<?php
+				    while($linha = mysqli_fetch_assoc($acesso)) {
+				?>
+				<ul>
+				    <li><?php echo utf8_encode($linha["cpf"]) ?></li>
+				    <li><?php echo utf8_encode($linha["nome"]) ?></li>
+				    <li><?php echo utf8_encode($linha["funcao"]) ?></li>
+				    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["user_id"] ?>">Alterar</a> </li>
+				    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["user_id"] ?>">Excluir</a> </li>
+				</ul>
+				<?php } ?>
+			</div>
+		</article>
 
 		<div class="direita">
 			<a href="../principal.php">Voltar</a><br><br>
 		</div>
-		<br>
-		<br>
 		
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

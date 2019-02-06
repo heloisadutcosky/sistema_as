@@ -15,12 +15,12 @@
 	<link rel="stylesheet" type="text/css" href="_css/estilo.css">
 
 	<style>
-		.folha_cadastro {
-		  margin-bottom: 1px;
-		  padding: 5px 15px;
-		  z-index: -1;
+		input, select {
+ 			margin-bottom: 10px;
+  			margin-right: 10px;
+  			margin-left: 4px;
+  			width: 150px;
 		}
-
 	</style>
 
 </head>
@@ -39,7 +39,7 @@
 			<!-- LOGIN -->
 			<div class="login">
 				<label for="cpf">CPF: </label>
-				<input type="text" id="cpf" name="cpf" size="32" placeholder="Insira seu CPF (somente números)" required><br>
+				<input type="text" id="cpf" name="cpf" size="30" placeholder="Insira seu CPF (somente números)" style="margin-left: 18px" required><br>
 
 				<label for="senha">Senha: </label>
 				<input type="password" id="senha" name="senha" size="30" placeholder="Data de nascimento (DDMMAAAA)" required><br>

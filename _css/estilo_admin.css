@@ -1,0 +1,95 @@
+main {
+  position: relative;
+    margin:auto;
+}
+
+header {
+  position: relative;
+  float: top;
+}
+
+article {
+  position: relative;
+  left: 0;
+  top: 0;
+  margin-left: 230px;
+  margin-top: -10px;
+}
+
+ul.menulateral {
+	position: relative;
+  float: left;
+  left: 0;
+  top: 0;
+  margin-top: 30px;
+  margin-left: -30px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  left: 0px;
+}
+
+li.menulateral a {
+  text-decoration: none;
+  background-color: #C2534B;
+  margin-bottom: 1px;
+  padding: 2px 2px;
+  color: #FFF;
+}
+
+li.menulateral a:hover {
+  background-color: #F99B95;
+  margin: 0 auto;
+}
+
+li.menulateral {
+  width: 160px;
+  margin: 3px;
+  text-decoration: none;
+  list-style-type: none;
+  background-color: #C2534B;
+  padding: 5px 15px;
+  color: #FFF;
+}
+
+li.submenulateral a {
+  text-decoration: none;
+  background-color: #FEFEFE;
+  margin-bottom: 1px;
+  padding: 2px 2px;
+  color: #FFF;
+}
+
+li.submenulateral a:hover {
+  background-color: #BABABA;
+  margin: 0 auto;
+}
+
+li.submenulateral {
+  width: 160px;
+  margin: 3px;
+  text-decoration: none;
+  list-style-type: none;
+  background-color: #FEFEFE;
+  padding: 5px 15px;
+  color: #5B5B5A;
+}
+
+footer {
+  position: absolute;
+  float: bottom;
+  bottom: 0;
+  font-size: 0.75em;
+  margin-left: 15px;
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+.saudacao {
+  position: relative;
+  right: 0;
+  top: 0;
+  font-size: 80%;
+  margin: 10px;
+}
+

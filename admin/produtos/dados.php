@@ -91,6 +91,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas_topo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
 
 	<style type="text/css">
 		li a {
@@ -111,30 +112,36 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
+
+		<article>
 		<h2 class="espaco">Categorias e produtos cadastrados</h2>
-		<br>
 
 		<form action="dados.php" method="get">
-			<label for="tipo">Tabela: </label>
-			<select id="tipo" name="tipo"><br>
-			<?php
-			$tipo = isset($_GET["tipo"]) ? $_GET["tipo"] : "";
-			switch ($tipo) {
-				case 'produtos': ?>
-					<option value="categorias">Categorias</option>
-					<option value="produtos" selected>Produtos</option>
-					<?php break;
+			<div style="float: left; margin-right: 5px;">
+				<label for="tipo">Tabela: </label>
+				<select id="tipo" name="tipo"><br>
+				<?php
+				$tipo = isset($_GET["tipo"]) ? $_GET["tipo"] : "";
+				switch ($tipo) {
+					case 'produtos': ?>
+						<option value="categorias">Categorias</option>
+						<option value="produtos" selected>Produtos</option>
+						<?php break;
 
-				default: ?>
-					<option value="categorias" selected>Categorias</option>
-					<option value="produtos">Produtos</option>
-					<?php break; 
-				}?>
-			</select>
+					default: ?>
+						<option value="categorias" selected>Categorias</option>
+						<option value="produtos">Produtos</option>
+						<?php break; 
+					}?>
+				</select>
+			</div>
 
-			<input type="submit" id="botao" value="Visualizar"><br>
+		<div style="padding-top: 15px;">
+			<label></label>
+			<input type="submit" value="Visualizar" style="width: 100px;"><br>
+		</div>
 		</form>
-		<br>
 		<br>
 
 		<?php 
@@ -146,12 +153,18 @@
 					$consulta = "SELECT * FROM categorias";
 					$acesso = mysqli_query($conecta, $consulta); ?>
 
-					<form action="dados.php?tipo=categorias&acao=cadastro" method="post">
-						<label for="categoria">Nova categoria: </label>
-						<input type="text" id="categoria" name="categoria" required>
+					<div style="width: 350px; background-color: #E3E3E3; padding-top: 10px; padding-left: 5px; height: 50px; margin-left: 20px">
+						<form action="dados.php?tipo=categorias&acao=cadastro" method="post">
+							<div style="float: left; margin-right: 10px;">
+								<label for="categoria">Nova categoria: </label>
+								<input type="text" id="categoria" name="categoria" required>
+							</div>
 
-						<input type="submit" id="botao" value="Cadastrar">
-					</form>
+							<div style="padding-top: 15px;">
+								<input type="submit" id="botao" value="Cadastrar" style="width: 100px; height: 20px; padding-top: 2px;">
+							</div>
+						</form>
+					</div>
 					<br>
 
 					<div id="cima_tabela" style="width: 400px">
@@ -210,15 +223,13 @@
 						<?php } ?>	
 					</div>
 				<?php } ?>
-		<?php } ?>	
+		<?php } ?>
+		<br><br><br><br><br><br>
+		</article>	
 
 		<div class="direita">
 			<a href="../principal.php">Voltar</a><br><br>
-		</div>
-
-		<br>
-		<br>
-		<br>		
+		</div>	
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
