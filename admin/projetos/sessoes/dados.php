@@ -45,42 +45,44 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco">Sessões e amostras - <?php echo $produto; ?></h2>
-		<br>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
-		<div class="botao">
-			<a href="painel.php?acao=cadastro&codigo=<?php echo($projeto_id); ?>&produto=<?php echo $produto; ?>">Adicionar sessão ou amostra</a>
-		</div>
-		<br>
+		<article>
+			<h2 class="espaco">Sessões e amostras - <?php echo $produto; ?></h2>
+			<br>
+
+			<div class="botao">
+				<a href="painel.php?acao=cadastro&codigo=<?php echo($projeto_id); ?>&produto=<?php echo $produto; ?>">Adicionar sessão ou amostra</a>
+			</div>
+			<br>
+			
+			<div id="cima_tabela" style="width: 345px">
+				<ul>
+				    <li style="width: 70px"><b>Sessão</b></li>
+				    <li style="width: 100px"><b>Amostra</b></li>
+				    <li style="width: 70px"><b>Código</b></li>
+				</ul>
+			</div>
+			<div id="janela" style="width: 345px">
+				<?php
+				    while($linha = mysqli_fetch_assoc($acesso)) {
+				?>
+				<ul>
+				    <li style="width: 70px"><?php echo utf8_encode($linha["sessao"]) ?></li>
+				    <li style="width: 100px"><?php echo utf8_encode($linha["amostra_descricao"]) ?></li>
+				    <li style="width: 70px"><?php echo utf8_encode($linha["amostra_codigo"]) ?></li>
+				    <li style="width: 0px"></li>
+				    <li style="width: 70px"><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&sessao=<?php echo $linha["sessao"]; ?>&amostra=<?php echo $linha["amostra_codigo"]; ?>">Excluir</a> </li>
+				</ul>
+				<?php } ?>	
+			</div>
+			<br><br>
+		</article>
 		
-		<div id="cima_tabela" class="usuarios">
-			<ul>
-			    <li><b>Sessão</b></li>
-			    <li><b>Amostra</b></li>
-			    <li><b>Código</b></li>
-			</ul>
-		</div>
-		<div id="janela" class="usuarios">
-			<?php
-			    while($linha = mysqli_fetch_assoc($acesso)) {
-			?>
-			<ul>
-			    <li><?php echo utf8_encode($linha["sessao"]) ?></li>
-			    <li><?php echo utf8_encode($linha["amostra_descricao"]) ?></li>
-			    <li><?php echo utf8_encode($linha["amostra_codigo"]) ?></li>
-			    <li></li>
-			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&sessao=<?php echo $linha["sessao"]; ?>&amostra=<?php echo $linha["amostra_codigo"]; ?>">Excluir</a> </li>
-			</ul>
-			<?php } ?>	
-		</div>
-		<br>
 
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>
 		</div>
-		<br>
-		<br>		
-
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
@@ -111,18 +113,22 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
+
+		<article>
 		<h2 class="espaco">Sessões e amostras - <?php echo $produto; ?></h2>
 
-		<p>Ainda não existe uma sessão cadastradas pra esse projeto</p><br><br>
+		<p style="margin-left: 15px">Ainda não existe uma sessão cadastrada para esse projeto</p><br><br>
 
 		<div class="botao">
 			<a href="painel.php?acao=cadastro&codigo=<?php echo($projeto_id); ?>&produto=<?php echo $produto; ?>">Adicionar sessão</a>
 		</div>
+		<br><br><br><br><br><br>
+		</article>
+		
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>
 		</div>
-		<br>
-		<br>
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

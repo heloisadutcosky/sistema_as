@@ -23,7 +23,7 @@ label {
 input#botao {
   text-decoration: none;
   background-color: #778899;
-  margin-left: 20px;
+  margin-left: 10px;
   margin-bottom: 1px;
   padding: 5px 15px;
   color: #FFF;
@@ -34,7 +34,7 @@ input#botao {
 input#botao:hover {
   background-color: #DCDCDC;
   margin: 0 auto;
-  margin-left: 20px;
+  margin-left: 10px;
   border: 1px solid #696969;
 }
 

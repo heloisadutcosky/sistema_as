@@ -87,43 +87,57 @@
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
 
 </head>
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco"><?php 
-			if ($acao == "alteracao") echo "ALTERAÇÃO DE AMOSTRA";
-			elseif ($acao == "exclusao") echo "EXCLUSÃO DE AMOSTRA";
-			else echo "CADASTRO DE AMOSTRA"; 
-			?></h2>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
+
+		<article>
+			<h2 class="espaco"><?php 
+				if ($acao == "alteracao") echo "ALTERAÇÃO DE AMOSTRA";
+				elseif ($acao == "exclusao") echo "EXCLUSÃO DE AMOSTRA";
+				else echo "CADASTRO DE AMOSTRA"; 
+				?></h2>
 
 
-		<h3 style="margin: 30px 0; color: #8B0000"><b>Sessões e amostras - <?php echo $produto; ?></b></h3>
+			<h3 style="margin: 30px 0; color: #8B0000; margin-left: 10px;"><b>Sessões e amostras - <?php echo $produto; ?></b></h3>
 
-		
-		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>&sessao=<?php echo $sessao; ?>&amostra=<?php echo $amostra_codigo; ?>" method="post">
-
-			<label for="sessao">Sessão: </label>
-			<input type="number" id="sessao" name="sessao" value="<?php echo $dados["sessao"]; ?>" required><br>
-
-			<label for="data">Data: </label>
-			<input type="date" id="data" name="data" value="<?php echo $dados["data"]; ?>" required><br>
 			
-			<p>Favor cadastrar as amostras e os códigos que serão utilizados</p>
-			
-			<label for="amostra_descricao">Descrição: </label>
-			<input type="text" id="amostra_descricao" name="amostra_descricao" value="<?php echo utf8_encode($dados["amostra_descricao"]); ?>" required><br>
+			<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>&sessao=<?php echo $sessao; ?>&amostra=<?php echo $amostra_codigo; ?>" method="post">
 
-			<label for="amostra_codigo">Código: </label>
-			<input type="text" id="amostra_codigo" name="amostra_codigo" value="<?php echo $dados["amostra_codigo"]; ?>" required><br>
+				<div style="float: left; margin-right: 30px;">
+					<label for="sessao">Sessão: </label>
+					<input type="number" id="sessao" name="sessao" value="<?php echo $dados["sessao"]; ?>" required>
+				</div>
 
-			<input type="submit" id="botao" value="<?php 
-				if ($acao == "alteracao") echo "Alterar amostra";
-				elseif ($acao == "exclusao") echo "Excluir amostra";
-				else echo "Cadastrar amostra"; 
-				?>">
-		</form>
+				<div>
+					<label for="data">Data: </label>
+					<input type="date" id="data" name="data" value="<?php echo $dados["data"]; ?>" required>
+				</div><br>
+				
+				<p style="margin-left: 10px;">Favor cadastrar as amostras e os códigos que serão utilizados</p>
+				
+				<div style="float: left; margin-right: 30px;">
+					<label for="amostra_descricao">Descrição: </label>
+					<input type="text" id="amostra_descricao" name="amostra_descricao" value="<?php echo utf8_encode($dados["amostra_descricao"]); ?>" required>
+				</div>
+
+				<div>
+					<label for="amostra_codigo">Código: </label>
+					<input type="text" id="amostra_codigo" name="amostra_codigo" value="<?php echo $dados["amostra_codigo"]; ?>" required><br>
+				</div><br><br>
+
+				<input type="submit" id="botao" value="<?php 
+					if ($acao == "alteracao") echo "Alterar amostra";
+					elseif ($acao == "exclusao") echo "Excluir amostra";
+					else echo "Cadastrar amostra"; 
+					?>" style="margin-left: 10px;">
+			</form>
+			<br><br>
+		</article>
 
 		<div class="direita">
 			<a href="dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>">Voltar</a><br><br>

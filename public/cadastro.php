@@ -67,6 +67,7 @@
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="<?php echo $caminho; ?>_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
 
 	<style>
 		.folha_cadastro {
@@ -93,51 +94,66 @@
 		<form action="cadastro.php" method="post">
 
 			<!-- CADASTRO -->
-			<div class="folha_cadastro">
+
+			<div style="float: left; margin-right: 30px;">
 				<label for="nome">Nome: </label>
-				<input type="text" id="nome" name="nome" placeholder="Insira seu nome" required><br>
-
-				<label for="cpf">CPF: </label>
-				<input type="text" id="cpf" name="cpf" size="30" placeholder="Insira seu CPF (somente números)" required><br>
-
-				<label for="nascimento">Data de nascimento: </label>
-				<input type="date" id="nascimento" name="nascimento" placeholder="dd/mm/aaaa" required><br>
-
-				<label for="sexo">Sexo: </label>			
-				<select id="sexo" name="sexo">
-					<option value="Feminino">Feminino</option>
-					<option value="Masculino">Masculino</option>
-				</select><br>
-
-				<label for="escolaridade">Escolaridade</label>
-				<select id="escolaridade" name="escolaridade"><br>
-					<option value="Ensino Fundamental">Ensino Fundamental</option>
-					<option value="Ensino Médio">Ensino Médio</option>
-					<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
-					<option value="Ensino Superior Completo">Ensino Superior Completo</option>
-				</select><br>
-
-				<label for="email">E-mail</label>
-				<input type="email" id="email" name="email"><br>
-
-				<label for="telefone">Telefone</label>
-				<input type="tel" id="telefone" name="telefone"><br>
-
-				<label for="funcao">Tipo de avaliador: </label>
-				<select id="funcao" name="funcao">
-					<option value="Consumidor">Consumidor</option>
-					<option value="Painelista" selected>Painelista</option>
-					<option value="Candidato">Candidato</option>
-				</select>
+				<input type="text" id="nome" name="nome" placeholder="Insira seu nome" required>
 			</div>
-			<br>
 
-			<input type="submit" id="botao" value="Realizar cadastro"><br>
-		</form>
-		<br>
+			<div>
+				<label for="cpf">CPF: </label>
+				<input type="text" id="cpf" name="cpf" placeholder="Insira seu CPF (somente números)" required><br>
+			</div>
 
+			<div style="float: left; margin-right: 30px;">
+					<label for="nascimento">Data de nascimento: </label>
+					<input type="date" id="nascimento" name="nascimento" placeholder="dd/mm/aaaa" required>
+				</div>
 
-		<br>
+				<div>
+					<label for="sexo">Sexo: </label>			
+					<select list="sexos" id="sexo" name="sexo" selected="<?php echo $dados["sexo"] ?>">
+							<option value="Feminino" selected>Feminino</option>
+							<option value="Masculino">Masculino</option>
+					</select>
+				</div><br>
+
+				<div>
+					<label for="escolaridade">Escolaridade: </label>
+					<select id="escolaridade" name="escolaridade"><br>
+						<option value="Ensino Fundamental" selected>Ensino Fundamental</option>
+						<option value="Ensino Médio">Ensino Médio</option>
+						<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
+						<option value="Ensino Superior Completo">Ensino Superior Completo</option>
+					</select>
+				</div><br>
+
+				<div style="float: left; margin-right: 30px;">
+					<label for="email">E-mail: </label>
+					<input type="email" id="email" name="email">
+				</div>
+
+				<div>
+					<label for="telefone">Telefone: </label>
+					<input type="tel" id="telefone" name="telefone">
+				</div><br><br>
+
+				<div>
+					<label for="funcao">Tipo de avaliador: </label>
+					<select id="funcao" name="funcao"><br>
+						<option value="Consumidor" selected>Consumidor</option>
+						<option value="Painelista">Painelista</option>
+						<option value="Candidato">Candidato</option>
+						<option value="Administrador">Administrador</option>
+					</select>
+				</div><br><br>
+
+				<div>
+					<input type="submit" id="botao" value="Realizar cadastro" style="margin-left: 15px">
+				</div>
+			</form>
+
+		<br><br>
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 	</main>

@@ -44,11 +44,12 @@
 				<label for="senha">Senha: </label>
 				<input type="password" id="senha" name="senha" size="30" placeholder="Data de nascimento (DDMMAAAA)" required><br>
 			</div>
+			<br>
 
 			<input type="submit" id="botao" value="Acessar">
 		</form>
 
-		<small><a href="public/cadastro.php" style="color: grey; text-decoration: none; margin-top: -5px">Ainda não estou cadastrado</a></small>
+		<small><a href="public/cadastro.php" style="color: #440091; text-decoration: none; margin-top: -10px;  margin-left: 5px; font-size: 90%;">Ainda não estou cadastrado</a></small>
 
 				<?php if (isset($_POST["cpf"])) {
 					$cpf = $_POST["cpf"];

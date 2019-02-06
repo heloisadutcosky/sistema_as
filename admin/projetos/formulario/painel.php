@@ -125,12 +125,16 @@
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
 
 </head>
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco"><?php 
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
+
+		<article>
+		<h2><?php 
 			if ($acao == "alteracao") echo "ALTERAÇÃO DE ATRIBUTO";
 			elseif ($acao == "exclusao") echo "EXCLUSÃO DE ATRIBUTO";
 			else echo "CADASTRO DE ATRIBUTO"; 
@@ -142,44 +146,63 @@
 		
 		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>" method="post">
 
-			<p><b>Favor preencher o conjunto de atributos e uma explicação de como avaliá-lo: </b></p>
+			<p><b>Informações do conjunto de atributos: </b></p>
 
-			<label for="conjunto_atributos">Conjunto de atributos: </label>
-			<input type="text" id="conjunto_atributos" name="conjunto_atributos" value="<?php echo utf8_encode($dados["conjunto_atributos"]); ?>" required><br>
+			<div>
+				<label for="conjunto_atributos">Nome do conjunto de atributos: </label>
+				<input type="text" id="conjunto_atributos" name="conjunto_atributos" value="<?php echo utf8_encode($dados["conjunto_atributos"]); ?>" required>
+			</div><br>
 
-			<label for="descricao_conjunto">Explicação: </label>
-			<input type="text" id="descricao_conjunto" name="descricao_conjunto" value="<?php echo utf8_encode($dados["descricao_conjunto"]); ?>" style= "width: 400px; height: 40px;"><br>
+			<div>
+				<label for="descricao_conjunto">Explicação de como avaliá-lo: </label>
+				<input type="text" id="descricao_conjunto" name="descricao_conjunto" value="<?php echo utf8_encode($dados["descricao_conjunto"]); ?>" style= "width: 440px; height: 40px;">
+			</div><br>
 			
 
-			<p><b>Favor preencher o atributo avaliado: </b></p>
+			<div style="margin-bottom: 10px;">
+				<p style="margin-bottom: 0px;"><b>Informações do atributo avaliado</b><small><sup>*</sup></small>: </p>
+				<small style="font-size: 55%; margin-left: 0px;"><sup>*</sup>Preencher um por página</small>
+			</div>
 			
-			<label for="atributo">Atributo: </label>
-			<input type="text" id="atributo" name="atributo" value="<?php echo utf8_encode($dados["atributo"]); ?>" required>
-			<small style="font-size: 60%; margin-left: -18px"><sup>*</sup> Um por página</small><br>
+			<div style="float: left; margin-right: 30px;">
+				<label for="atributo">Atributo: </label>
+				<input type="text" id="atributo" name="atributo" value="<?php echo utf8_encode($dados["atributo"]); ?>" required>
+			</div>
 
-			<label for="atributo_short">Nome curto para o atributo:</label>
-			<input type="text" id="atributo_short" name="atributo_short" value="<?php echo $dados["atributo_short"]; ?>" required>
-			<small style="font-size: 60%; margin-left: -18px"><sup>*</sup>Sem espaços (os nomes das colunas serão formados pelo nome do conjunto de atributos mais o nome curto do atributo)</small><br><br>
+			<div>
+				<label for="atributo_short">Nome curto para o atributo<small><sup>**</sup></small>:</label>
+				<input type="text" id="atributo_short" name="atributo_short" value="<?php echo $dados["atributo_short"]; ?>" style="margin-bottom: 1px;" required>
+				<small style="font-size: 55%; margin-left: 0px; width: 200px"><sup>**</sup>Sem espaços (colunas = conjunto + nome curto)</small>
+			</div><br>
 
-			<p><b>Favor preencher os textos que devem aparecer nos extremos da régua e os valores correspondentes: </b></p>
+			<p><b>Informações dos extremos da escala: </b></p>
 
-			<label for="escala_baixo">Escala baixa: </label>
-			<input type="text" id="escala_baixo" name="escala_baixo" value="<?php echo utf8_encode($dados["escala_baixo"]); ?>">
-			<label for="escala_alto">Escala alta: </label>
-			<input type="text" id="escala_alto" name="escala_alto" value="<?php echo utf8_encode($dados["escala_alto"]); ?>"><br>
+			<div style="float: left; margin-right: 30px;">
+				<label for="escala_baixo">Texto scala baixa: </label>
+				<input type="text" id="escala_baixo" name="escala_baixo" value="<?php echo utf8_encode($dados["escala_baixo"]); ?>">
+			</div>
+			<div>
+				<label for="escala_alto">Texto escala alta: </label>
+				<input type="text" id="escala_alto" name="escala_alto" value="<?php echo utf8_encode($dados["escala_alto"]); ?>">
+			</div><br>
 
-			<label for="escala_min">Valor escala baixa: </label>
-			<input type="number" id="escala_min" name="escala_min" value="<?php echo $dados["escala_min"]; ?>">
-			<label for="escala_max">Valor escala alta: </label>
-			<input type="text" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>"><br><br>
+			<div style="float: left; margin-right: 30px;">
+				<label for="escala_min">Valor escala baixa: </label>
+				<input type="number" id="escala_min" name="escala_min" value="<?php echo $dados["escala_min"]; ?>">
+			</div>
+			<div>
+				<label for="escala_max">Valor escala alta: </label>
+				<input type="text" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>">
+			</div><br><br>
 
 			<input type="submit" id="botao" value="<?php 
 				if ($acao == "alteracao") echo "Alterar atributo";
 				elseif ($acao == "exclusao") echo "Excluir atributo";
 				else echo "Cadastrar atributo";
-			?>">
-
+			?>" style="margin-left: 10px">
 		</form>
+		<br><br>
+		</article>
 
 		<div class="direita">
 			<a href="dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>">Voltar</a><br><br>

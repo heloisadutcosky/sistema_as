@@ -138,126 +138,125 @@
 
 			<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $user_id; ?>" method="post">
 				<div style="float: left; margin-right: 30px;">
-				<label for="nome">Nome: </label>
-				<input type="text" id="nome" name="nome" value="<?php echo utf8_encode($dados["nome"]) ?>">
+					<label for="nome">Nome: </label>
+					<input type="text" id="nome" name="nome" value="<?php echo utf8_encode($dados["nome"]) ?>">
 				</div>
 
 				<div>
-				<label for="cpf">CPF: </label>
-				<input type="text" id="cpf" name="cpf" value="<?php echo $dados["cpf"] ?>"><br>
-				</div>
+					<label for="cpf">CPF: </label>
+					<input type="text" id="cpf" name="cpf" value="<?php echo $dados["cpf"] ?>">
+				</div><br>
 
 				<div style="float: left; margin-right: 30px;">
-				<label for="nascimento">Data de nascimento: </label>
-				<input type="date" id="nascimento" name="nascimento" value="<?php echo $dados["nascimento"] ?>">
+					<label for="nascimento">Data de nascimento: </label>
+					<input type="date" id="nascimento" name="nascimento" value="<?php echo $dados["nascimento"] ?>">
 				</div>
 
 				<div>
-				<label for="sexo">Sexo: </label>			
-				<select list="sexos" id="sexo" name="sexo" selected="<?php echo $dados["sexo"] ?>">
-					<?php if($dados["sexo"] == "Feminino") { ?>
-						<option value="Feminino" selected>Feminino</option>
-						<option value="Masculino">Masculino</option>
-					<?php } else { ?>
-						<option value="Feminino">Feminino</option>
-						<option value="Masculino" selected>Masculino</option>
-					<?php } ?>
-				</select><br>
-				</div>
+					<label for="sexo">Sexo: </label>			
+					<select list="sexos" id="sexo" name="sexo" selected="<?php echo $dados["sexo"] ?>">
+						<?php if($dados["sexo"] == "Feminino") { ?>
+							<option value="Feminino" selected>Feminino</option>
+							<option value="Masculino">Masculino</option>
+						<?php } else { ?>
+							<option value="Feminino">Feminino</option>
+							<option value="Masculino" selected>Masculino</option>
+						<?php } ?>
+					</select>
+				</div><br>
 
 				<div>
-				<label for="escolaridade">Escolaridade: </label>
-				<select id="escolaridade" name="escolaridade"><br>
-					<?php switch ($dados["escolaridade"]) {
+					<label for="escolaridade">Escolaridade: </label>
+					<select id="escolaridade" name="escolaridade"><br>
+						<?php switch ($dados["escolaridade"]) {
 
-						case 'Ensino Médio': ?>
-							<option value="Ensino Fundamental">Ensino Fundamental</option>
-							<option value="Ensino Médio" selected>Ensino Médio</option>
-							<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
-							<option value="Ensino Superior Completo">Ensino Superior Completo</option>
-							<?php break;
+							case 'Ensino Médio': ?>
+								<option value="Ensino Fundamental">Ensino Fundamental</option>
+								<option value="Ensino Médio" selected>Ensino Médio</option>
+								<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
+								<option value="Ensino Superior Completo">Ensino Superior Completo</option>
+								<?php break;
 
-						case 'Ensino Superior Incompleto': ?>
-							<option value="Ensino Fundamental">Ensino Fundamental</option>
-							<option value="Ensino Médio">Ensino Médio</option>
-							<option value="Ensino Superior Incompleto" selected>Ensino Superior Incompleto</option>
-							<option value="Ensino Superior Completo">Ensino Superior Completo</option>
-							<?php break;
+							case 'Ensino Superior Incompleto': ?>
+								<option value="Ensino Fundamental">Ensino Fundamental</option>
+								<option value="Ensino Médio">Ensino Médio</option>
+								<option value="Ensino Superior Incompleto" selected>Ensino Superior Incompleto</option>
+								<option value="Ensino Superior Completo">Ensino Superior Completo</option>
+								<?php break;
 
-						case 'Ensino Superior Completo': ?>
-							<option value="Ensino Fundamental">Ensino Fundamental</option>
-							<option value="Ensino Médio">Ensino Médio</option>
-							<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
-							<option value="Ensino Superior Completo" selected>Ensino Superior Completo</option>
+							case 'Ensino Superior Completo': ?>
+								<option value="Ensino Fundamental">Ensino Fundamental</option>
+								<option value="Ensino Médio">Ensino Médio</option>
+								<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
+								<option value="Ensino Superior Completo" selected>Ensino Superior Completo</option>
 
-							<?php break;
-						default: ?>
-							<option value="Ensino Fundamental" selected>Ensino Fundamental</option>
-							<option value="Ensino Médio">Ensino Médio</option>
-							<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
-							<option value="Ensino Superior Completo">Ensino Superior Completo</option>
-							<?php break; 
-						}?>
-
-				</select><br>
-				</div>
+								<?php break;
+							default: ?>
+								<option value="Ensino Fundamental" selected>Ensino Fundamental</option>
+								<option value="Ensino Médio">Ensino Médio</option>
+								<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
+								<option value="Ensino Superior Completo">Ensino Superior Completo</option>
+								<?php break; 
+							}?>
+					</select>
+				</div><br>
 
 				<div style="float: left; margin-right: 30px;">
-				<label for="email">E-mail: </label>
-				<input type="email" id="email" name="email" value="<?php echo $dados["email"] ?>">
+					<label for="email">E-mail: </label>
+					<input type="email" id="email" name="email" value="<?php echo $dados["email"] ?>">
 				</div>
 
 				<div>
-				<label for="telefone">Telefone: </label>
-				<input type="tel" id="telefone" name="telefone" value="<?php echo $dados["telefone"] ?>"><br><br>
+					<label for="telefone">Telefone: </label>
+					<input type="tel" id="telefone" name="telefone" value="<?php echo $dados["telefone"] ?>">
+				</div><br>
+
+				<div>
+					<label for="funcao">Tipo de avaliador: </label>
+					<select id="funcao" name="funcao"><br>
+						<?php switch ($dados["funcao"]) {
+
+							case 'Painelista': ?>
+								<option value="Consumidor">Consumidor</option>
+								<option value="Painelista" selected>Painelista</option>
+								<option value="Candidato">Candidato</option>
+								<option value="Administrador">Administrador</option>
+								<?php break;
+
+							case 'Candidato': ?>
+								<option value="Consumidor">Consumidor</option>
+								<option value="Painelista">Painelista</option>
+								<option value="Candidato" selected>Candidato</option>
+								<option value="Administrador">Administrador</option>
+								<?php break;
+
+							case 'Administrador': ?>
+								<option value="Consumidor">Consumidor</option>
+								<option value="Painelista">Painelista</option>
+								<option value="Candidato">Candidato</option>
+								<option value="Administrador" selected>Administrador</option>
+								<?php break;
+
+							default: ?>
+								<option value="Consumidor" selected>Consumidor</option>
+								<option value="Painelista">Painelista</option>
+								<option value="Candidato">Candidato</option>
+								<option value="Administrador">Administrador</option>
+								<?php break; 
+							}?>
+					</select><br><br>
 				</div>
 
 				<div>
-				<label for="funcao">Tipo de avaliador: </label>
-				<select id="funcao" name="funcao"><br>
-					<?php switch ($dados["funcao"]) {
-
-						case 'Painelista': ?>
-							<option value="Consumidor">Consumidor</option>
-							<option value="Painelista" selected>Painelista</option>
-							<option value="Candidato">Candidato</option>
-							<option value="Administrador">Administrador</option>
-							<?php break;
-
-						case 'Candidato': ?>
-							<option value="Consumidor">Consumidor</option>
-							<option value="Painelista">Painelista</option>
-							<option value="Candidato" selected>Candidato</option>
-							<option value="Administrador">Administrador</option>
-							<?php break;
-
-						case 'Administrador': ?>
-							<option value="Consumidor">Consumidor</option>
-							<option value="Painelista">Painelista</option>
-							<option value="Candidato">Candidato</option>
-							<option value="Administrador" selected>Administrador</option>
-							<?php break;
-
-						default: ?>
-							<option value="Consumidor">Consumidor</option>
-							<option value="Painelista" selected>Painelista</option>
-							<option value="Candidato">Candidato</option>
-							<option value="Administrador">Administrador</option>
-							<?php break; 
-						}?>
-				</select><br><br>
+					<input type="submit" id="botao" value="<?php 
+						if ($acao == "alteracao") echo "Alterar cadastro";
+						elseif ($acao == "exclusao") echo "Excluir cadastro";
+						else echo "Cadastrar";
+					?>" style="margin-left: 10px"><br>
+					<br>
 				</div>
-
-				<div>
-				<input type="submit" id="botao" value="<?php 
-					if ($acao == "alteracao") echo "Alterar cadastro";
-					elseif ($acao == "exclusao") echo "Excluir cadastro";
-					else echo "Cadastrar";
-				?>"><br>
-				<br>
-				</div>
-
 			</form>
+			<br><br>
 		</article>
 
 		<div class="direita">

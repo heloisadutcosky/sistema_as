@@ -61,41 +61,44 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
-		<br>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
-		<div class="botao">
-			<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar atributo</a>
-		</div>
-		<br>
+		<article>
+			<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
+			<br>
 
-		<div id="cima_tabela" class="usuarios">
-			<ul>
-			    <li><b>Conjunto</b></li>
-			    <li><b>Atributos</b></li>
-			    <li><b></b></li>
-			</ul>
-		</div>
-		<div id="janela" class="usuarios">
-			<?php
-			    while($linha = mysqli_fetch_assoc($acesso)) {
-			?>
-			<ul>
-			    <li><?php echo utf8_encode($linha["conjunto_atributos"]) ?></li>
-			    <li><?php echo utf8_encode($linha["atributo"]) ?></li>
-			    <li></li>
-			    <li></li>
-			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_completo=<?php echo  $linha["atributo_completo"]; ?>">Excluir</a> </li>
-			</ul>
-			<?php } ?>	
-		</div>
+			<div class="botao">
+				<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar atributo</a>
+			</div>
+			<br>
+
+			<div id="cima_tabela" class="usuarios">
+				<ul>
+				    <li><b>Conjunto</b></li>
+				    <li><b>Atributos</b></li>
+				    <li><b></b></li>
+				</ul>
+			</div>
+			<div id="janela" class="usuarios">
+				<?php
+				    while($linha = mysqli_fetch_assoc($acesso)) {
+				?>
+				<ul>
+				    <li><?php echo utf8_encode($linha["conjunto_atributos"]) ?></li>
+				    <li><?php echo utf8_encode($linha["atributo"]) ?></li>
+				    <li></li>
+				    <li></li>
+				    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_completo=<?php echo  $linha["atributo_completo"]; ?>">Excluir</a> </li>
+				</ul>
+				<?php } ?>	
+			</div>
+			<br><br>
+		</article>
 
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>
 		</div>
-		<br>
-		<br>		
-
+				
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 
 	</main>
@@ -125,18 +128,22 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
+		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
-		<p>Ainda não existe um formulário pra esse projeto</p><br><br>
+		<article>
+			<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
 
-		<div class="botao">
-			<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
-		</div>
+			<p style="margin-left: 10px;">Ainda não existe um formulário pra esse projeto</p><br><br>
+
+			<div class="botao">
+				<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
+			</div>
+			<br><br><br><br><br><br>
+		</article>
+
 		<div class="direita">
 			<a href="../dados.php">Voltar</a><br><br>
 		</div>
-		<br>
-		<br>
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

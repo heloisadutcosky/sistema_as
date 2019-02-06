@@ -35,7 +35,7 @@
 
 </head>
 <body>
-	<main style="height: 450px">
+	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 		<article>
@@ -68,6 +68,7 @@
 				</ul>
 				<?php } ?>
 			</div>
+			<br><br><br><br><br><br>
 		</article>
 
 		<div class="direita">
