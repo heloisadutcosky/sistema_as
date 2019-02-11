@@ -101,9 +101,9 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
-
+		
 		<article>
+		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
 			<!-- Título do atributo avaliado -->
 			<div>
 				<h3><?php echo strtoupper(utf8_encode($dados["conjunto_atributos"])); ?></h3>

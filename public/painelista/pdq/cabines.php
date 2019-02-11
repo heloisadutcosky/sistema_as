@@ -166,10 +166,10 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
-		
-		<br>	
+
 		<article>
+			<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
+			<br>
 			
 			<div>
 				<h3><?php echo strtoupper(utf8_encode($_SESSION["conjunto_atributos"])); ?></h3>
