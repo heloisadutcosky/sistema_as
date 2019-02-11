@@ -39,8 +39,8 @@
 		$produto_id = utf8_decode($_POST["produto_id"]);
 		$descricao_projeto = utf8_decode($_POST["descricao_projeto"]);
 		$tipo_avaliacao = utf8_decode($_POST["tipo_avaliacao"]);
-		$escala_min = $_POST["escala_min"];
-		$escala_max = $_POST["escala_max"];
+		$escala_min = empty($_POST["escala_min"]) ? 0 : $_POST["escala_min"];
+		$escala_max = empty($_POST["escala_max"]) ? 0 : $_POST["escala_max"];
 		$data_inicio = $_POST["data_inicio"];
 		$data_fim = $_POST["data_fim"];
 		$form_ativo = isset($_POST["form_ativo"]) ? 1 : 0;
@@ -58,7 +58,7 @@
 			if (!$operacao_alterar) {
 				die("Falha na alteração dos dados.");
 			} else {
-				header("location:dados.php");
+				//header("location:dados.php");
 			}
 		}
 		// --------------------------------------------------------------------------
