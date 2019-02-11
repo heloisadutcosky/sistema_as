@@ -121,7 +121,7 @@
 								<p class="amostra"><?php echo $amostra; ?></p>
 								
 								<form action="aparencia.php?pagina=<?php echo($pagina + 1); ?>" method="post" align="">
-									<input type="range" id="nota" name="<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" required>
+									<input type="range" id="nota" name="<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
 									<input type="checkbox" name="teste" required>
 									<div class="ticks" style="padding-left: <?php echo($dados["escala_min"]*60); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60); ?>px">
 										<span class="tick"></span>

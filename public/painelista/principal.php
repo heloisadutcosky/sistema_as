@@ -6,11 +6,8 @@
 	// Iniciar sessão
 	session_start();
 	
-	if(isset($_SESSION["usuario"])) {
-		$funcao = $_SESSION["funcao"] == "Administrador" ? $_GET["funcao"] : $_SESSION["funcao"];
-		} else {
-			Header("Location:<?php echo($caminho); ?>login.php");
-		}
+	//Verificar informações de acesso
+	require_once($caminho . "_incluir/verificacao_usuario.php");
 
 	$_SESSION["produto"] = isset($_GET["produto"]) ? $_GET["produto"] : $_SESSION["produto"];
 
@@ -58,6 +55,11 @@
 	<meta charset="utf-8">
 	
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
+	<style type="text/css">
+		.menu {
+			display: inline-block;
+		}
+	</style>
 
 </head>
 <body>
@@ -85,7 +87,7 @@
 			</article>
 				
 			<nav>
-				<ul>
+				<ul style="display: inline-block;">
 					<li class="menu"><a href="pdq/aparencia.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Aparência</a></li>
 					<li class="menu"><a href="pdq/cabines.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Cabines</a></li>
 				</ul>

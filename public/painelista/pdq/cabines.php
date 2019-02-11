@@ -189,7 +189,7 @@
 						<li><b><?php echo utf8_encode($linhas["atributo"]); ?></b></li>
 
 						<form action="cabines.php?pagina=<?php echo($pagina + 1); ?>&n=<?php echo($n); ?>&amostra=<?php echo($_SESSION["amostras"][$n]); ?>" method="post" align="">
-							<input type="range" id="nota" name="<?php echo $linhas["atributo_completo"]; ?>" min="0" max="10" value="0" step="0.01" required>
+							<input type="range" id="nota" name="<?php echo $linhas["atributo_completo"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
 							<input type="checkbox" name="teste" required>
 							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*60); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*60); ?>px">
 								<span class="tick"></span>

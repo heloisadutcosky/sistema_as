@@ -24,7 +24,7 @@
 
 </head>
 <body>
-<main style="height:400px">
+<main style="height:500px">
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
@@ -32,7 +32,6 @@
 		<article>
 			<p>Bem vindo(a), <?php echo utf8_encode($_SESSION["usuario"]); ?>! <u>O que você deseja fazer?</u></p>
 		</article>
-
 		
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>

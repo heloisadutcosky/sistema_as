@@ -4,9 +4,43 @@
 	require_once($caminho . "conexao/conexao.php");
 
 	// Iniciar sessão
-	session_start();
+	session_start(); 
+?>
 
-	if (isset($_POST["cpf"])) {
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<title>Cadastro About Solution</title>
+	
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" type="text/css" href="<?php echo $caminho; ?>_css/estilo.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
+
+	<style>
+		.folha_cadastro {
+		  margin-bottom: 1px;
+		  padding: 5px 15px;
+		  z-index: -1;
+		}
+
+	</style>
+
+</head>
+<body>
+	<main>
+		<header>
+			<a href="http://aboutsolution.com.br/novo/" target="_blank">
+			<img src="http://aboutsolution.com.br/novo/wp-content/uploads/2017/12/Logo_About-Solution.png" width="210" height="70"
+				title="logo About Solution">
+			</a>
+		</header>
+		<h2 class="espaco">CADASTRO USUÁRIO</h2>
+		<br>
+
+		<?php
+
+		if (isset($_POST["cpf"])) {
 
 		$cpf = $_POST["cpf"];
 
@@ -52,43 +86,13 @@
 
 
 		} else { ?>
-			<p>Esse cpf já foi cadastrado.</p>
-			<p>Favor realizar o login.</p>
-			<a href="<?php echo $caminho; ?>login.php">Login</a>
+			<div style="margin-left: 10px">
+				<p>Esse cpf já foi cadastrado.</p>
+				<p>Favor realizar o <a href="<?php echo $caminho; ?>login.php">login</a>.</p>
+			</div>
+			<br><br>
 		<?php } 
-	} 
-?>
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-	<title>Cadastro About Solution</title>
-	
-	<meta charset="utf-8">
-
-	<link rel="stylesheet" type="text/css" href="<?php echo $caminho; ?>_css/estilo.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
-
-	<style>
-		.folha_cadastro {
-		  margin-bottom: 1px;
-		  padding: 5px 15px;
-		  z-index: -1;
-		}
-
-	</style>
-
-</head>
-<body>
-	<main>
-		<header>
-			<a href="http://aboutsolution.com.br/novo/" target="_blank">
-			<img src="http://aboutsolution.com.br/novo/wp-content/uploads/2017/12/Logo_About-Solution.png" width="210" height="70"
-				title="logo About Solution">
-			</a>
-		</header>
-		<h2 class="espaco">CADASTRO USUÁRIO</h2>
-		<br>
+	} ?>
 
 		
 		<form action="cadastro.php" method="post">

@@ -62,9 +62,14 @@
 			<ul>
 			    <li style="width:80px;"><?php echo utf8_encode($linha["empresa"]) ?></li>
 			    <li><?php echo utf8_encode($linha["tipo_avaliacao"]) ?></li>
-			    <li style="width: 110px;"><?php echo utf8_encode($linha["produto"]) ?></li>
-			    <li><a href="formulario/dados.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto=<?php echo $linha["produto"]; ?>">Formulário</a> </li>
-			    <li><a href="sessoes/dados.php?codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $linha["produto"]; ?>">Sessão</a> </li>
+			    <li style="width: 110px;"><?php 
+			    $consulta = "SELECT * FROM produtos WHERE produto_id = {$linha["produto_id"]}";
+				$acesso2 = mysqli_query($conecta, $consulta);
+				$dados = mysqli_fetch_assoc($acesso2);
+				$produto = $dados["produto"];
+			    echo utf8_encode($dados["produto"]) ?></li>
+			    <li><a href="formulario/dados.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto=<?php echo $produto; ?>">Formulário</a> </li>
+			    <li><a href="sessoes/dados.php?codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>">Sessão</a> </li>
 			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>">Alterar</a> </li>
 			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>">Excluir</a> </li>
 			</ul>
