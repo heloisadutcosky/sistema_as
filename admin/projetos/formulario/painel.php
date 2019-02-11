@@ -53,7 +53,7 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = {$escala_min}, escala_max = {$escala_max} WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}' AND atributo = '{$atributo}'";
+			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = '{$escala_min}', escala_max = '{$escala_max}' WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}' AND atributo = '{$atributo}'";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -82,7 +82,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO formularios (projeto_id, conjunto_atributos, descricao_conjunto, atributo, atributo_short, atributo_completo, escala_baixo, escala_alto, escala_min, escala_max) VALUES ($projeto_id, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$atributo_short', '$atributo_completo', '$escala_baixo', '$escala_alto', $escala_min, $escala_max)";
+				$cadastrar = "INSERT INTO formularios (projeto_id, conjunto_atributos, descricao_conjunto, atributo, atributo_short, atributo_completo, escala_baixo, escala_alto, escala_min, escala_max) VALUES ($projeto_id, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$atributo_short', '$atributo_completo', '$escala_baixo', '$escala_alto', '$escala_min', '$escala_max')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 

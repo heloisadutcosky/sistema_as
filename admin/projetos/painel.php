@@ -49,7 +49,9 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto_id = '{$produto_id}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = {$escala_min}, escala_max = {$escala_max}, data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = {$form_ativo}, tipo_avaliador = '{$tipo_avaliador}' WHERE projeto_id = {$projeto_id}";
+			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto_id = '{$produto_id}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}' WHERE projeto_id = {$projeto_id}";
+
+			echo $alterar;
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -78,7 +80,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO projetos (empresa, produto_id, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto_id}', '{$descricao_projeto}', '{$tipo_avaliacao}', {$escala_min}, {$escala_max}, '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}')";
+				$cadastrar = "INSERT INTO projetos (empresa, produto_id, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto_id}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
