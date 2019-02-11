@@ -19,6 +19,30 @@
 		$acesso = mysqli_query($conecta, $consulta);
 		$dados = mysqli_num_rows($acesso);
 
+		// Informações preenchidas para exclusão dos dados ------------------------------
+		if (isset($_GET["amostra"])) {
+			$acao = $_GET["acao"];
+			$sessao = $_GET["sessao"];
+			$amostra_codigo = $_GET["amostra"];
+
+			// Excluir cadastro ---------------------------------------------------------
+			if ($acao == "exclusao") {
+					
+				$excluir = "DELETE FROM amostras WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND amostra_codigo = '{$amostra_codigo}'";
+
+				echo $excluir;
+
+				$operacao_excluir = mysqli_query($conecta, $excluir);
+
+				if (!$operacao_excluir) {
+					die("Falha na exclusão dos dados.");
+				} else {
+					header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
+				}
+			}
+			// --------------------------------------------------------------------------
+				}
+
 		if ($dados>0) {
 
 ?>
@@ -72,7 +96,7 @@
 				    <li style="width: 100px"><?php echo utf8_encode($linha["amostra_descricao"]) ?></li>
 				    <li style="width: 70px"><?php echo utf8_encode($linha["amostra_codigo"]) ?></li>
 				    <li style="width: 0px"></li>
-				    <li style="width: 70px"><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&sessao=<?php echo $linha["sessao"]; ?>&amostra=<?php echo $linha["amostra_codigo"]; ?>">Excluir</a> </li>
+				    <li style="width: 70px"><a href="dados.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&sessao=<?php echo $linha["sessao"]; ?>&amostra=<?php echo $linha["amostra_codigo"]; ?>">Excluir</a> </li>
 				</ul>
 				<?php } ?>	
 			</div>
@@ -123,7 +147,7 @@
 		<div class="botao">
 			<a href="painel.php?acao=cadastro&codigo=<?php echo($projeto_id); ?>&produto=<?php echo $produto; ?>">Adicionar sessão</a>
 		</div>
-		<br><br><br><br><br><br>
+		<br><br><br><br><br><br><br><br>
 		</article>
 		
 		<div class="direita">

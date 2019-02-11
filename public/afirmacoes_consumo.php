@@ -31,7 +31,6 @@
 		$painelista = $_SESSION["funcao"] == "Painelista" ? 1 : 0;
 		$fumante = isset($_POST["fumante"]) ? 1 : 0;
 		$data_registro = date("Y-m-d");
-		$frequencia_consumo = utf8_decode($_POST["frequencia_consumo"]);
 
 		// Computar sabores consumidos
 		$consulta = "SELECT * FROM sabores WHERE categoria_id = {$_SESSION["categoria_id"]}";
@@ -47,12 +46,10 @@
 			$cons = in_array($sabor, $_POST["sabores_consumidos"]) ? 1 : 0;
 			$sabores_consumidos = $sabores_consumidos . $cons;
 		} 
-
-		$sabores_consumidos_outros = utf8_decode($_POST["sabores_consumidos_outros"]);
 		// ------------------------------
 
 		// Computar sabor preferido
-		$sabor_preferido = $_POST["sabor_preferido"] == "Outro" ? utf8_decode($_POST["sabor_preferido_outro"]) : utf8_decode($_POST["sabor_preferido"]);
+		$sabor_preferido = $_POST["sabor_preferido"] == "Outro" ? $_POST["sabor_preferido_outro"] : $_POST["sabor_preferido"];
 		// ------------------------------
 
 
@@ -70,15 +67,13 @@
 			$cons = in_array($marca, $_POST["marcas_consumidas"]) ? 1 : 0;
 			$marcas_consumidas = $marcas_consumidas . $cons;
 		} 
-
-		$marcas_consumidas_outras = utf8_decode($_POST["marcas_consumidas_outras"]);
 		// ------------------------------
 
 		// Computar marca preferida
-		$marca_preferida = $_POST["marca_preferida"] == "Outra" ? utf8_decode($_POST["marca_preferida_outra"]) : utf8_decode($_POST["marca_preferida"]);
+		$marca_preferida = $_POST["marca_preferida"] == "Outra" ? $_POST["marca_preferida_outra"] : $_POST["marca_preferida"];
 		// ------------------------------
 
-		$inserir = "INSERT INTO consumo (user_id, categoria_id, painelista, frequencia_consumo, sabores_consumidos, sabores_consumidos_outros, sabor_preferido, marcas_consumidas, marcas_consumidas_outras, marca_preferida, data_registro) VALUES ('{$_SESSION["user_id"]}', '{$_SESSION["categoria_id"]}', '{$painelista}', '{$frequencia_consumo}', '{$sabores_consumidos}', '{$sabores_consumidos_outros}', '{$sabor_preferido}', '{$marcas_consumidas}', '{$marcas_consumidas_outras}', '{$marca_preferida}', '{$data_registro}')";
+		$inserir = "INSERT INTO consumo (user_id, categoria_id, painelista, frequencia_consumo, sabores_consumidos, sabores_consumidos_outros, sabor_preferido, marcas_consumidas, marcas_consumidas_outras, marca_preferida, data_registro) VALUES ('{$_SESSION["user_id"]}', '{$_SESSION["categoria_id"]}', '{$painelista}', '{$_POST["frequencia_consumo"]}', '{$sabores_consumidos}', '{$_POST["sabores_consumidos_outros"]}', '{$_POST["sabor_preferido"]}', '{$marcas_consumidas}', '{$_POST["marcas_consumidas_outras"]}', '{$_POST["marca_preferida"]}', '{$data_registro}')";
 
 		$operacao_inserir = mysqli_query($conecta, $inserir);
 
@@ -127,12 +122,7 @@
 			<div>
 				<p>Com qual frequência você consome <?php echo strtolower(utf8_encode($categoria)); ?>? </p>
 				<select name="frequencia_consumo">
-					<option value="NA"></option>
-					<option value="Mais de duas vezes por semana">Mais de duas vezes por semana</option>
-					<option value="Duas vezes por semana">Duas vezes por semana</option>
-					<option value="Uma vez por semana">Uma vez por semana</option>
-					<option value="Duas a três vezes por mês">Duas a três vezes por mês</option>
-					<option value="Menos de uma vez por mês">Menos de uma vez por mês</option>
+					<option value="Mais de duas vezes por semana" required>Mais de duas vezes por semana</option>
 				</select>
 			</div><br>
 
@@ -170,7 +160,6 @@
 				<p>Qual é seu sabor preferido de <?php echo strtolower(utf8_encode($categoria)); ?>? </p>
 				<div>
 					<select name="sabor_preferido" id="sabor_preferido">
-						<option value="NA"></option>
 						<?php $consulta = "SELECT * FROM sabores WHERE categoria_id = {$_SESSION["categoria_id"]}";
 						$acesso = mysqli_query($conecta, $consulta);
 						while ($dados = mysqli_fetch_assoc($acesso)) { ?>
@@ -214,8 +203,7 @@
 			<div>
 				<p>Qual é sua marca preferida de <?php echo strtolower(utf8_encode($categoria)); ?>? </p>
 				<div>
-					<select name="marca_preferida" id="marca_preferida">
-						<option value="NA"></option>
+					<select name="marca_preferida" id="marca_preferida" >
 						<?php $consulta = "SELECT * FROM marcas WHERE categoria_id = {$_SESSION["categoria_id"]}";
 						$acesso = mysqli_query($conecta, $consulta);
 						while ($dados = mysqli_fetch_assoc($acesso)) { ?>
@@ -225,7 +213,7 @@
 					</select>
 				</div>
 				<div>
-					<label for="marca_preferida_outra">Se outra, favor indicar qual: </label>
+					<label for="marca_preferida_outra">Se outro, favor indicar qual: </label>
 					<input type="text" name="marca_preferida_outra">
 				</div>
 			</div><br><br>

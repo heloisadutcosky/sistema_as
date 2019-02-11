@@ -86,7 +86,7 @@
 				</ul>
 				<?php } ?>	
 			</div>
-			<br><br>
+			<br><br><br><br><br><br>
 		</article>
 
 		<div class="direita">
@@ -132,7 +132,7 @@
 			<div class="botao">
 				<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
 			</div>
-			<br><br><br><br><br><br>
+			<br><br><br><br><br><br><br><br>
 		</article>
 
 		<div class="direita">

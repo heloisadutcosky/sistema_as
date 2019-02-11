@@ -178,7 +178,7 @@
 			<p><b>Informações dos extremos da escala: </b></p>
 
 			<div style="float: left; margin-right: 30px;">
-				<label for="escala_baixo">Texto scala baixa: </label>
+				<label for="escala_baixo">Texto escala baixa: </label>
 				<input type="text" id="escala_baixo" name="escala_baixo" value="<?php echo utf8_encode($dados["escala_baixo"]); ?>">
 			</div>
 			<div>
