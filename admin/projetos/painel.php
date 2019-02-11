@@ -41,8 +41,8 @@
 		$tipo_avaliacao = utf8_decode($_POST["tipo_avaliacao"]);
 		$escala_min = empty($_POST["escala_min"]) ? 0 : $_POST["escala_min"];
 		$escala_max = empty($_POST["escala_max"]) ? 0 : $_POST["escala_max"];
-		$data_inicio = $_POST["data_inicio"];
-		$data_fim = $_POST["data_fim"];
+		$data_inicio = empty($_POST["data_inicio"]) ? "NULL" : $_POST["data_inicio"];
+		$data_fim = empty($_POST["data_fim"]) ? "NULL" : $_POST["data_fim"];
 		$form_ativo = isset($_POST["form_ativo"]) ? 1 : 0;
 		$tipo_avaliador = $_POST["tipo_avaliador"];
 
