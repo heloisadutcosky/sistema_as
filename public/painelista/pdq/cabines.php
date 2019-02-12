@@ -168,8 +168,7 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 		<article>
-			<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
-			<br>
+			<h2 style="color: #8B0000">PDQ - <?php echo $_SESSION["produto"]; ?></h2>
 			
 			<div>
 				<h3><?php echo strtoupper(utf8_encode($_SESSION["conjunto_atributos"])); ?></h3>
