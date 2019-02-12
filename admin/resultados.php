@@ -120,7 +120,11 @@
 					</div>
 			<?php } ?>
 			<br><br><br><br><br><br>
-		</article>			
+		</article>
+
+		<div class="direita">
+			<a href="principal.php">Voltar</a><br><br>
+		</div>			
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
 

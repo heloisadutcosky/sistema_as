@@ -11,6 +11,8 @@
 
 	$funcao = isset($_GET["funcao"]) ? $_GET["funcao"] : $_SESSION["funcao"];
 
+	$_SESSION["teste"] = isset($_GET["teste"]) ? $_GET["teste"] : 0;
+
 	// Setar projeto e categoria
 	if (isset($_GET["codigo"])) {
 		$_SESSION["projeto_id"] = $_GET["codigo"];
@@ -69,13 +71,14 @@
 						echo $dados["url_imagem"]; 
 					?>
 					" width="100" height="70" style="float: left;"><br><br>
-					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>&produto=<?php echo $linha["nome_form"]; ?>&funcao=<?php echo $funcao; ?>"><?php echo $linha["nome_form"]; ?></a></li><br><br>
+					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>&produto=<?php echo $linha["nome_form"]; ?>&funcao=<?php echo $funcao; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo $linha["nome_form"]; ?></a></li><br><br>
 				<?php } ?>
 			</ul>
 		</nav>
 		<br>
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/voltar_admin.php"); ?>
 
 	</main>
 </body>

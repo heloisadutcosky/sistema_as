@@ -46,20 +46,22 @@
 	}
 	
 
-	foreach ($_SESSION["amostras"] as $amostra) {
-		if (isset($_POST["$amostra"])) {
+	if ($_SESSION["teste"] == 0) {
+		foreach ($_SESSION["amostras"] as $amostra) {
+			if (isset($_POST["$amostra"])) {
 
-			$conjunto_atributos = utf8_decode($dados["conjunto_atributos"]);
-			$atributo = $dados["atributo_completo"];
-			$nota = $_POST["$amostra"]*10;
+				$conjunto_atributos = utf8_decode($dados["conjunto_atributos"]);
+				$atributo = $dados["atributo_completo"];
+				$nota = $_POST["$amostra"]*10;
 
-			$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo', $nota)";
+				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo', $nota)";
 
-			if (!$acesso) {
-				die("Falha na insercao dos dados.");
+				if (!$acesso) {
+					die("Falha na insercao dos dados.");
+				}
+
+				$operacao_inserir = mysqli_query($conecta, $inserir);
 			}
-
-			$operacao_inserir = mysqli_query($conecta, $inserir);
 		}
 	}
 
@@ -127,7 +129,7 @@
 										<span class="tick"></span>
 										<span class="tick"></span>
 									</div>
-									<div class="afterticks" style="padding-left: <?php echo($dados["escala_min"]*60+90); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60+50); ?>px">
+									<div class="afterticks" style="padding-left: <?php echo($dados["escala_min"]*60+100); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60+40); ?>px">
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_baixo"]); ?></span>
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_alto"]); ?></span>
 									</div>
@@ -145,6 +147,7 @@
 		</article>
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/voltar_admin.php"); ?>
 
 	</main>
 </body>

@@ -159,6 +159,7 @@
 
 		<br><br>
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/voltar_admin.php"); ?>
 
 	</main>
 </body>

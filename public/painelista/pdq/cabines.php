@@ -24,17 +24,22 @@
 
 		$amostra = $_GET["amostra"];
 
-		if (isset($_POST[$_SESSION["atributo_completo"][0]])) {
+		echo $_SESSION["teste"];
 
-			for ($i=0; $i < $_SESSION["n_atributos"]; $i++) {
+		if ($_SESSION["teste"] == 0) {
+		
+			if (isset($_POST[$_SESSION["atributo_completo"][0]])) {
 
-				$atributo_completo = $_SESSION["atributo_completo"][$i];
-				$nota = $_POST[$_SESSION["atributo_completo"][$i]]*10;
+				for ($i=0; $i < $_SESSION["n_atributos"]; $i++) {
 
-				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo_completo', $nota)";
+					$atributo_completo = $_SESSION["atributo_completo"][$i];
+					$nota = $_POST[$_SESSION["atributo_completo"][$i]]*10;
 
-				$operacao_inserir = mysqli_query($conecta, $inserir);
-				}
+					$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo_completo', $nota)";
+
+					$operacao_inserir = mysqli_query($conecta, $inserir);
+					}
+			}
 		}
 	}
 
@@ -118,6 +123,7 @@
 				<br>
 
 				<?php include_once($caminho . "_incluir/rodape.php"); ?>
+				<?php include_once($caminho . "_incluir/voltar_admin.php"); ?>
 
 			</main>
 		</body>
@@ -209,6 +215,7 @@
 		</article>
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
+		<?php include_once($caminho . "_incluir/voltar_admin.php"); ?>
 		
 	</main>
 </body>
