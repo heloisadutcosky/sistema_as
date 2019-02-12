@@ -9,25 +9,14 @@
 	//Verificar informações de acesso
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
-	// Verificar se usuário já preencheu o questionário pra categoria em questão
-	if (isset($_SESSION["categoria_id"])) {
-		$consulta = "SELECT * FROM consumo WHERE user_id = {$_SESSION["user_id"]} AND categoria_id = {$_SESSION["categoria_id"]}";
-		$acesso = mysqli_query($conecta, $consulta);
-		$dados = mysqli_fetch_assoc($acesso);
-
-		if (!empty($dados) && $_SESSION["funcao"] != "Administrador") {
-			header("location:" . strtolower($_SESSION["funcao"]) . "/principal.php");
-		} else {
-			$consulta = "SELECT * FROM categorias WHERE categoria_id = {$_SESSION["categoria_id"]}"; 
-			$acesso2 = mysqli_query($conecta, $consulta);
-			$dados = mysqli_fetch_assoc($acesso2);
-			$categoria = $dados["categoria"];
-		}
-	} else {
-		header("location:principal.php");
-	}
+	$funcao = isset($_GET["funcao"]) ? $_GET["funcao"] : $_SESSION["funcao"];
 
 	if (isset($_POST["frequencia_consumo"])) {
+
+		if ($_SESSION["funcao"] == "Administrador") {
+			header("location:" . strtolower($funcao) . "/principal.php?codigo={$_SESSION["projeto_id"]}");
+		}
+
 		$painelista = $_SESSION["funcao"] == "Painelista" ? 1 : 0;
 		$fumante = isset($_POST["fumante"]) ? 1 : 0;
 		$data_registro = date("Y-m-d");
@@ -81,10 +70,27 @@
 		$inserir = "INSERT INTO consumo (user_id, categoria_id, painelista, frequencia_consumo, sabores_consumidos, sabores_consumidos_outros, sabor_preferido, marcas_consumidas, marcas_consumidas_outras, marca_preferida, data_registro) VALUES ('{$_SESSION["user_id"]}', '{$_SESSION["categoria_id"]}', '{$painelista}', '{$frequencia_consumo}', '{$sabores_consumidos}', '{$sabores_consumidos_outros}', '{$sabor_preferido}', '{$marcas_consumidas}', '{$marcas_consumidas_outras}', '{$marca_preferida}', '{$data_registro}')";
 
 		$operacao_inserir = mysqli_query($conecta, $inserir);
-
-		//header("location:painelista/principal.php?codigo={$_SESSION["projeto_id"]}&produto={$_SESSION["produto"]}");
-		
 	}
+
+
+	// Verificar se usuário já preencheu o questionário pra categoria em questão
+	if (isset($_SESSION["categoria_id"])) {
+		$consulta = "SELECT * FROM consumo WHERE user_id = {$_SESSION["user_id"]} AND categoria_id = {$_SESSION["categoria_id"]}";
+		$acesso = mysqli_query($conecta, $consulta);
+		$dados = mysqli_fetch_assoc($acesso);
+
+		if (!empty($dados) && $_SESSION["funcao"] != "Administrador") {
+			header("location:" . strtolower($funcao) . "/principal.php?codigo={$_SESSION["projeto_id"]}");
+		} else {
+			$consulta = "SELECT * FROM categorias WHERE categoria_id = {$_SESSION["categoria_id"]}"; 
+			$acesso2 = mysqli_query($conecta, $consulta);
+			$dados = mysqli_fetch_assoc($acesso2);
+			$categoria = $dados["categoria"];
+		}
+	} else {
+		header("location:principal.php");
+	}
+	// -------------------------------------
 ?>
 
 <!DOCTYPE html>
@@ -121,7 +127,7 @@
 		</p><br>
 
 		
-		<form action="consumo.php" method="post">
+		<form action="consumo.php?funcao=<?php echo($funcao); ?>" method="post">
 
 			<!-- CADASTRO -->
 			<div>

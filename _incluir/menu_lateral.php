@@ -7,8 +7,8 @@
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/produtos/dados.php?tipo=produtos">Consultar produtos</a></li>
 		<li class="menulateral">Revisar questionários</a></li>
 		<ul>
-			<li class="submenulateral"><a href="<?php echo($caminho); ?>public/principal.php?funcao=Consumidor">Para consumidores</a></li>
-			<li class="submenulateral"><a href="<?php echo($caminho); ?>public/principal.php?funcao=Painelista">Para painelistas</a></li>
+			<li class="submenulateral"><a href="<?php echo($caminho); ?>public/principal.php?funcao=Painelista">Avaliações - painelistas</a></li>
+			<li class="submenulateral"><a href="<?php echo($caminho); ?>public/principal.php?funcao=Consumidor">Avaliações - consumidores</a></li>
 		</ul>
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/resultados.php">Visualizar resultados</a></li>
 	</ul>

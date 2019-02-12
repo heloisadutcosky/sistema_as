@@ -9,7 +9,7 @@
 	//Verificar informações de acesso
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
-	//$funcao = $_SESSION["funcao"] == "Administrador" ? $_GET["funcao"] : $_SESSION["funcao"];
+	$funcao = isset($_GET["funcao"]) ? $_GET["funcao"] : $_SESSION["funcao"];
 
 	// Setar projeto e categoria
 	if (isset($_GET["codigo"])) {
@@ -22,7 +22,7 @@
 		$_SESSION["categoria_id"] = $dados["categoria_id"];
 		$_SESSION["produto"] = $dados["produto"];
 
-		header("location:consumo.php");
+		header("location:consumo.php?funcao={$funcao}");
 	} 
 ?>
 
@@ -69,7 +69,7 @@
 						echo $dados["url_imagem"]; 
 					?>
 					" width="100" height="70" style="float: left;"><br><br>
-					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>&produto=<?php echo $linha["nome_form"]; ?>"><?php echo $linha["nome_form"]; ?></a></li><br><br>
+					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>&produto=<?php echo $linha["nome_form"]; ?>&funcao=<?php echo $funcao; ?>"><?php echo $linha["nome_form"]; ?></a></li><br><br>
 				<?php } ?>
 			</ul>
 		</nav>
