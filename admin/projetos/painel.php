@@ -41,15 +41,15 @@
 		$tipo_avaliacao = utf8_decode($_POST["tipo_avaliacao"]);
 		$escala_min = empty($_POST["escala_min"]) ? 0 : $_POST["escala_min"];
 		$escala_max = empty($_POST["escala_max"]) ? 0 : $_POST["escala_max"];
-		$data_inicio = empty($_POST["data_inicio"]) ? "data_inicio = NULL" : "data_inicio = '{$_POST["data_inicio"]}'";
-		$data_fim = empty($_POST["data_fim"]) ? "data_fim = NULL" : "data_fim = '{$_POST["data_fim"]}'";
+		$data_inicio = empty($_POST["data_inicio"]) ? "0000-00-00" : $_POST["data_inicio"];
+		$data_fim = empty($_POST["data_fim"]) ? "0000-00-00" : $_POST["data_fim"];
 		$form_ativo = isset($_POST["form_ativo"]) ? 1 : 0;
 		$tipo_avaliador = $_POST["tipo_avaliador"];
 
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto_id = '{$produto_id}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', {$data_inicio}, {$data_fim}, form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}' WHERE projeto_id = {$projeto_id}";
+			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto_id = '{$produto_id}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}' WHERE projeto_id = {$projeto_id}";
 
 			echo $alterar;
 
@@ -80,8 +80,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO projetos (empresa, produto_id, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto_id}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', {$data_inicio}, {$data_fim}, '{$form_ativo}', '{$tipo_avaliador}')";
-				echo $cadastrar;
+				$cadastrar = "INSERT INTO projetos (empresa, produto_id, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto_id}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
