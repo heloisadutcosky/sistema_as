@@ -80,15 +80,16 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO projetos (empresa, produto_id, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto_id}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}')";
+				$cadastrar = "INSERT INTO projetos (empresa, produto_id, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto_id}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', {$data_inicio}, {$data_fim}, '{$form_ativo}', '{$tipo_avaliador}')";
+				echo $cadastrar;
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
-				if (!$operacao_cadastrar) {
-					die("Falha no cadastro dos dados.");
-				} else {
-					header("location:dados.php");
-				}
+				//if (!$operacao_cadastrar) {
+				//	die("Falha no cadastro dos dados.");
+				//} else {
+				//	header("location:dados.php");
+				//}
 			}
 		}
 		// --------------------------------------------------------------------------

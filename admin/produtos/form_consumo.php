@@ -11,21 +11,27 @@
 	//Estabelecer conexão a base de dados
 	require_once($caminho . "conexao/conexao.php");
 
-	$acao = isset($_GET["acao"]) ? $_GET["acao"] : "";
-	$n_opcoes = isset($_POST["n_opcoes"]) ? $_POST["n_opcoes"] : 0;
+	if(isset($_GET["acao"])) {
+		$acao = $_GET["acao"];
+	} elseif (isset($_POST["acao"])) {
+		$acao = $_POST["acao"];
+	} else {
+		$acao = "cadastro";
+	}
 
 	if(isset($_GET["codigo"])) {
 		$_SESSION["categoria_id"] = $_GET["codigo"];
 	}
+
 	if(isset($_GET["categoria"])) {
 		$_SESSION["categoria"] = $_GET["categoria"];
 	}
 
-	if (isset($_POST["pergunta" . ($n_opcoes - 1)])) {
+	if (isset($_POST["pergunta"])) {
 		$classe = utf8_decode($_POST["classe"]);
 		$subclasse = utf8_decode($_POST["subclasse"]);
-		$pergunta = utf8_decode($_POST["pergunta" . ($n_opcoes - 1)]);
-		$disposicao_pergunta = utf8_decode($_POST["disposicao_pergunta" . ($n_opcoes - 1)]);
+		$pergunta = utf8_decode($_POST["pergunta"]);
+		$disposicao_pergunta = utf8_decode($_POST["disposicao_pergunta"]);
 		
 		// Cadastrar ----------------------------------------------------------------
 		if ($acao == "cadastro") {
@@ -39,25 +45,27 @@
 			if (empty($existe_subclasse)) {
 
 				$cadastrar = "INSERT INTO form_consumo (categoria_id, classe, subclasse, pergunta, disposicao_pergunta) VALUES ({$_SESSION["categoria_id"]}, '{$classe}', '{$subclasse}', '{$pergunta}', '{$disposicao_pergunta}')";
+				echo $cadastrar;
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
 				if (!$operacao_cadastrar) {
 					die("Falha no cadastro");
 				}
+			} else {
+				
 			}
+				// Alterar cadastro ---------------------------------------------------------
+				if ($_POST["caracteristica"]) {
+
+					$alterar = "UPDATE form_consumo SET classe = '{$classe}', subclasse = '{$subclasse}', pergunta = '{$pergunta}', disposicao_pergunta = '{$disposicao_pergunta}' WHERE caracteristica_id = {$_POST["caracteristica"]}";
+
+					$operacao_alterar = mysqli_query($conecta, $alterar);
+				}
+				// --------------------------------------------------------------------------
 		}
 	}
 
 	if (isset($_GET["caracteristica"])) {
-
-		// Alterar cadastro ---------------------------------------------------------
-		if ($acao == "alteracao") {
-
-			$alterar = "UPDATE form_consumo SET classe = '{$classe}', subclasse = '{$subclasse}', pergunta = '{$pergunta}', diposicao_pergunta = '{$disposicao_pergunta}' WHERE caracteristica_id = {$_GET["caracteristica"]}";
-
-			$operacao_alterar = mysqli_query($conecta, $alterar);
-		}
-		// --------------------------------------------------------------------------
 
 		// Excluir cadastro ---------------------------------------------------------
 		if ($acao == "exclusao") {
@@ -98,6 +106,21 @@
 	    padding:0 10px;
 	}
 
+	button {
+	  text-decoration: none;
+	  background-color: #778899;
+	  margin-left: 10px;
+	  margin-bottom: 1px;
+	  padding: 5px 15px;
+	  color: #FFF;
+	  border: 1px solid #696969;
+	  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+	}
+
+	button:hover {
+	  background-color: #DCDCDC;
+	}
+
 	</style>
 
 </head>
@@ -109,8 +132,15 @@
 		<article>
 			<h2 class="espaco">Questionário de hábitos de consumo - <?php echo $_SESSION["categoria"]; ?></h2>
 			<br>
+			<?php 
+				if ($acao == "alteracao" && isset($_GET["caracteristica"])) {
+					$consulta_alteracao = "SELECT * FROM form_consumo WHERE caracteristica_id = {$_GET["caracteristica"]}";
+					$acesso_alteracao = mysqli_query($conecta, $consulta_alteracao);
+					$alteracao = mysqli_fetch_assoc($acesso_alteracao);
+				}
+			?>
 
-			<form action="form_consumo.php?acao=cadastro" method="post">
+			<form action="form_consumo.php" method="post">
 				<div style="width: 500px; background-color: #E3E3E3; padding-top: 10px; padding-left: 5px; height: 50px; margin-left: 20px">
 						<div style="float: left; margin-right: 10px;">
 							<label for="classe">Classe: </label>
@@ -129,8 +159,8 @@
 									<?php 
 									foreach ($classes as $classe) { ?>
 										<option value="<?php echo($classe); ?>" <?php 
-										if (isset($_POST["classe"])) {
-											if ($_POST["classe"] == $classe) { ?>
+										if ($acao == "alteracao" && isset($_GET["caracteristica"])) {
+											if ($alteracao["classe"] == $classe) { ?>
 												selected
 											<?php } 
 										} ?>>
@@ -143,8 +173,8 @@
 							<label for="subclasse">Subclasse: </label>
 							<input type="text" id="subclasse" name="subclasse" 
 							<?php
-							if(isset($_POST["subclasse"])) { ?>
-								value="<?php echo($_POST["subclasse"]); ?>"
+							if ($acao == "alteracao" && isset($_GET["caracteristica"])) { ?>
+								value="<?php echo($alteracao["subclasse"]); ?>"
 							<?php } ?>
 							required>
 						</div>
@@ -152,8 +182,6 @@
 
 				<div style="width: 500px; background-color: #E3E3E3; padding-top: 10px; padding-left: 5px; margin-left: 20px">
 					
-						<?php 
-						foreach (range(0, $n_opcoes) as $i) { ?>
 							<div style="margin-right: 10px;">
 							<label for="pergunta">Pergunta: </label>
 							<?php
@@ -161,10 +189,10 @@
 								<p style="margin-left: 15px; font-size: 80%; color: red;">Essa opção já foi cadastrada</p>
 							<?php } 
 							else { ?>
-								<input type="pergunta" id="pergunta" name="pergunta<?php echo($i); ?>" style="width: 440px;"
+								<input type="pergunta" id="pergunta" name="pergunta" style="width: 440px;"
 								<?php 
-								if(isset($_POST["pergunta{$i}"])) { ?>
-									value="<?php echo($_POST["pergunta{$i}"]); ?>"
+								if ($acao == "alteracao" && isset($_GET["caracteristica"])) { ?>
+									value="<?php echo($alteracao["pergunta"]); ?>"
 								<?php } ?>
 								required>
 							<?php } ?>
@@ -172,9 +200,9 @@
 
 							<div style="margin-right: 10px;">
 								<?php 
-									$disp = isset($_POST["disposicao_pergunta{$i}"]) ? $_POST["disposicao_pergunta{$i}"] : ""; ?>
+									$disp = isset($alteracao["disposicao_pergunta"]) ? $alteracao["disposicao_pergunta"] : ""; ?>
 								<label for="disposicao_pergunta">Disposição da pergunta no form: </label>
-									<select id="disposicao_pergunta" name="disposicao_pergunta<?php echo($i); ?>">
+									<select id="disposicao_pergunta" name="disposicao_pergunta">
 										<option value="text" <?php if ($disp == "text") { ?>
 											selected
 										<?php } ?>>Texto livre</option>
@@ -189,13 +217,17 @@
 										<?php } ?>>Checkbox</option>
 									</select>
 							</div><br>
-						<?php } ?>
+						<!--
 					<input type="hidden" name="n_opcoes" value="<?php echo ($n_opcoes + 1); ?>">
 					<button type="submit" value="+" style="margin-right: 230px; float: right; margin-top: -48px;"><b style="font-size: 125%;">+</b></button><br>
+					-->
 				</div><br>
 
+				<input type="hidden" name="caracteristica" value="<?php echo($_GET["caracteristica"]); ?>">
+
+
 					<div style="margin-left: 15px;">
-						<input type="submit" id="botao" value="Cadastrar" style="width: 100px; height: 20px; padding-top: 2px">
+						<button type="submit" id="botao" value="cadastro" name="acao" style="width: 100px; height: 20px; padding-top: 2px; float: left; margin-right: 20px;">Cadastrar</button>
 					</div><br><br>
 				</form>
 

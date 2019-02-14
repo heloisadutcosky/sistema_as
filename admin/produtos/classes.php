@@ -62,6 +62,12 @@
 		}
 		// --------------------------------------------------------------------------
 	}
+
+	if(isset($_POST["nova_classe"])) {
+		$_POST["classe"] = "";
+		$n_opcoes = 0;
+		$_POST["opcao" . $n_opcoes] = "";
+	}
 ?>
 
 <!DOCTYPE html>
@@ -136,7 +142,7 @@
 				</div><br>
 
 					<div style="margin-left: 15px;">
-						<input type="submit" id="botao" value="Cadastrar" style="width: 100px; height: 20px; padding-top: 2px">
+						<input type="submit" id="botao" value="Nova classe" name="nova_classe" style="width: 100px; height: 20px; padding-top: 2px">
 					</div><br><br>
 				</form>
 
