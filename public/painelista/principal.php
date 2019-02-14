@@ -11,8 +11,7 @@
 
 	$_SESSION["produto"] = isset($_GET["produto"]) ? $_GET["produto"] : $_SESSION["produto"];
 
-	if (isset($_GET["codigo"])) {
-		$_SESSION["projeto_id"] = $_GET["codigo"];
+	if (isset($_SESSION["projeto_id"])) {
 
 		$consulta = "SELECT * FROM amostras WHERE projeto_id = " . $_SESSION["projeto_id"];
 		$acesso = mysqli_query($conecta, $consulta);

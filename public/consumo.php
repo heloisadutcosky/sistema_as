@@ -9,18 +9,18 @@
 	//Verificar informações de acesso
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
-	$funcao = isset($_GET["funcao"]) ? $_GET["funcao"] : $_SESSION["funcao"];
+	if(isset($_GET["frequencia"])) $frequencia_consumo = $_GET["frequencia"];
 
 	if (isset($_POST["frequencia_consumo"])) {
 
 		if ($_SESSION["funcao"] == "Administrador") {
-			header("location:" . strtolower($funcao) . "/principal.php?codigo={$_SESSION["projeto_id"]}");
+			header("location:" . strtolower($_SESSION["funcao_temp"]) . "/principal.php?codigo={$_SESSION["projeto_id"]}");
 		}
 
 		$painelista = $_SESSION["funcao"] == "Painelista" ? 1 : 0;
 		$fumante = isset($_POST["fumante"]) ? 1 : 0;
 		$data_registro = date("Y-m-d");
-		$frequencia_consumo = utf8_decode($_POST["frequencia_consumo"]);
+		$frequencia_consumo = $_POST["frequencia_consumo"];
 
 		// Computar sabores consumidos
 		$consulta = "SELECT * FROM sabores WHERE categoria_id = {$_SESSION["categoria_id"]}";
@@ -31,6 +31,7 @@
 			$sabores[] = $dados["sabor"];
 		};
 		
+		$_POST["sabores_consumidos"] = isset($_POST["sabores_consumidos"]) ? $_POST["sabores_consumidos"] : array();
 		$sabores_consumidos = "";
 		foreach ($sabores as $sabor) { 
 			$cons = in_array($sabor, $_POST["sabores_consumidos"]) ? 1 : 0;
@@ -54,6 +55,7 @@
 			$marcas[] = $dados["marca"];
 		};
 		
+		$_POST["marcas_consumidas"] = isset($_POST["marcas_consumidas"]) ? $_POST["marcas_consumidas"] : array();
 		$marcas_consumidas = "";
 		foreach ($marcas as $marca) { 
 			$cons = in_array($marca, $_POST["marcas_consumidas"]) ? 1 : 0;
@@ -80,7 +82,7 @@
 		$dados = mysqli_fetch_assoc($acesso);
 
 		if (!empty($dados) && $_SESSION["funcao"] != "Administrador") {
-			header("location:" . strtolower($funcao) . "/principal.php?codigo={$_SESSION["projeto_id"]}");
+			header("location:" . strtolower($_SESSION["funcao_temp"]) . "/principal.php?codigo={$_SESSION["projeto_id"]}");
 		} else {
 			$consulta = "SELECT * FROM categorias WHERE categoria_id = {$_SESSION["categoria_id"]}"; 
 			$acesso2 = mysqli_query($conecta, $consulta);
@@ -110,6 +112,39 @@
 		  z-index: -1;
 		}
 
+		ul.opcoes {
+		  margin-left: -30px;
+		}
+
+		ul.opcoes li {
+		  display: inline-block;
+		  margin: 1px;
+		  list-style-type: none;
+		  background-color: #F7F6F6;
+		  padding: 5px 5px;
+		  color: #FFF;
+		  border: 1px solid #C1B7B7;
+		  width: 100px;
+		  height: 30px;
+		  vertical-align: middle;
+		}
+
+		ul.opcoes li:hover {
+		  background-color: #FFE1E1;
+		}
+
+		ul.opcoes li a {
+		  position: relative;
+		  top: 50%;
+		  transform: translateY(-50%);
+		  text-decoration: none;
+		  text-align: center;
+		  vertical-align: middle;
+		  font-size: 75%;
+		  display: block;
+		  color: #626161;
+		}
+
 	</style>
 
 </head>
@@ -125,23 +160,24 @@
 		<b style="font-size: 120%; color: #C2534B;"><?php echo utf8_encode($categoria); ?></b>
 		: 
 		</p><br>
-
 		
-		<form action="consumo.php?funcao=<?php echo($funcao); ?>" method="post">
+		<form action="consumo.php" method="post">
 
-			<!-- CADASTRO -->
 			<div>
-				<p>Com qual frequência você consome <?php echo strtolower(utf8_encode($categoria)); ?>? </p>
-				<select name="frequencia_consumo">
-					<option value="NA"></option>
-					<option value="Mais de duas vezes por semana">Mais de duas vezes por semana</option>
-					<option value="Duas vezes por semana">Duas vezes por semana</option>
-					<option value="Uma vez por semana">Uma vez por semana</option>
-					<option value="Duas a três vezes por mês">Duas a três vezes por mês</option>
-					<option value="Menos de uma vez por mês">Menos de uma vez por mês</option>
-				</select>
+			<p>Com qual frequência você consome <?php echo strtolower(utf8_encode($categoria)); ?>? </p>
+			<ul class="opcoes">
+				<?php $frequencias = array("Menos de uma vez por mês", "Duas a três vezes por mês", "Uma vez por semana", "Duas vezes por semana", "Mais de duas vezes por semana"); ?>
+				<?php foreach (range(0, 4) as $i => $value) { 
+					$freq = empty($frequencia_consumo) ? -1 : $frequencia_consumo;
+					$backcolor = $freq == $i ? "#FFE1E1" : "#F7F6F6"; ?>
+					<li style="background-color: <?php echo $backcolor;?>"><a href="consumo.php?frequencia=<?php echo $i;?>"><?php echo $frequencias[$i];?></a></li>
+				<?php } ?>
+			</ul>
 			</div><br>
 
+			<input type="hidden" name="frequencia_consumo" value="<?php echo $frequencia_consumo; ?>">
+
+			<!-- CADASTRO -->
 			<div>
 				<?php 
 					$consulta = "SELECT * FROM sabores WHERE categoria_id = {$_SESSION["categoria_id"]}";
@@ -149,27 +185,30 @@
 					$rows = mysqli_num_rows($acesso); 
 					if ($rows > 0) {
 				?>
-					<p>Quais sabores de <?php echo strtolower(utf8_encode($categoria)); ?> você costuma consumir? </p>
+
+					<p>Qual(is) sabor(es) de <?php echo strtolower(utf8_encode($categoria)); ?> você costuma utilizar com mais frequência? </p>
+					<div style="margin-left: -10px;">
 						<?php 
 							$consulta = "SELECT * FROM sabores WHERE categoria_id = {$_SESSION["categoria_id"]}";
 							$acesso = mysqli_query($conecta, $consulta);
 							while ($dados = mysqli_fetch_assoc($acesso)) { ?>
 								<div style="float: left;">
 									<label for="<?php echo $dados["sabor"]; ?>" style="margin-right: 20px; float: left;">
-										<input type="checkbox" name="sabores_consumidos[]" id="<?php echo $dados["sabor"]; ?>" value="<?php echo $dados["sabor"]; ?>" style="width: 5px; float: left;" />
+										<input type="checkbox" name="sabores_consumidos[]" id="<?php echo $dados["sabor"]; ?>" value="<?php echo $dados["sabor"]; ?>" style="width: 10px; float: left;" />
 										<?php echo utf8_encode($dados["sabor"]); ?>
 									</label><br>
 								</div>
 							<?php } ?>
 							<div>
 								<label for="Outros" style="margin-right: 20px; float: left;">
-									<input type="checkbox" name="sabores_consumidos[]" id="Outros" value="Outros" style="width: 5px; float: left;" />Outros
+									<input type="checkbox" name="sabores_consumidos[]" id="Outros" value="Outros" style="width: 10px; float: left;" />Outros
 								</label><br>
 							</div><br>
-							<div>
-								<label for="sabores_consumidos_outros">Se outros, favor indicar quais: </label>
-								<input type="text" name="sabores_consumidos_outros">
-							</div>
+					</div>
+					<div>
+						<label for="sabores_consumidos_outros">Se outros, favor indicar quais: </label>
+						<input type="text" name="sabores_consumidos_outros">
+					</div>
 			</div><br>
 
 			<div>
@@ -194,27 +233,29 @@
 				<?php } ?>
 
 			<div>
-				<p>Quais marcas de <?php echo strtolower(utf8_encode($categoria)); ?> você costuma consumir? </p>
-						<?php 
-							$consulta = "SELECT * FROM marcas WHERE categoria_id = {$_SESSION["categoria_id"]}";
-							$acesso = mysqli_query($conecta, $consulta);
-							while ($dados = mysqli_fetch_assoc($acesso)) { ?>
-								<div style="float: left">
-									<label for="<?php echo $dados["marca"]; ?>" style="margin-right: 20px; float: left;">
-										<input type="checkbox" name="marcas_consumidas[]" id="<?php echo $dados["marca"]; ?>" value="<?php echo $dados["marca"]; ?>" style="width: 5px; float: left;" />
-										<?php echo utf8_encode($dados["marca"]); ?>
-									</label><br>
-								</div>
-							<?php } ?>
-							<div>
-								<label for="Outras" style="margin-right: 20px; float: left;">
-									<input type="checkbox" name="marcas_consumidas[]" id="Outras" value="Outras" style="width: 5px; float: left;" />Outras
+				<p>Qual(is) marca(s) de <?php echo strtolower(utf8_encode($categoria)); ?> você costuma utilizar com mais frequência?</p>
+				<div style="margin-left: -10px;">
+					<?php 
+						$consulta = "SELECT * FROM marcas WHERE categoria_id = {$_SESSION["categoria_id"]}";
+						$acesso = mysqli_query($conecta, $consulta);
+						while ($dados = mysqli_fetch_assoc($acesso)) { ?>
+							<div style="float: left">
+								<label for="<?php echo $dados["marca"]; ?>" style="margin-right: 20px; float: left;">
+									<input type="checkbox" name="marcas_consumidas[]" id="<?php echo $dados["marca"]; ?>" value="<?php echo $dados["marca"]; ?>" style="width: 10px; float: left;" />
+									<?php echo utf8_encode($dados["marca"]); ?>
 								</label><br>
-							</div><br>
-							<div>
-								<label for="sabores_consumidos_outros">Se outras, favor indicar quais: </label>
-								<input type="text" name="marcas_consumidas_outras">
 							</div>
+						<?php } ?>
+						<div>
+							<label for="Outras" style="margin-right: 20px; float: left;">
+								<input type="checkbox" name="marcas_consumidas[]" id="Outras" value="Outras" style="width: 10px; float: left;" />Outras
+							</label><br>
+						</div><br>
+				</div>
+				<div>
+					<label for="sabores_consumidos_outros">Se outras, favor indicar quais: </label>
+					<input type="text" name="marcas_consumidas_outras">
+				</div>
 			</div><br>
 
 			<div>

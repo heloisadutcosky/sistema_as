@@ -167,21 +167,20 @@
 					</div>
 					<br>
 
-					<div id="cima_tabela" style="width: 400px">
+					<div id="cima_tabela" style="width: 355px">
 						<ul>
 						    <li><b>Categorias</b></li>
 						</ul>
 					</div>
 
-					<div id="janela" style="width: 400px">
+					<div id="janela" style="width: 355px">
 						<?php
 						    while($linha = mysqli_fetch_assoc($acesso)) {
 						?>
 						<ul>
-						    <li style="width: 120px"><?php echo utf8_encode($linha["categoria"]) ?></li>
-						    <li style="width: 60px"><a href="marcas.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Marcas</a> </li>
-						    <li style="width: 65px"><a href="sabores.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Sabores</a> </li>
-						    <li style="width: 65px"><a href="produtos.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Produtos</a> </li>
+						    <li style="width: 115px"><?php echo utf8_encode($linha["categoria"]) ?></li>
+						    <li style="width: 60px"><a href="classes.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Classes</a> </li>
+						    <li style="width: 90px"><a href="form_consumo.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Questionário</a> </li>
 						    <li style="width: 50px"><a href="dados.php?tipo=categorias&acao=exclusao&codigo=<?php echo $linha["categoria_id"] ?>">Excluir</a> </li>
 						</ul>
 						<?php } ?>	
