@@ -108,7 +108,7 @@
 				<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 				<article>
-					<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
+					<h2><?php echo $_SESSION["produto"]; ?></h2>
 					<br>
 					<h3 style="color: #8B0000">CABINES</h3>
 
@@ -174,10 +174,10 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 		<article>
-			<h2 style="color: #8B0000; margin-bottom: 5px;">PDQ - <?php echo $_SESSION["produto"]; ?></h2>
+			<h2 style="margin-bottom: 5px;"><?php echo $_SESSION["produto"]; ?></h2>
 			
-			<div>
-				<h3><?php echo strtoupper(utf8_encode($_SESSION["conjunto_atributos"])); ?></h3>
+			<div style="margin-top: 40px;">
+				<h3 style="font-size: 120%; color: #8B0000;"><?php echo utf8_encode($_SESSION["conjunto_atributos"]); ?></h3>
 				
 				<p><?php echo utf8_encode($_SESSION["descricao_conjuntos"]); ?></p><br>
 

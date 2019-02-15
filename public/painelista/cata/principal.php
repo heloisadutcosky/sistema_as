@@ -1,6 +1,6 @@
 <?php 
 
-	$caminho =  "../../";
+	$caminho =  "../../../";
 	require_once($caminho . "conexao/conexao.php");
 	
 	// Iniciar sessão
@@ -64,7 +64,7 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
+		<h2><?php echo $_SESSION["produto"]; ?></h2>
 
 		<article>
 			<p>Qual sessão você vai realizar hoje?</p>

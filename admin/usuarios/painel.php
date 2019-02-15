@@ -214,36 +214,11 @@
 				<div>
 					<label for="funcao">Tipo de avaliador: </label>
 					<select id="funcao" name="funcao"><br>
-						<?php switch ($dados["funcao"]) {
-
-							case 'Painelista': ?>
-								<option value="Consumidor">Consumidor</option>
-								<option value="Painelista" selected>Painelista</option>
-								<option value="Candidato">Candidato</option>
-								<option value="Administrador">Administrador</option>
-								<?php break;
-
-							case 'Candidato': ?>
-								<option value="Consumidor">Consumidor</option>
-								<option value="Painelista">Painelista</option>
-								<option value="Candidato" selected>Candidato</option>
-								<option value="Administrador">Administrador</option>
-								<?php break;
-
-							case 'Administrador': ?>
-								<option value="Consumidor">Consumidor</option>
-								<option value="Painelista">Painelista</option>
-								<option value="Candidato">Candidato</option>
-								<option value="Administrador" selected>Administrador</option>
-								<?php break;
-
-							default: ?>
-								<option value="Consumidor" selected>Consumidor</option>
-								<option value="Painelista">Painelista</option>
-								<option value="Candidato">Candidato</option>
-								<option value="Administrador">Administrador</option>
-								<?php break; 
-							}?>
+						<option value="Consumidor" <?php if($dados["funcao"] == "Consumidor") { ?> selected <?php } ?>>Consumidor</option>
+						<option value="Painelista" <?php if($dados["funcao"] == "Painelista") { ?> selected <?php } ?>>Painelista</option>
+						<option value="Candidato" <?php if($dados["funcao"] == "Candidato") { ?> selected <?php } ?>>Candidato</option>
+						<option value="Administrador" <?php if($dados["funcao"] == "Administrador") { ?> selected <?php } ?>>Administrador</option>
+						<option value="Cliente" <?php if($dados["funcao"] == "Cliente") { ?> selected <?php } ?>>Cliente</option>
 					</select><br><br>
 				</div>
 

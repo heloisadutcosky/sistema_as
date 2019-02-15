@@ -94,19 +94,35 @@
 			}
 		}
 		// --------------------------------------------------------------------------
-		
 
 		// Excluir cadastro ---------------------------------------------------------
 		if ($acao == "exclusao") {
 				
 			$excluir = "DELETE FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo = '{$atributo_completo}'";
+			echo $excluir;
 
 			$operacao_excluir = mysqli_query($conecta, $excluir);
 
 			if (!$operacao_excluir) {
 				die("Falha na exclusão dos dados.");
 			} else {
-				header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
+				//header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
+			}
+		}
+		// --------------------------------------------------------------------------
+
+		// Excluir cadastro ---------------------------------------------------------
+		if ($acao == "exclusao") {
+				
+			$excluir = "DELETE FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo = '{$atributo_completo}'";
+			echo $excluir;
+
+			$operacao_excluir = mysqli_query($conecta, $excluir);
+
+			if (!$operacao_excluir) {
+				die("Falha na exclusão dos dados.");
+			} else {
+				//header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
 			}
 		}
 		// --------------------------------------------------------------------------

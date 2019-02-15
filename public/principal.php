@@ -15,13 +15,15 @@
 	// Setar projeto e categoria
 	if (isset($_GET["codigo"])) {
 		$_SESSION["projeto_id"] = $_GET["codigo"];
-		$_SESSION["produto_id"] = $_GET["produto_id"];
 
-		$consulta = "SELECT * FROM produtos WHERE produto_id = {$_SESSION["produto_id"]}";
+		$consulta = "SELECT * FROM projetos WHERE projeto_id = {$_SESSION["projeto_id"]}"; 
 		$acesso = mysqli_query($conecta, $consulta);
 		$dados = mysqli_fetch_assoc($acesso);
-		$_SESSION["categoria_id"] = $dados["categoria_id"];
+
 		$_SESSION["produto"] = $dados["produto"];
+		$_SESSION["categoria_id"] = $dados["categoria_id"];
+		$_SESSION["tipo_avaliador"] = strtolower($dados["tipo_avaliador"]);
+		$_SESSION["tipo_avaliacao"] = $dados["tipo_avaliacao"];
 
 		$consulta2 = "SELECT * FROM categorias WHERE categoria_id = {$_SESSION["categoria_id"]}"; 
 		$acesso2 = mysqli_query($conecta, $consulta2);
@@ -33,10 +35,10 @@
 		$acesso3 = mysqli_query($conecta, $consulta3);
 		$preenchida = mysqli_fetch_assoc($acesso3);
 
-		if (empty($preenchida) || $_SESSION["teste"]=1) {
+		if (empty($preenchida) || $_SESSION["teste"]==1) {
 			header("location:form_consumo.php");
 		} else {
-			header("location:{$_SESSION["funcao_temp"]}/principal.php");
+			header("location:{$_SESSION["tipo_avaliador"]}/{$_SESSION["tipo_avaliacao"]}/principal.php");
 		}
 		
 	} 
@@ -77,14 +79,9 @@
 
 				while($linha = mysqli_fetch_assoc($acesso)) { ?>
 					<img src="
-					<?php 
-						$consulta = "SELECT * FROM produtos WHERE produto_id = {$linha["produto_id"]}"; 
-						$acesso2 = mysqli_query($conecta, $consulta);
-						$dados = mysqli_fetch_assoc($acesso2);
-						echo $dados["url_imagem"]; 
-					?>
+					<?php echo $linha["url_imagem"]; ?>
 					" width="100" height="70" style="float: left;"><br><br>
-					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto_id=<?php echo $linha["produto_id"]; ?>&produto=<?php echo $linha["nome_form"]; ?>&funcao=<?php echo $_SESSION["funcao_temp"]; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo $linha["nome_form"]; ?></a></li><br><br>
+					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&categoria_id=<?php echo $linha["categoria_id"]; ?>&produto=<?php echo $linha["nome_form"]; ?>&funcao=<?php echo $_SESSION["funcao_temp"]; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo $linha["nome_form"]; ?></a></li><br><br>
 				<?php } ?>
 			</ul>
 		</nav>

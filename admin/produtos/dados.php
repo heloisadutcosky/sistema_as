@@ -63,29 +63,12 @@
 		}
 		// --------------------------------------------------------------------------
 	}
-
-	if (isset($_GET["produto_id"])) {
-		$produto_id = $_GET["produto_id"];
-
-		// Excluir cadastro ---------------------------------------------------------
-		if ($acao == "exclusao") {
-				
-			$excluir = "DELETE FROM produtos WHERE produto_id = {$produto_id}";
-
-			$operacao_excluir = mysqli_query($conecta, $excluir);
-
-			if (!$operacao_excluir) {
-				die("Falha na exclusão dos dados.");
-			} 
-		}
-		// --------------------------------------------------------------------------
-	}
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Produtos</title>
+	<title>Categorias</title>
 	
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
@@ -115,114 +98,46 @@
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
 		<article>
-		<h2 class="espaco">Categorias e produtos cadastrados</h2>
-
-		<form action="dados.php" method="get">
-			<div style="float: left; margin-right: 5px;">
-				<label for="tipo">Tabela: </label>
-				<select id="tipo" name="tipo"><br>
-				<?php
-				$tipo = isset($_GET["tipo"]) ? $_GET["tipo"] : "";
-				switch ($tipo) {
-					case 'produtos': ?>
-						<option value="categorias">Categorias</option>
-						<option value="produtos" selected>Produtos</option>
-						<?php break;
-
-					default: ?>
-						<option value="categorias" selected>Categorias</option>
-						<option value="produtos">Produtos</option>
-						<?php break; 
-					}?>
-				</select>
-			</div>
-
-		<div style="padding-top: 15px;">
-			<label></label>
-			<input type="submit" value="Visualizar" style="width: 100px;"><br>
-		</div>
-		</form>
+		<h2 class="espaco">Categorias cadastradas</h2>
 		<br>
 
 		<?php 
-			if (isset($_GET["tipo"])) {
-				$tipo = $_GET["tipo"];
+		
+			$consulta = "SELECT * FROM categorias";
+			$acesso = mysqli_query($conecta, $consulta); ?>
 
-				if ($tipo == "categorias") { 
-
-					$consulta = "SELECT * FROM categorias";
-					$acesso = mysqli_query($conecta, $consulta); ?>
-
-					<div style="width: 350px; background-color: #E3E3E3; padding-top: 10px; padding-left: 5px; height: 50px; margin-left: 20px">
-						<form action="dados.php?tipo=categorias&acao=cadastro" method="post">
-							<div style="float: left; margin-right: 10px;">
-								<label for="categoria">Nova categoria: </label>
-								<input type="text" id="categoria" name="categoria" required>
-							</div>
-
-							<div style="padding-top: 15px;">
-								<input type="submit" id="botao" value="Cadastrar" style="width: 100px; height: 20px; padding-top: 2px;">
-							</div>
-						</form>
-					</div>
-					<br>
-
-					<div id="cima_tabela" style="width: 355px">
-						<ul>
-						    <li><b>Categorias</b></li>
-						</ul>
+			<div style="width: 350px; background-color: #E3E3E3; padding-top: 10px; padding-left: 5px; height: 50px; margin-left: 20px">
+				<form action="dados.php?tipo=categorias&acao=cadastro" method="post">
+					<div style="float: left; margin-right: 10px;">
+						<label for="categoria">Nova categoria: </label>
+						<input type="text" id="categoria" name="categoria" required>
 					</div>
 
-					<div id="janela" style="width: 355px">
-						<?php
-						    while($linha = mysqli_fetch_assoc($acesso)) {
-						?>
-						<ul>
-						    <li style="width: 115px"><?php echo utf8_encode($linha["categoria"]) ?></li>
-						    <li style="width: 60px"><a href="classes.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Classes</a> </li>
-						    <li style="width: 90px"><a href="form_consumo.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Questionário</a> </li>
-						    <li style="width: 50px"><a href="dados.php?tipo=categorias&acao=exclusao&codigo=<?php echo $linha["categoria_id"] ?>">Excluir</a> </li>
-						</ul>
-						<?php } ?>	
+					<div style="padding-top: 15px;">
+						<input type="submit" id="botao" value="Cadastrar" style="width: 100px; height: 20px; padding-top: 2px;">
 					</div>
-				<?php } ?>
+				</form>
+			</div>
+			<br>
 
-				<?php if ($tipo == "produtos") { 
-					$consulta1 = "SELECT * FROM produtos";
-					$acesso1 = mysqli_query($conecta, $consulta1); ?>
+			<div id="cima_tabela" style="width: 355px">
+				<ul>
+				    <li><b>Categorias</b></li>
+				</ul>
+			</div>
 
-					<div class="botao">
-						<a class="espaco" href="cadastro_produto.php">Cadastrar produto</a><br>
-					</div>
-					<br>
-
-					<div id="cima_tabela" style="width: 500px">
-						<ul>
-						    <li style="width: 140px"><b>Produto</b></li>
-						    <li style="width: 110px"><b>Categoria</b></li>
-						    <li style="width: 80px"><b>Sabor</b></li>
-						    <li style="width: 70px"><b>Marca</b></li>
-						</ul>
-					</div>
-					
-					<div id="janela" style="width: 500px">
-						<?php
-						    while($linha = mysqli_fetch_assoc($acesso1)) {
-						    	$consulta2 = "SELECT * FROM categorias WHERE categoria_id = '{$linha["categoria_id"]}'";
-								$acesso2 = mysqli_query($conecta, $consulta2);
-								$dados = mysqli_fetch_assoc($acesso2);
-						?>
-						<ul>
-						    <li style="width: 140px"><?php echo utf8_encode($linha["produto"]); ?></li>
-						    <li style="width: 110px"><?php echo utf8_encode($dados["categoria"]); ?></li>
-						    <li style="width: 80px"><?php echo utf8_encode($linha["sabor"]); ?></li>
-						    <li style="width: 70px"><?php echo utf8_encode($linha["marca"]); ?></li>
-						    <li style="width: 50px"><a href="dados.php?tipo=produtos&acao=exclusao&produto_id=<?php echo $linha["produto_id"] ?>">Excluir</a>
-						</ul>
-						<?php } ?>	
-					</div>
-				<?php } ?>
-		<?php } ?>
+			<div id="janela" style="width: 355px">
+				<?php
+				    while($linha = mysqli_fetch_assoc($acesso)) {
+				?>
+				<ul>
+				    <li style="width: 115px"><?php echo utf8_encode($linha["categoria"]) ?></li>
+				    <li style="width: 60px"><a href="classes.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Classes</a> </li>
+				    <li style="width: 90px"><a href="form_consumo.php?codigo=<?php echo $linha["categoria_id"] ?>&categoria=<?php echo utf8_encode($linha["categoria"]) ?>">Questionário</a> </li>
+				    <li style="width: 50px"><a href="dados.php?tipo=categorias&acao=exclusao&codigo=<?php echo $linha["categoria_id"] ?>">Excluir</a> </li>
+				</ul>
+				<?php } ?>	
+			</div>
 		<br><br><br><br><br><br>
 		</article>	
 

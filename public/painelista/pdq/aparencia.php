@@ -105,10 +105,10 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		
 		<article>
-		<h2>PDQ - <?php echo $_SESSION["produto"]; ?></h2>
+		<h2><?php echo $_SESSION["produto"]; ?></h2>
 			<!-- Título do atributo avaliado -->
-			<div>
-				<h3><?php echo strtoupper(utf8_encode($dados["conjunto_atributos"])); ?></h3>
+			<div style="margin-top: 40px;">
+				<h3 style="font-size: 120%; color: #8B0000;"><?php echo utf8_encode($dados["conjunto_atributos"]); ?></h3>
 				<!-- Explicação do teste -->
 				<p><?php echo utf8_encode($dados["descricao_conjunto"]); ?></p><br>
 

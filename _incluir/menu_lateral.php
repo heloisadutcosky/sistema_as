@@ -4,7 +4,6 @@
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/usuarios/dados.php">Consultar usuários</a></li>
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/projetos/dados.php">Consultar projetos</a></li>
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/produtos/dados.php?tipo=categorias">Consultar categorias</a></li>
-		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/produtos/dados.php?tipo=produtos">Consultar produtos</a></li>
 		<li class="menulateral">Revisar questionários</a></li>
 		<ul>
 			<li class="submenulateral"><a href="<?php echo($caminho); ?>public/principal.php?funcao=Painelista&teste=1">Para painelistas</a></li>

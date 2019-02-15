@@ -36,7 +36,7 @@
 	// Informações preenchidas ------------------------------------------------------
 	if (isset($_POST["empresa"])) {
 		$empresa = utf8_decode($_POST["empresa"]);
-		$produto_id = utf8_decode($_POST["produto_id"]);
+		$produto = utf8_decode($_POST["produto"]);
 		$descricao_projeto = utf8_decode($_POST["descricao_projeto"]);
 		$tipo_avaliacao = utf8_decode($_POST["tipo_avaliacao"]);
 		$escala_min = empty($_POST["escala_min"]) ? 0 : $_POST["escala_min"];
@@ -49,7 +49,7 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto_id = '{$produto_id}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}' WHERE projeto_id = {$projeto_id}";
+			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}' WHERE projeto_id = {$projeto_id}";
 
 			echo $alterar;
 
@@ -68,7 +68,7 @@
 
 			// Verificar existência do projeto na base ------------------------------
 
-			$consulta_projeto = "SELECT * FROM projetos WHERE empresa = '{$empresa}' AND produto_id = '{$produto_id}' AND tipo_avaliacao = '{$tipo_avaliacao}'";
+			$consulta_projeto = "SELECT * FROM projetos WHERE empresa = '{$empresa}' AND produto = '{$produto}' AND tipo_avaliacao = '{$tipo_avaliacao}'";
 
 			$acesso = mysqli_query($conecta, $consulta_projeto);
 			$existe_projeto = mysqli_fetch_assoc($acesso);
@@ -80,7 +80,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO projetos (empresa, produto_id, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto_id}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}')";
+				$cadastrar = "INSERT INTO projetos (empresa, produto, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
@@ -140,25 +140,37 @@
 		<br>
 		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>" method="post">
 
-			<div style="float: left; margin-right: 30px;">
+			<div>
 				<label for="empresa">Empresa: </label>
 				<input type="text" id="empresa" name="empresa" value="<?php echo utf8_encode($dados["empresa"]); ?>" required>
+			</div><br>
+
+			<div style="float: left; margin-right: 30px;">
+				<label for="categoria_id">Categoria: </label>
+				<select id="categoria_id" name="categoria_id"><br>
+					<?php 
+					$consulta2 = "SELECT * FROM categorias";
+					$acesso2 = mysqli_query($conecta, $consulta2);
+					while($linha = mysqli_fetch_assoc($acesso2)) { ?>
+						<?php if($dados["categoria_id"] == $linha["categoria_id"]) { ?>
+							<option value="<?php echo $linha["categoria_id"]; ?>" selected><?php echo utf8_encode($linha["categoria"]); ?></option>
+						<?php } else { ?>
+							<option value="<?php echo $linha["categoria_id"]; ?>"><?php echo utf8_encode($linha["categoria"]); ?></option>
+						<?php } ?>
+					<?php } ?>
+				</select>
+				<br>
 			</div>
 
 			<div>
-			<label for="produto_id">Produto: </label>
-			<select id="produto_id" name="produto_id"><br>
-				<?php 
-				$consulta2 = "SELECT * FROM produtos";
-				$acesso2 = mysqli_query($conecta, $consulta2);
-				while($linha = mysqli_fetch_assoc($acesso2)) { ?>
-					<?php if($dados["produto_id"] == $linha["produto_id"]) { ?>
-						<option value="<?php echo $linha["produto_id"]; ?>" selected><?php echo utf8_encode($linha["produto"]); ?></option>
-					<?php } else { ?>
-						<option value="<?php echo $linha["produto_id"]; ?>"><?php echo utf8_encode($linha["produto"]); ?></option>
-					<?php } ?>
-				<?php } ?>
-			</select>
+				<label for="produto">Produto: </label>
+				<input type="text" id="produto" name="produto" value="<?php echo utf8_encode($dados["produto"]); ?>" required>
+			<br>
+			</div>
+
+			<div>
+				<label for="produto">Url de uma imagem do produto: </label>
+				<input type="url" id="url_imagem" name="url_imagem" value="<?php echo utf8_encode($dados["url_imagem"]); ?>">
 			<br>
 			</div>
 
@@ -179,7 +191,12 @@
 
 			<div style="float: left; margin-right: 30px;">
 				<label for="tipo_avaliacao">Tipo de avaliação sensorial: </label>
-				<input type="text" id="tipo_avaliacao" name="tipo_avaliacao" value="<?php echo utf8_encode($dados["tipo_avaliacao"]); ?>" required>
+				<select type="text" id="tipo_avaliacao" name="tipo_avaliacao">
+					<option value="cata" <?php if($dados["tipo_avaliacao"] == "cata") { ?> selected <?php } ?>>CATA</option>
+					<option value="hedonica" <?php if($dados["tipo_avaliacao"] == "hedonica") { ?> selected <?php } ?>>Escala hedônica</option>
+					<option value="pdq" <?php if($dados["tipo_avaliacao"] == "pdq") { ?> selected <?php } ?>>Painel descritivo quantitativo</option>
+					<option value="triangular" <?php if($dados["tipo_avaliacao"] == "triangular") { ?> selected <?php } ?>>Teste triangular</option>
+				</select>
 			</div>
 
 			<div>

@@ -45,7 +45,6 @@
 			if (empty($existe_subclasse)) {
 
 				$cadastrar = "INSERT INTO form_consumo (categoria_id, classe, subclasse, pergunta, disposicao_pergunta) VALUES ({$_SESSION["categoria_id"]}, '{$classe}', '{$subclasse}', '{$pergunta}', '{$disposicao_pergunta}')";
-				echo $cadastrar;
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
 				if (!$operacao_cadastrar) {
@@ -146,7 +145,7 @@
 							<label for="classe">Classe: </label>
 							<select id="classe" name="classe">
 								<?php 
-									$consulta = "SELECT * FROM consumo_opcoes WHERE categoria_id = '{$_SESSION["categoria_id"]}'";
+									$consulta = "SELECT * FROM consumo_opcoes WHERE categoria_id = '{$_SESSION["categoria_id"]}' OR categoria_id = 0";
 									$acesso = mysqli_query($conecta, $consulta);
 									
 									$classes = array();
@@ -164,7 +163,7 @@
 												selected
 											<?php } 
 										} ?>>
-										<?php echo($classe); ?></option>
+										<?php echo(utf8_encode($classe)); ?></option>
 									<?php 
 									} ?>
 							</select>
@@ -192,7 +191,7 @@
 								<input type="pergunta" id="pergunta" name="pergunta" style="width: 440px;"
 								<?php 
 								if ($acao == "alteracao" && isset($_GET["caracteristica"])) { ?>
-									value="<?php echo($alteracao["pergunta"]); ?>"
+									value="<?php echo(utf8_encode($alteracao["pergunta"])); ?>"
 								<?php } ?>
 								required>
 							<?php } ?>
@@ -218,7 +217,7 @@
 									</select>
 							</div><br>
 						<!--
-					<input type="hidden" name="n_opcoes" value="<?php echo ($n_opcoes + 1); ?>">
+					<input type="hidden" name="n_opcoes" value="<?php //echo ($n_opcoes + 1); ?>">
 					<button type="submit" value="+" style="margin-right: 230px; float: right; margin-top: -48px;"><b style="font-size: 125%;">+</b></button><br>
 					-->
 				</div><br>
@@ -236,7 +235,7 @@
 			<?php 
 			if (isset($_SESSION["categoria_id"])) {
 
-				$consulta = "SELECT * FROM form_consumo WHERE categoria_id = {$_SESSION["categoria_id"]}";
+				$consulta = "SELECT * FROM form_consumo WHERE categoria_id = {$_SESSION["categoria_id"]} OR categoria_id = 0";
 				$acesso = mysqli_query($conecta, $consulta); 
 			?>
 				<div id="janela" style="width: 500px">

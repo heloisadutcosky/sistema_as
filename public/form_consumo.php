@@ -73,19 +73,8 @@
 	}
 	
 	if (isset($_POST["botao"])) {
-		header("location:{$_SESSION["funcao_temp"]}/principal.php");
+		header("location:form_consumo_afirmacoes.php");
 	}
-
-
-	// Verificar se usuário já preencheu o questionário pra categoria em questão
-	if (isset($_SESSION["categoria_id"])) {
-		$consulta = "SELECT * FROM consumo WHERE user_id = {$_SESSION["user_id"]} AND categoria_id = {$_SESSION["categoria_id"]}";
-		$acesso = mysqli_query($conecta, $consulta);
-		$dados = mysqli_fetch_assoc($acesso);
-	} else {
-		header("location:principal.php");
-	}
-	// -------------------------------------
 ?>
 
 <!DOCTYPE html>
@@ -164,7 +153,7 @@
 
 			while ($form_consumo = mysqli_fetch_assoc($acesso)) { 
 
-				if ($form_consumo["disposicao_pergunta"] == "lista") { ?>
+				if ($form_consumo["disposicao_pergunta"] == "lista" && $form_consumo["classe"] != "Afirmativa") { ?>
 
 					<div>
 					<p><?php echo utf8_encode($form_consumo["pergunta"]); ?></p>
