@@ -24,8 +24,8 @@ if (isset($_GET["codigo"])) {
 		}
 
 		// output headers so that the file is downloaded rather than displayed
-		header('Content-Type: text/csv; charset=utf-8');
-		header('Content-Disposition: attachment; filename=data.csv');
+		//header('Content-Type: text/csv; charset=utf-8');
+		//header('Content-Disposition: attachment; filename=data.csv');
 
 		// create a file pointer connected to the output stream
 		$output = fopen('php://output', 'w');
@@ -47,7 +47,7 @@ if (isset($_GET["codigo"])) {
 		WHERE r.projeto_id = {$_GET["codigo"]}
 		GROUP BY r.user_id, r.sessao, r.amostra_codigo";
 		$acesso = mysqli_query($conecta, $consulta);
-
+		echo $consulta;
 		// loop over the rows, outputting them
 		while ($row = mysqli_fetch_assoc($acesso)) {
 			fputcsv($output, $row);
