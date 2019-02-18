@@ -45,10 +45,17 @@
 		$telefone = $_POST["telefone"];
 		$funcao = $_POST["funcao"];
 
+		$words = explode(" ", $nome);
+		$iniciais = "";
+
+		foreach ($words as $w) {
+  			$iniciais .= $w[0];
+		}
+
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE usuarios SET cpf = '{$cpf}', nome = '{$nome}', sexo = '{$sexo}', nascimento = '{$nascimento}', escolaridade = '{$escolaridade}', email = '{$email}', telefone = '{$telefone}', funcao = '{$funcao}' WHERE user_id = {$_SESSION["user_id"]}";
+			$alterar = "UPDATE usuarios SET cpf = '{$cpf}', nome = '{$nome}', sexo = '{$sexo}', nascimento = '{$nascimento}', escolaridade = '{$escolaridade}', email = '{$email}', telefone = '{$telefone}', funcao = '{$funcao}', iniciais = '{$iniciais}' WHERE user_id = {$_SESSION["user_id"]}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -77,7 +84,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao')";
+				$cadastrar = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao', '$iniciais')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 

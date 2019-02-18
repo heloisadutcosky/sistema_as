@@ -16,7 +16,7 @@ if (isset($_GET["codigo"])) {
 		$consulta = "SELECT * FROM formularios WHERE projeto_id = {$_GET["codigo"]}";
 		$acesso = mysqli_query($conecta, $consulta);
 
-		$nomes_colunas = array('Usuario', 'Sessao', 'Amostra');
+		$nomes_colunas = array('Usuario', 'Amostra', 'Codigo', 'Sessao');
 		$colunas = "";
 		while ($dados = mysqli_fetch_assoc($acesso)) {
 			$nomes_colunas[] = $dados["atributo_completo"];
@@ -34,18 +34,22 @@ if (isset($_GET["codigo"])) {
 		fputcsv($output, $nomes_colunas);
 
 		// fetch the data
-		$consulta = "SELECT u.nome, 
-		r.sessao, 
-		r.amostra_codigo 
+		$consulta = "SELECT u.iniciais, 
+		a.amostra_descricao,
+		r.amostra_codigo,
+        r.sessao
 		{$colunas}
-		FROM resultados AS r LEFT JOIN usuarios AS u
-		ON r.user_id = u.user_id
-		WHERE projeto_id = {$_GET["codigo"]}
-		GROUP BY u.nome, r.sessao, r.amostra_codigo";
-		$acesso1 = mysqli_query($conecta, $consulta);
+		FROM resultados AS r 
+        LEFT JOIN usuarios AS u
+        ON u.user_id = r.user_id
+        LEFT JOIN amostras AS a
+		ON (a.amostra_codigo = r.amostra_codigo AND a.projeto_id = r.projeto_id)
+		WHERE r.projeto_id = {$_GET["codigo"]}
+		GROUP BY r.user_id, r.sessao, r.amostra_codigo";
+		$acesso = mysqli_query($conecta, $consulta);
 
 		// loop over the rows, outputting them
-		while ($row = mysqli_fetch_assoc($acesso1)) {
+		while ($row = mysqli_fetch_assoc($acesso)) {
 			fputcsv($output, $row);
 		}
 }

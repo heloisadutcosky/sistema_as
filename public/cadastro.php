@@ -61,7 +61,14 @@
 				$telefone = $_POST["telefone"];
 				$funcao = $_POST["funcao"];
 
-				$inserir = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao')";
+				$words = explode(" ", $nome);
+				$iniciais = "";
+
+				foreach ($words as $w) {
+		  			$iniciais .= $w[0];
+				}
+
+				$inserir = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao', '$iniciais')";
 
 				$operacao_inserir = mysqli_query($conecta, $inserir);
 
