@@ -24,8 +24,8 @@ if (isset($_GET["codigo"])) {
 		}
 
 		// output headers so that the file is downloaded rather than displayed
-		//header('Content-Type: text/csv; charset=utf-8');
-		//header('Content-Disposition: attachment; filename=data.csv');
+		header('Content-Type: text/csv; charset=utf-8');
+		header('Content-Disposition: attachment; filename=data.csv');
 
 		// create a file pointer connected to the output stream
 		$output = fopen('php://output', 'w');
@@ -45,9 +45,9 @@ if (isset($_GET["codigo"])) {
         LEFT JOIN amostras AS a
 		ON (a.amostra_codigo = r.amostra_codigo AND a.projeto_id = r.projeto_id)
 		WHERE r.projeto_id = {$_GET["codigo"]}
-		GROUP BY r.user_id, r.sessao, r.amostra_codigo";
+		GROUP BY r.user_id, u.iniciais, r.sessao, r.amostra_codigo, a.amostra_descricao";
 		$acesso = mysqli_query($conecta, $consulta);
-		echo $consulta;
+		
 		// loop over the rows, outputting them
 		while ($row = mysqli_fetch_assoc($acesso)) {
 			fputcsv($output, $row);
