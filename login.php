@@ -76,7 +76,8 @@
 							<p><b style="color: #8B0000">Senha incorreta.</b></p>
 						<?php }
 					} else { ?>
-						<p>Usuário não cadastrado.</p>
+						<br>
+						<p style="margin-left: 10px; color: red;">Usuário não cadastrado.</p>
 						<div class="botao">
 							<a href="public/cadastro.php">Realizar cadastro</a>
 						</div>

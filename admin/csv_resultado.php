@@ -20,9 +20,9 @@ if (isset($_GET["codigo"])) {
 		$colunas = "";
 		while ($dados = mysqli_fetch_assoc($acesso)) {
 			$nomes_colunas[] = $dados["atributo_completo"];
-			$colunas = ", SUM(CASE WHEN r.atributo_completo = '{$dados["atributo_completo"]}' THEN nota END) AS {$dados["atributo_completo"]}";
+			$colunas = $colunas . ", SUM(CASE WHEN r.atributo_completo = '{$dados["atributo_completo"]}' THEN nota END) AS {$dados["atributo_completo"]}";
 		}
-		
+
 		// output headers so that the file is downloaded rather than displayed
 		header('Content-Type: text/csv; charset=utf-8');
 		header('Content-Disposition: attachment; filename=data.csv');
