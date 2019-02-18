@@ -73,7 +73,7 @@
 	}
 	
 	if (isset($_POST["botao"])) {
-		header("location:form_consumo_afirmacoes.php");
+		header("location:consumo_afirmacoes.php");
 	}
 ?>
 
@@ -98,8 +98,7 @@
 		  margin-left: -30px;
 		}
 
-		button {
-			
+		button {	
 		  display: inline-block;
 		  text-decoration: none;
 		  background-color: #F7F6F6;
@@ -135,7 +134,7 @@
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
-		<h2 class="espaco">QUESTIONÁRIO DE HÁBITOS DE CONSUMO</h2>
+		<h2 class="espaco">QUESTIONÁRIO DE HÁBITOS DE CONSUMO (1/2)</h2>
 		<br>
 
 		<article style="margin-left: 10px">
@@ -144,7 +143,7 @@
 		: 
 		</p><br>
 
-		<form action="form_consumo.php" method="post">
+		<form action="consumo.php" method="post">
 
 			<?php 
 					

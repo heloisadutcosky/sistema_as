@@ -76,7 +76,7 @@
 			     	<?php break;
 			     } ?></li>
 			    <li style="width: 110px;"><?php echo utf8_encode($linha["produto"]) ?></li>
-			    <li><a href="formulario/dados.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto=<?php echo $linha["produto"]; ?>">Formulário</a> </li>
+			    <li><a href="formulario/dados.php?codigo=<?php echo $linha["projeto_id"]; ?>&produto=<?php echo $linha["produto"]; ?>&avaliacao=<?php echo $linha["tipo_avaliacao"]; ?>">Formulário</a> </li>
 			    <li><a href="sessoes/dados.php?codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $linha["produto"]; ?>">Sessão</a> </li>
 			    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"]; ?>">Alterar</a> </li>
 			    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"]; ?>">Excluir</a> </li>

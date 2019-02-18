@@ -149,7 +149,7 @@
 
 				<div style="float: left; margin-right: 30px;">
 					<label for="nascimento">Data de nascimento: </label>
-					<input type="date" id="nascimento" name="nascimento" value="<?php echo $dados["nascimento"] ?>">
+					<input type="date" id="nascimento" name="nascimento" value="<?php echo $dados["nascimento"] ?>" required>
 				</div>
 
 				<div>

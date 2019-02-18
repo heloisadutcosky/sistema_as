@@ -160,7 +160,7 @@
 		<h3 style="margin: 30px 0; color: #8B0000"><b>Formulário <?php echo $produto; ?></b></h3>
 
 		
-		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>" method="post">
+		<form action="form_pdq.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>" method="post">
 
 			<p><b>Informações do conjunto de atributos: </b></p>
 
@@ -221,7 +221,7 @@
 		</article>
 
 		<div class="direita">
-			<a href="dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>">Voltar</a><br><br>
+			<a href="dados.php?codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>avaliacao=hedonica">Voltar</a><br><br>
 		</div>
 		<br>
 

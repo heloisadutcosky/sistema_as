@@ -10,9 +10,6 @@
 
 	//Estabelecer conexão a base de dados
 	require_once($caminho . "conexao/conexao.php");
-
-	$consulta1 = "SELECT * FROM projetos";
-	$acesso1 = mysqli_query($conecta, $consulta1);
 ?>
 
 <!DOCTYPE html>
@@ -69,18 +66,21 @@
 			<h2 class="espaco">Resultados</h2>
 			<br>
 
-			<form action="resultados.php" method="get">
+			<form action="csv_resultado.php" method="get">
 				<div style="float: left; margin-right: 5px;">
 					<label for="codigo">Projeto: </label>
 					<select id="codigo" name="codigo"><br>
-						<?php while ($dados = mysqli_fetch_assoc($acesso1)) { ?>
+						<?php 
+						$consulta2 = "SELECT * FROM projetos";
+						$acesso2 = mysqli_query($conecta, $consulta2);
+						while ($dados = mysqli_fetch_assoc($acesso2)) { ?>
 							<option value="<?php echo $dados["projeto_id"]; ?>"><?php echo $dados["empresa"]; ?> - <?php echo $dados["produto"]; ?></option>
 						<?php } ?>
 					</select>
 				</div>
 
 				<div style="padding-top: 17px;">
-					<input type="submit" value="Ver resultados" style="width: 100px;"><br>
+					<input type="submit" value="Baixar resultados" style="width: 100px;"><br>
 				</div>
 			</form>
 
@@ -131,3 +131,7 @@
 	</main>
 </body>
 </html>
+
+<?php 
+
+?>

@@ -16,6 +16,7 @@
 	// Abrir consulta ao banco de dados
 	if (isset($_GET["codigo"])) {
 		$projeto_id = $_GET["codigo"];
+		$tipo_avaliacao = $_GET["avaliacao"];
 
 		$consulta = "SELECT * FROM formularios WHERE projeto_id = " . $projeto_id;
 		$acesso = mysqli_query($conecta, $consulta);
@@ -62,7 +63,7 @@
 			<br>
 
 			<div class="botao">
-				<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar atributo</a>
+				<a href="form_<?php echo($tipo_avaliacao); ?>.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar atributo</a>
 			</div>
 			<br>
 
@@ -82,7 +83,7 @@
 				    <li><?php echo utf8_encode($linha["atributo"]) ?></li>
 				    <li></li>
 				    <li></li>
-				    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_completo=<?php echo  $linha["atributo_completo"]; ?>">Excluir</a> </li>
+				    <li><a href="form_pdq.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_completo=<?php echo  $linha["atributo_completo"]; ?>">Excluir</a> </li>
 				</ul>
 				<?php } ?>	
 			</div>
@@ -130,7 +131,7 @@
 			<p style="margin-left: 10px;">Ainda não existe um formulário pra esse projeto</p><br><br>
 
 			<div class="botao">
-				<a href="painel.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
+				<a href="form_<?php echo($tipo_avaliacao); ?>.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
 			</div>
 			<br><br><br><br><br><br><br><br>
 		</article>

@@ -36,7 +36,7 @@
 		$preenchida = mysqli_fetch_assoc($acesso3);
 
 		if (empty($preenchida) || $_SESSION["teste"]==1) {
-			header("location:form_consumo.php");
+			header("location:consumo.php");
 		} else {
 			header("location:{$_SESSION["tipo_avaliador"]}/{$_SESSION["tipo_avaliacao"]}/principal.php");
 		}
@@ -74,7 +74,7 @@
 				if ($rows == 1) {
 					$dados = mysqli_fetch_assoc($acesso);
 					$_SESSION["form"] = $dados["nome_form"];
-					header("location:form_consumo.php?codigo={$dados["projeto_id"]}");
+					header("location:consumo.php?codigo={$dados["projeto_id"]}");
 				}
 
 				while($linha = mysqli_fetch_assoc($acesso)) { ?>

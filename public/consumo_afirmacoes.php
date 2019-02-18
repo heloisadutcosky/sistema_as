@@ -105,7 +105,7 @@
 		<article style="margin-left: 10px">
 		<p>Por favor, selecione o quanto você concorda ou discorda com as seguintes afirmações:</p><br>
 
-		<form action="form_consumo_afirmacoes.php" method="post">
+		<form action="consumo_afirmacoes.php" method="post">
 
 			<?php 
 					
