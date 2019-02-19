@@ -35,6 +35,8 @@
 				title="logo About Solution">
 			</a>
 		</header>
+
+		<article style="margin-left: 10px">
 		<h2 class="espaco">CADASTRO USUÁRIO</h2>
 		<br>
 
@@ -68,11 +70,12 @@
 		  			$iniciais .= $w[0];
 				}
 
-				$inserir = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao', '$iniciais')";
+				$inserir = "INSERT INTO usuarios (cpf, nome, sexo, nascimento, escolaridade, email, telefone, funcao, iniciais) VALUES ('$cpf', '$nome', '$sexo', '$nascimento', '$escolaridade', '$email', '$telefone', '$funcao', '$iniciais')";
 
 				$operacao_inserir = mysqli_query($conecta, $inserir);
 
 				if (!$operacao_inserir) {
+					echo $inserir;
 					die("Falha na insercao ao banco.");
 				}
 
@@ -85,7 +88,7 @@
 				$_SESSION["funcao"] = $dados["funcao"];
 
 				if($_SESSION["funcao"]=="Consumidor") { 
-					header("location:../principal.php"); // Redireciona
+					header("location:principal.php"); // Redireciona
 				} else {
 					header("location:painelista/cadastro_painel.php");
 				} // Redireciona
@@ -93,9 +96,9 @@
 
 
 		} else { ?>
-			<div style="margin-left: 10px">
-				<p>Esse cpf já foi cadastrado.</p>
-				<p>Favor realizar o <a href="<?php echo $caminho; ?>login.php">login</a>.</p>
+			<div style="width: 440px; background-color: #F8E0E0; padding: 2px 5px; margin-left: 10px">
+				<p style="margin-left: 10px">Esse cpf já está cadastrado no sistema.</p>
+				<p style="margin-left: 10px">Favor realizar o <a href="<?php echo $caminho; ?>login.php">login</a>.</p>
 			</div>
 			<br><br>
 		<?php } 
@@ -163,10 +166,10 @@
 					<input type="submit" id="botao" value="Realizar cadastro" style="margin-left: 15px">
 				</div>
 			</form>
+			</article>
 
 		<br><br>
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
-		<?php include_once($caminho . "_incluir/voltar_admin.php"); ?>
 
 	</main>
 </body>

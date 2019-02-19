@@ -60,7 +60,7 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 		<article>
-			<p>Muito bem vindo(a), <?php echo utf8_encode($_SESSION["usuario"]); ?>! <u>Qual será a avaliação que você vai realizar hoje?</u></p>
+			<p>Muito bem vindo(a), <?php echo $_SESSION["usuario"]; ?>! <u>Qual será a avaliação que você vai realizar hoje?</u></p>
 		</article>
 
 		<nav>

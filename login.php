@@ -32,22 +32,24 @@
 				title="logo About Solution">
 			</a>
 		</header>
-		<h2 class="espaco">ACESSO AO SISTEMA</h2>
 		<br>
-
+		<article>
+			<h2>ACESSO AO SISTEMA</h2>
+			<br>
 		<form action="login.php" method="post">
 			<!-- LOGIN -->
 			<div class="login">
 				<label for="cpf">CPF: </label>
-				<input type="text" id="cpf" name="cpf" size="30" placeholder="Insira seu CPF (somente números)" style="margin-left: 18px" required><br>
+				<input type="text" id="cpf" name="cpf" size="30" placeholder="Insira seu CPF (somente números)" style="margin-left: 18px; width: 185px" required><br>
 
 				<label for="senha">Senha: </label>
-				<input type="password" id="senha" name="senha" size="30" placeholder="Data de nascimento (DDMMAAAA)" required><br>
+				<input type="password" id="senha" name="senha" size="35" placeholder="Data de nascimento (DDMMAAAA)" required style="width: 185px"><br>
 			</div>
 			<br>
 
 			<input type="submit" id="botao" value="Acessar">
 		</form>
+		
 
 		<small><a href="public/cadastro.php" style="color: #440091; text-decoration: none; margin-top: -10px;  margin-left: 5px; font-size: 90%;">Ainda não estou cadastrado</a></small>
 
@@ -69,6 +71,7 @@
 							
 						if ($senha == $nascimento) {
 							if($_SESSION["funcao"]=="Administrador") { 
+								$_SESSION["detalhe"] = "";
 								header("location:admin/principal.php"); // Redireciona
 							} else {
 								header("location:public/principal.php");
@@ -77,17 +80,17 @@
 							<p><b style="color: #8B0000">Senha incorreta.</b></p>
 						<?php }
 					} else { ?>
-						<br>
-						<p style="margin-left: 10px; color: red;">Usuário não cadastrado.</p>
-						<div class="botao">
-							<a href="public/cadastro.php">Realizar cadastro</a>
+						<br><br>
+						<div style="width: 240px; background-color: #F8E0E0; padding: 5px;">
+							<p style="margin-left: 34px; color: red;">Usuário não cadastrado.</p>
+							<div class="botao" style="margin-left: 17px">
+								<a href="public/cadastro.php">Realizar cadastro</a>
+							</div><br>
 						</div>
 					<?php } 
 				} ?>
-
-		<br>
-		<br>
-		<br>
+		</article>
+		<br><br>
 		<?php include_once("_incluir/rodape.php"); ?>
 
 	</main>

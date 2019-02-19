@@ -9,11 +9,11 @@
 	if(isset($_SESSION["usuario"])) {
 
 		if($_SESSION["funcao"] == "Painelista" || $_SESSION["funcao"] == "Candidato") {
-			$consulta = "SELECT * FROM painelistas WHERE user_id = '{$_SESSION["user_id"]}'";
+			$consulta = "SELECT * FROM usuarios WHERE user_id = '{$_SESSION["user_id"]}'";
 			$acesso = mysqli_query($conecta, $consulta);
 			$dados = mysqli_fetch_assoc($acesso);	
 
-			if (!empty($dados)) {
+			if (!empty($dados["rg"])) {
 				header("location:{$caminho}public/principal.php");
 			}
 		}
@@ -24,16 +24,29 @@
 
 	if (isset($_POST["rg"])) {
 		$concordancia = isset($_POST["concordancia"]) ? 1 : 0;
+		$rg = $_POST["rg"];
+		$orgao_emissor = utf8_decode($_POST["orgao_emissor"]);
+		$cep = utf8_decode($_POST["cep"]);
+		$rua = utf8_decode($_POST["rua"]);
+		$numero_casa = utf8_decode($_POST["numero"]);
+		$complemento = utf8_decode($_POST["complemento"]);
+		$bairro = utf8_decode($_POST["bairro"]);
+		$cidade = utf8_decode($_POST["cidade"]);
+		$estado = utf8_decode($_POST["estado"]);
+		$intolerancia = utf8_decode($_POST["intolerancia"]);
+		$fumante = $_POST["fumante"];
 
-		$inserir = "INSERT INTO painelistas (user_id, rg, orgao_emissor, endereco, cidade, estado, intolerancia, fumante) VALUES ({$_SESSION["user_id"]}, '{$_POST["rg"]}', '{$_POST["orgao_emissor"]}', '{$_POST["endereco"]}', '{$_POST["cidade"]}', '{$_POST["estado"]}', '{$_POST["intolerancia"]}', {$_POST["fumante"]})";
+
+		$inserir = "UPDATE usuarios SET rg = '{$rg}', orgao_emissor = '{$orgao_emissor}', cep = '{$cep}', rua = '{$rua}', numero_casa = '{$numero_casa}', complemento = '{$complemento}', bairro = '{$bairro}', cidade = '{$cidade}', estado = '{$estado}', intolerancia = '{$intolerancia}', fumante = {$fumante} WHERE user_id = {$_SESSION["user_id"]}";
 
 		$operacao_inserir = mysqli_query($conecta, $inserir);
 
 		if (!$operacao_inserir) {
+			echo $inserir;
 			die("Falha na insercao ao banco.");
 		}
 
-		header("location:<?php echo($caminho); ?>public/principal.php");
+		header("location:{$caminho}public/principal.php");
 	}
 ?>
 
@@ -53,8 +66,10 @@
 		  padding: 5px 15px;
 		  z-index: -1;
 		}
-
 	</style>
+
+	<script type='text/javascript' src='http://files.rafaelwendel.com/jquery.js'></script>
+	<script type='text/javascript' src='cep.js'></script>
 
 </head>
 <body>
@@ -65,7 +80,9 @@
 				title="logo About Solution">
 			</a>
 		</header>
-		<h2 class="espaco">CADASTRO PARA PAINEL TREINADO</h2>
+
+		<article style="margin-left: 10px">
+		<h2 class="espaco">CADASTRO PARA PAINELISTAS</h2>
 		<br>
 
 		
@@ -79,17 +96,32 @@
 
 			<div>
 				<label for="orgao_emissor">Órgão emissor: </label>
-				<input type="text" id="orgao_emissor" name="orgao_emissor"><br>
+				<input type="text" id="orgao_emissor" name="orgao_emissor" placeholder="Ex.: SSP-PR"><br>
 			</div><br>
 
-			<div>
+			<div style="float: left; margin-right: 30px;">
 				<label for="cep">CEP: </label>
-				<input type="text" id="cep" name="cep" placeholder="XXXXX-XXX" required><br>
+				<input type="text" id="cep" name="cep" placeholder="CEP (Somente números)" required style="width: 100px"><br>
 			</div>
 
 			<div>
-				<label for="endereco">Endereço: </label>
-				<input type="text" id="endereco" name="endereco" style="width: 440px"><br>
+				<label for="rua">Rua: </label>
+				<input type="text" id="rua" name="rua" placeholder="Ex.: Rua das Flores" style="width: 300px"><br>
+			</div>
+
+			<div style="float: left; margin-right: 10px;">
+				<label for="numero">Número: </label>
+				<input type="text" id="numero" name="numero" style="width: 80px"><br>
+			</div>
+
+			<div style="float: left; margin-right: 30px;">
+				<label for="complemento">Complemento: </label>
+				<input type="text" id="complemento" name="complemento" style="width: 80px"><br>
+			</div>
+
+			<div>
+				<label for="bairro">Bairro: </label>
+				<input type="text" id="bairro" name="bairro"><br>
 			</div>
 
 			<div style="float: left; margin-right: 30px;">
@@ -108,7 +140,7 @@
 			</div>
 
 			<div>
-				<label for="fumante">Fumante? </label>
+				<label for="fumante">É fumante? </label>
 				<select id="fumante" name="fumante" style="width: 80px"><br>
 					<option value=0 selected>Não</option>
 					<option value=1>Sim</option>
@@ -117,13 +149,14 @@
 			<br>
 
 			<div>
-				<input type="checkbox" name="concordancia" id="concordancia" style="float: left; width: 20px" required>
-				<p>Declaro que blablabla</p>
-			</div><br><br>
+				<input type="checkbox" name="concordancia" id="concordancia" style="float: left; width: 15px" required>
+				<p style="font-size: 90%; width: 440px; line-height: 20px">Declaro que concordo com os termos de prestação de serviço à About Solution</p>
+			</div><br>
 
 			<input type="submit" id="botao" value="Cadastrar dados"><br>
 		</form>
 		<br>
+		</article>
 
 
 		<br>

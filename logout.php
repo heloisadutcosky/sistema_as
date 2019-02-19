@@ -27,6 +27,7 @@ session_destroy(); // Destrói todas as variáveis de sessão
 			</a>
 		</header>
 		
+		<article>
 		<h2 class="espaco"></h2>
 		<br>
 
@@ -39,6 +40,7 @@ session_destroy(); // Destrói todas as variáveis de sessão
 		<p>Volte sempre à About Solution!</p>
 
 		<a href="login.php">Login</a>
+		</article>
 		<br>
 		<br>
 		<?php include_once("_incluir/rodape.php"); ?>

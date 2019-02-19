@@ -24,7 +24,7 @@
 
 <?php 
 	if (isset($_GET["detalhe"])) {
-		$_SESSION["detalhe"] = $_GET["detalhe"];
+	$_SESSION["detalhe"] = $_GET["detalhe"];
 	}
 ?>
 	

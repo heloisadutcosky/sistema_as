@@ -21,16 +21,19 @@ if (isset($_GET["codigo"])) {
 		$output = fopen('php://output', 'w');
 
 		// output the column headings
-		fputcsv($output, array("projeto_id", "conjunto_atributos", "atributo", "definicao_atributo", "referencia_min", "referencia_max"));
+		fputcsv($output, array("produto", "conjunto_atributos", "atributo", "definicao_atributo", "referencia_min", "referencia_max"));
 
 		// fetch the data
-		$consulta = "SELECT projeto_id,
-		conjunto_atributos,
-		atributo,
-		definicao_atributo,
-		referencia_min,
-		referencia_max
-		FROM formularios WHERE projeto_id = {$_GET["codigo"]}";
+		$consulta = "SELECT p.produto,
+		f.conjunto_atributos,
+		f.atributo,
+		f.definicao_atributo,
+		f.referencia_min,
+		f.referencia_max
+		FROM formularios AS f 
+        LEFT JOIN projetos AS p
+        ON p.projeto_id = f.projeto_id
+		WHERE f.projeto_id = {$_GET["codigo"]}";
 		$acesso = mysqli_query($conecta, $consulta);
 		
 		// loop over the rows, outputting them
