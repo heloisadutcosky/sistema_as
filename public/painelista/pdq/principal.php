@@ -87,8 +87,8 @@
 				
 			<nav>
 				<ul style="display: inline-block;">
-					<li class="menu"><a href="pdq/aparencia.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Aparência</a></li>
-					<li class="menu"><a href="pdq/cabines.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Cabines</a></li>
+					<li class="menu"><a href="aparencia.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Aparência</a></li>
+					<li class="menu"><a href="cabines.php?sessao=<?php echo $_SESSION["sessao"]; ?>&first=1">Cabines</a></li>
 				</ul>
 			</nav>
 			<br>

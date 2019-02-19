@@ -33,6 +33,7 @@
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/principal.php?detalhe="><b>PRINCIPAL</b></a></li><br>
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/usuarios/dados.php?detalhe=">USUÁRIOS</a></li>
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/empresas/dados.php?detalhe=">EMPRESAS</a></li>
+		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/produtos/dados.php?tipo=categorias">CATEGORIAS</a></li>
 		<li class="menulateral"><a href="?detalhe=projetos">PROJETOS</a></li>
 		<?php if ($_SESSION["detalhe"] == "projetos") { ?>
 		<ul>
@@ -40,7 +41,6 @@
 			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/projetos/dados.php">Cadastro de projeto</a></li>
 		</ul>
 		<?php } ?>
-		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/produtos/dados.php?tipo=categorias">CATEGORIAS</a></li>
 		<li class="menulateral"><a href="?detalhe=questionarios">QUESTIONÁRIOS</a></li>
 		<?php if ($_SESSION["detalhe"] == "questionarios") { ?>
 		<ul>
@@ -48,11 +48,12 @@
 			<li class="submenulateral"><a href="<?php echo($caminho); ?>public/principal.php?funcao=Consumidor&teste=1">Revisar como consumidor</a></li>
 		</ul>
 		<?php } ?>
-		<li class="menulateral"><a href="?detalhe=resultados">RESULTADOS</a></li>
-		<?php if ($_SESSION["detalhe"] == "resultados") { ?>
+		<li class="menulateral"><a href="?detalhe=exportar">EXPORTAR DADOS</a></li>
+		<?php if ($_SESSION["detalhe"] == "exportar") { ?>
 		<ul>
-			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/resultados/projetos.php">Resultados de projetos</a></li>
-			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/resultados/consumo.php">Questionários de consumo</a></li>
+			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/exportar/formularios.php">Formulários de projetos</a></li>
+			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/exportar/projetos.php">Resultados de projetos</a></li>
+			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/exportar/consumo.php">Questionários de consumo</a></li>
 		</ul>
 		<?php } ?>
 	</ul>
