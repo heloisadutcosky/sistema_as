@@ -85,11 +85,11 @@
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
-				//if (!$operacao_cadastrar) {
-				//	die("Falha no cadastro dos dados.");
-				//} else {
-				//	header("location:dados.php");
-				//}
+				if (!$operacao_cadastrar) {
+					die("Falha no cadastro dos dados.");
+				} else {
+					header("location:dados.php");
+				}
 			}
 		}
 		// --------------------------------------------------------------------------

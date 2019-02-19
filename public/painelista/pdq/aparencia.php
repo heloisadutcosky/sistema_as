@@ -152,3 +152,8 @@
 	</main>
 </body>
 </html>
+
+<?php 
+	// Fechar conexão
+	mysqli_close($conecta);
+?>

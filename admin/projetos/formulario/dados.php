@@ -82,8 +82,8 @@
 				    <li><?php echo utf8_encode($linha["conjunto_atributos"]) ?></li>
 				    <li><?php echo utf8_encode($linha["atributo"]) ?></li>
 				    <li></li>
-				    <li></li>
-				    <li><a href="form_pdq.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_completo=<?php echo  $linha["atributo_completo"]; ?>">Excluir</a> </li>
+				    <li><a href="form_pdq.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_id=<?php echo  $linha["atributo_id"]; ?>">Alterar</a> </li>
+				    <li><a href="form_pdq.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_id=<?php echo  $linha["atributo_id"]; ?>">Excluir</a> </li>
 				</ul>
 				<?php } ?>	
 			</div>
@@ -133,7 +133,7 @@
 			<div class="botao">
 				<a href="form_<?php echo($tipo_avaliacao); ?>.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
 			</div>
-			<br><br><br><br><br><br><br><br>
+			<br><br><br><br><br><br><br><br><br><br>
 		</article>
 
 		<div class="direita">

@@ -13,7 +13,7 @@
 
 	//Definir a ação a ser realizada
 	$acao = isset($_GET["acao"]) ? $_GET["acao"] : "";
-	$atributo_completo = isset($_GET["atributo_completo"]) ? $_GET["atributo_completo"] : "";
+	$atributo_id = isset($_GET["atributo_id"]) ? $_GET["atributo_id"] : 0;
 
 	// Abrir consulta ao banco de dados para pegar informações do projeto selecionado
 	if (isset($_GET["codigo"])) {
@@ -27,16 +27,6 @@
 		$complemento = "";
 	}
 
-	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo = '{$atributo_completo}'";
-	$acesso = mysqli_query($conecta, $consulta);
-
-	if (!$acesso) {
-		die("Falha na consulta ao banco.");
-	}
-
-	$dados = mysqli_fetch_assoc($acesso);
-	// ------------------------------------------------------------------------------
-
 	
 	// Informações preenchidas ------------------------------------------------------
 	if (isset($_POST["atributo"])) {
@@ -47,20 +37,20 @@
 		$atributo_completo = strtolower($_POST["conjunto_atributos"]) . "_" . strtolower($_POST["atributo_short"]);
 		$escala_baixo = utf8_decode($_POST["escala_baixo"]);
 		$escala_alto = utf8_decode($_POST["escala_alto"]);
-		$escala_min = $_POST["escala_min"];
-		$escala_max = $_POST["escala_max"];
+		$escala_min = !empty($_POST["escala_min"]) ? $_POST["escala_min"] : 0;
+		$escala_max = !empty($_POST["escala_max"]) ? $_POST["escala_max"] : 0;
 
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = '{$escala_min}', escala_max = '{$escala_max}' WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}' AND atributo = '{$atributo}'";
+			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = {$escala_min}, escala_max = {$escala_max} WHERE atributo_id = {$atributo_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
 			if (!$operacao_alterar) {
 				die("Falha na alteração dos dados.");
 			} else {
-				header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
+				header("location:dados.php?codigo={$projeto_id}&produto={$produto}&avaliacao=pdq");
 			}
 		}
 		// --------------------------------------------------------------------------
@@ -70,7 +60,7 @@
 
 			// Verificar existência do projeto na base ------------------------------
 
-			$consulta_atributo = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo '{$atributo_completo}'";
+			$consulta_atributo = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo = '{$atributo_completo}'";
 
 			$acesso = mysqli_query($conecta, $consulta_atributo);
 			$existe_atributo = mysqli_fetch_assoc($acesso);
@@ -87,9 +77,9 @@
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
 				if (!$operacao_cadastrar) {
-					die("Falha no cadastro dos dados.");
+					echo $cadastrar;
 				} else {
-					header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
+					header("location:dados.php?codigo={$projeto_id}&produto={$produto}&avaliacao=pdq");
 				}
 			}
 		}
@@ -98,31 +88,14 @@
 		// Excluir cadastro ---------------------------------------------------------
 		if ($acao == "exclusao") {
 				
-			$excluir = "DELETE FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo = '{$atributo_completo}'";
-			echo $excluir;
+			$excluir = "DELETE FROM formularios WHERE atributo_id = {$atributo_id}";
 
 			$operacao_excluir = mysqli_query($conecta, $excluir);
 
 			if (!$operacao_excluir) {
 				die("Falha na exclusão dos dados.");
 			} else {
-				//header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
-			}
-		}
-		// --------------------------------------------------------------------------
-
-		// Excluir cadastro ---------------------------------------------------------
-		if ($acao == "exclusao") {
-				
-			$excluir = "DELETE FROM formularios WHERE projeto_id = {$projeto_id} AND atributo_completo = '{$atributo_completo}'";
-			echo $excluir;
-
-			$operacao_excluir = mysqli_query($conecta, $excluir);
-
-			if (!$operacao_excluir) {
-				die("Falha na exclusão dos dados.");
-			} else {
-				//header("location:dados.php?codigo={$projeto_id}&produto={$produto}");
+				header("location:dados.php?codigo={$projeto_id}&produto={$produto}&avaliacao=pdq");
 			}
 		}
 		// --------------------------------------------------------------------------
@@ -130,7 +103,15 @@
 	// ------------------------------------------------------------------------------
 
 	// Liberar dados da memória
-	mysqli_free_result($acesso);
+	$consulta = "SELECT * FROM formularios WHERE atributo_id = {$atributo_id}";
+	$acesso = mysqli_query($conecta, $consulta);
+
+	if (!$acesso) {
+		die("Falha na consulta ao banco.");
+	}
+
+	$dados = mysqli_fetch_assoc($acesso);
+	// ------------------------------------------------------------------------------
 ?>
 
 <!DOCTYPE html>
@@ -160,7 +141,7 @@
 		<h3 style="margin: 30px 0; color: #8B0000"><b>Formulário <?php echo $produto; ?></b></h3>
 
 		
-		<form action="form_pdq.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>" method="post">
+		<form action="form_pdq.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>&produto=<?php echo $produto; ?>&atributo_id=<?php echo $atributo_id; ?>" method="post">
 
 			<p><b>Informações do conjunto de atributos: </b></p>
 

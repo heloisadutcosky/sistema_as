@@ -93,3 +93,9 @@
 	</main>
 </body>
 </html>
+
+<?php 
+	// Fechar conexão
+	mysqli_free_result($acesso);
+	mysqli_close($conecta);
+?>

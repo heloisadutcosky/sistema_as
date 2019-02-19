@@ -222,3 +222,8 @@
 </html>
 
 <?php } ?>
+
+<?php 
+	// Fechar conexão
+	mysqli_close($conecta);
+?>
