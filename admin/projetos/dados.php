@@ -60,7 +60,15 @@
 			    while($linha = mysqli_fetch_assoc($acesso)) {
 			?>
 			<ul>
-			    <li style="width:80px;"><?php echo utf8_encode($linha["empresa"]) ?></li>
+			    <li style="width:80px;">
+			    	<?php 
+					$consulta_contratos = "SELECT * FROM contratos WHERE contrato_id={$linha["contrato_id"]}";
+					$acesso_contratos = mysqli_query($conecta, $consulta_contratos);
+					$dados = mysqli_fetch_assoc($acesso_contratos);
+					$consulta_empresas = "SELECT * FROM empresas WHERE empresa_id = {$dados["empresa_id"]}";
+					$acesso_empresas = mysqli_query($conecta, $consulta_empresas);
+					$empresa = mysqli_fetch_assoc($acesso_empresas);
+					echo utf8_encode($empresa["nome_fantasia"]); ?></li>
 			    <li><?php switch ($linha["tipo_avaliacao"]) {
 			     	case 'cata': ?>
 			     		CATA

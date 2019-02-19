@@ -98,7 +98,7 @@
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
 		<article>
-		<h2 class="espaco">Categorias cadastradas</h2>
+		<h2 class="espaco">CATEGORIAS CADASTRADAS</h2>
 		<br>
 
 		<?php 

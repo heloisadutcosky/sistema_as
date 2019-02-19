@@ -24,7 +24,7 @@
 
 </head>
 <body>
-<main style="height:400px">
+<main style="height:450px">
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>

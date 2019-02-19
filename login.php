@@ -64,6 +64,7 @@
 						$_SESSION["user_id"] = $dados["user_id"];
 						$_SESSION["usuario"] = utf8_encode($dados["nome"]);
 						$_SESSION["funcao"] = $dados["funcao"];
+						$_SESSION["cpf"] = $dados["cpf"];
 						$nascimento = date("dmY", strtotime($dados["nascimento"]));
 							
 						if ($senha == $nascimento) {

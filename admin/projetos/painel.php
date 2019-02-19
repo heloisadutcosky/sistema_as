@@ -34,9 +34,10 @@
 
 	
 	// Informações preenchidas ------------------------------------------------------
-	if (isset($_POST["empresa"])) {
-		$empresa = utf8_decode($_POST["empresa"]);
+	if (isset($_POST["contrato_id"])) {
+		$contrato_id = utf8_decode($_POST["contrato_id"]);
 		$produto = utf8_decode($_POST["produto"]);
+		$nome_form = utf8_decode($_POST["nome_form"]);
 		$descricao_projeto = utf8_decode($_POST["descricao_projeto"]);
 		$tipo_avaliacao = utf8_decode($_POST["tipo_avaliacao"]);
 		$escala_min = empty($_POST["escala_min"]) ? 0 : $_POST["escala_min"];
@@ -49,7 +50,7 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET empresa = '{$empresa}', produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}' WHERE projeto_id = {$projeto_id}";
+			$alterar = "UPDATE projetos SET contrato_id = {$contrato_id}, produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}', nome_form = '{$nome_form}' WHERE projeto_id = {$projeto_id}";
 
 			echo $alterar;
 
@@ -68,7 +69,7 @@
 
 			// Verificar existência do projeto na base ------------------------------
 
-			$consulta_projeto = "SELECT * FROM projetos WHERE empresa = '{$empresa}' AND produto = '{$produto}' AND tipo_avaliacao = '{$tipo_avaliacao}'";
+			$consulta_projeto = "SELECT * FROM projetos WHERE contrato_id = {$contrato_id} AND produto = '{$produto}' AND tipo_avaliacao = '{$tipo_avaliacao}'";
 
 			$acesso = mysqli_query($conecta, $consulta_projeto);
 			$existe_projeto = mysqli_fetch_assoc($acesso);
@@ -80,7 +81,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO projetos (empresa, produto, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador) VALUES ('{$empresa}', '{$produto}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}')";
+				$cadastrar = "INSERT INTO projetos (contrato_id, produto, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador, nome_form) VALUES ({$contrato_id}, '{$produto}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}', '{$nome_form}')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
@@ -141,8 +142,28 @@
 		<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $projeto_id; ?>" method="post">
 
 			<div>
-				<label for="empresa">Empresa: </label>
-				<input type="text" id="empresa" name="empresa" value="<?php echo utf8_encode($dados["empresa"]); ?>" required>
+				<label for="contrato_id">Contrato: </label>
+				<select id="contrato_id" name="contrato_id" style="width: 440px;">
+				<br>
+					<?php 
+					$consulta_contratos = "SELECT * FROM contratos";
+					$acesso_contratos = mysqli_query($conecta, $consulta_contratos);
+					while ($contratos = mysqli_fetch_assoc($acesso_contratos)) { 
+						$consulta_empresas = "SELECT * FROM empresas WHERE empresa_id = {$contratos["empresa_id"]}";
+						$acesso_empresas = mysqli_query($conecta, $consulta_empresas);
+						$empresa = mysqli_fetch_assoc($acesso_empresas);
+					?>
+					<option value="<?php echo $contratos["contrato_id"]; ?>" 
+					<?php 
+						if($contratos["contrato_id"] == $dados["contrato_id"]) { ?> 
+							selected 
+						<?php } ?>>
+					<?php echo $empresa["nome_fantasia"]; ?> - 
+					<?php echo date("M/Y", strtotime($contratos["data_inicio"])); ?> a 
+					<?php echo date("M/Y", strtotime($contratos["data_fim"])); ?>
+					</option>
+					<?php } ?>
+				</select>
 			</div><br>
 
 			<div style="float: left; margin-right: 30px;">
@@ -166,27 +187,6 @@
 				<label for="produto">Produto: </label>
 				<input type="text" id="produto" name="produto" value="<?php echo utf8_encode($dados["produto"]); ?>" required>
 			<br>
-			</div>
-
-			<div>
-				<label for="produto">Url de uma imagem do produto: </label>
-				<input type="url" id="url_imagem" name="url_imagem" value="<?php echo utf8_encode($dados["url_imagem"]); ?>">
-			<br>
-			</div>
-
-			<div>
-				<label for="descricao_projeto">Descrição do projeto: </label>
-				<input type="text" id="descricao_projeto" name="descricao_projeto" value="<?php echo utf8_encode($dados["descricao_projeto"]); ?>" style="width: 440px; height: 40px; text-indent: 2px"><br>
-			</div>
-
-			<div style="float: left; margin-right: 30px;">
-				<label for="data_inicio">Data de início: </label>
-				<input type="date" id="data_inicio" name="data_inicio" value="<?php echo $dados["data_inicio"]; ?>">
-			</div>
-
-			<div>
-				<label for="data_fim">Data de fim: </label>
-				<input type="date" id="data_fim" name="data_fim" value="<?php echo $dados["data_fim"]; ?>"><br>
 			</div>
 
 			<div style="float: left; margin-right: 30px;">
@@ -216,21 +216,47 @@
 				</select><br>
 			</div>
 
+			<div>
+				<label for="descricao_projeto">Descrição do projeto: </label>
+				<input type="text" id="descricao_projeto" name="descricao_projeto" value="<?php echo utf8_encode($dados["descricao_projeto"]); ?>" style="width: 440px; height: 40px; text-indent: 2px"><br>
+			</div>
+
+			<div style="float: left; margin-right: 30px;">
+				<label for="data_inicio">Data de início: </label>
+				<input type="date" id="data_inicio" name="data_inicio" value="<?php echo $dados["data_inicio"]; ?>">
+			</div>
+
+			<div>
+				<label for="data_fim">Data de fim: </label>
+				<input type="date" id="data_fim" name="data_fim" value="<?php echo $dados["data_fim"]; ?>"><br>
+			</div><br><br>
+
+			<div>
+				<label for="produto">Url de uma imagem do produto: </label>
+				<input type="url" id="url_imagem" name="url_imagem" value="<?php echo utf8_encode($dados["url_imagem"]); ?>" style="width: 440px;">
+			<br>
+			</div>
+
+			<div>
+				<label for="nome_form">Título do formulário: </label>
+				<input type="text" id="nome_form" name="nome_form" value="<?php echo utf8_encode($dados["nome_form"]); ?>"><br>
+			</div>
+
 			<div style="float: left; margin-right: 30px;">
 				<label for="escala_min">Escala mínima: </label>
-				<input type="number" id="escala_min" name="escala_min" value="<?php echo $dados["escala_min"]; ?>" size="10" style="width: 80px;">
+				<input type="number" id="escala_min" name="escala_min" value="<?php echo $dados["escala_min"]; ?>" style="width: 80px;">
 			</div>
 
 			<div>
 				<label for="escala_max">Escala máxima: </label>
-				<input type="number" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>" size="10" style="width: 80px;"><br>
-			</div>
+				<input type="number" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>" style="width: 80px;">
+			</div><br>
 
 			<div>
 				<label for="form_ativo">Habilitar formulário: </label>
 				<input type="checkbox" id="form_ativo" name="form_ativo" <?php if ($dados["form_ativo"] == 1) { ?> 
 				checked <?php } ?>><br>
-			</div>
+			</div><br>
 
 				<div>
 				<input type="submit" id="botao" value="<?php 
