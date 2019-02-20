@@ -96,7 +96,7 @@
 
 			<div>
 				<label for="orgao_emissor">Órgão emissor: </label>
-				<input type="text" id="orgao_emissor" name="orgao_emissor" placeholder="Ex.: SSP-PR"><br>
+				<input type="text" id="orgao_emissor" name="orgao_emissor" required placeholder="Ex.: SSP-PR"><br>
 			</div><br>
 
 			<div style="float: left; margin-right: 30px;">

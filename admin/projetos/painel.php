@@ -46,11 +46,12 @@
 		$data_fim = empty($_POST["data_fim"]) ? "0000-00-00" : $_POST["data_fim"];
 		$form_ativo = isset($_POST["form_ativo"]) ? 1 : 0;
 		$tipo_avaliador = $_POST["tipo_avaliador"];
+		$consumo_ativo = isset($_POST["consumo_ativo"]) ? 1 : 0;
 
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET contrato_id = {$contrato_id}, produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}', nome_form = '{$nome_form}' WHERE projeto_id = {$projeto_id}";
+			$alterar = "UPDATE projetos SET contrato_id = {$contrato_id}, produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}', nome_form = '{$nome_form}', consumo_ativo = '{$consumo_ativo}' WHERE projeto_id = {$projeto_id}";
 
 			echo $alterar;
 
@@ -143,7 +144,7 @@
 
 			<div>
 				<label for="contrato_id">Contrato: </label>
-				<select id="contrato_id" name="contrato_id" style="width: 440px;">
+				<select id="contrato_id" name="contrato_id" style="width: 445px;">
 				<br>
 					<?php 
 					$consulta_contratos = "SELECT * FROM contratos";
@@ -252,13 +253,19 @@
 				<input type="number" id="escala_max" name="escala_max" value="<?php echo $dados["escala_max"]; ?>" style="width: 80px;">
 			</div><br>
 
-			<div>
-				<label for="form_ativo">Habilitar formulário: </label>
+			<div style="float: left; margin-right: 20px;">
 				<input type="checkbox" id="form_ativo" name="form_ativo" <?php if ($dados["form_ativo"] == 1) { ?> 
-				checked <?php } ?>><br>
-			</div><br>
+				checked <?php } ?> style="float: left; width: 5px">
+				<label for="form_ativo" style="width: 210px">Habilitar formulário de avaliação</label>
+			</div>
 
-				<div>
+			<div>
+				<input type="checkbox" id="consumo_ativo" name="consumo_ativo" <?php if ($dados["consumo_ativo"] == 1) { ?> 
+				checked <?php } ?> style="float: left; width: 5px">
+				<label for="consumo_ativo">Habilitar formulário de consumo</label>
+			</div><br><br>
+
+			<div>
 				<input type="submit" id="botao" value="<?php 
 					if ($acao == "alteracao") echo "Alterar cadastro";
 					if ($acao == "exclusao") echo "Excluir cadastro";

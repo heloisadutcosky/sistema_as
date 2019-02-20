@@ -11,6 +11,7 @@
 
 	$_SESSION["funcao_temp"] = isset($_GET["funcao"]) ? $_GET["funcao"] : $_SESSION["funcao"];
 	$_SESSION["teste"] = isset($_GET["teste"]) ? $_GET["teste"] : 0;
+	$consumo = isset($_GET["consumo"]) ? $_GET["consumo"] : 0;
 
 	// Setar projeto e categoria
 	if (isset($_GET["codigo"])) {
@@ -35,7 +36,7 @@
 		$acesso3 = mysqli_query($conecta, $consulta3);
 		$preenchida = mysqli_fetch_assoc($acesso3);
 
-		if (empty($preenchida) || $_SESSION["teste"]==1) {
+		if ((empty($preenchida) && $consumo == 1) || ($_SESSION["teste"]==1 && $consumo == 1)) {
 			header("location:consumo.php");
 		} else {
 			header("location:{$_SESSION["tipo_avaliador"]}/{$_SESSION["tipo_avaliacao"]}/principal.php");
@@ -81,7 +82,7 @@
 					<img src="
 					<?php echo $linha["url_imagem"]; ?>
 					" width="100" height="70" style="float: left;"><br><br>
-					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&categoria_id=<?php echo $linha["categoria_id"]; ?>&produto=<?php echo utf8_encode($linha["nome_form"]); ?>&funcao=<?php echo $_SESSION["funcao_temp"]; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo utf8_encode($linha["nome_form"]); ?></a></li><br><br>
+					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&categoria_id=<?php echo $linha["categoria_id"]; ?>&produto=<?php echo utf8_encode($linha["nome_form"]); ?>&funcao=<?php echo $_SESSION["funcao_temp"]; ?>&consumo=<?php echo $linha["consumo_ativo"]; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo utf8_encode($linha["nome_form"]); ?></a></li><br><br>
 				<?php } ?>
 			</ul>
 		</nav>
