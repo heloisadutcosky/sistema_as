@@ -153,5 +153,20 @@
 
 <?php 
 	// Fechar conexão
+if (isset($acesso)) {
+	mysqli_free_result($acesso);
+}
+if (isset($acesso3)) {
+	mysqli_free_result($acesso3);
+}
+if (isset($acesso_opcoes)) {
+	mysqli_free_result($acesso_opcoes);
+}
+if (isset($operacao_inserir)) {
+	mysqli_free_result($operacao_inserir);
+}
+if (isset($operacao_alterar)) {
+	mysqli_free_result($operacao_alterar);
+}
 	mysqli_close($conecta);
 ?>

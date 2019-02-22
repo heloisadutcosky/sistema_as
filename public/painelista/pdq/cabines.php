@@ -225,5 +225,11 @@
 
 <?php 
 	// Fechar conexão
-	mysqli_close($conecta);
+if (isset($acesso)) {
+	mysqli_free_result($acesso);
+}
+if (isset($operacao_inserir)) {
+	mysqli_free_result($operacao_inserir);
+}
+mysqli_close($conecta);
 ?>

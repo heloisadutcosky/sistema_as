@@ -100,3 +100,11 @@
 	</main>
 </body>
 </html>
+
+<?php 
+	// Fechar conexão
+	if (isset($acesso)) {
+	mysqli_free_result($acesso);
+}
+	mysqli_close($conecta);
+?>

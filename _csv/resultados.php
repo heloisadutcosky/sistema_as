@@ -44,7 +44,7 @@ if (isset($_GET["codigo"])) {
         ON u.user_id = r.user_id
         LEFT JOIN amostras AS a
 		ON (a.amostra_codigo = r.amostra_codigo AND a.projeto_id = r.projeto_id)
-		WHERE r.projeto_id = {$_GET["codigo"]}
+		WHERE r.projeto_id = {$_GET["codigo"]} AND r.user_id <> '888' AND r.user_id <> '889'
 		GROUP BY r.user_id, u.iniciais, r.sessao, r.amostra_codigo, a.amostra_descricao";
 		$acesso = mysqli_query($conecta, $consulta);
 		

@@ -239,5 +239,17 @@
 
 <?php 
 	// Fechar conexão
+if (isset($acesso)) {
+	mysqli_free_result($acesso);
+}
+if (isset($operacao_cadastrar)) {
+	mysqli_free_result($operacao_cadastrar);
+}
+if (isset($operacao_alterar)) {
+	mysqli_free_result($operacao_alterar);
+}
+if (isset($operacao_excluir)) {
+	mysqli_free_result($operacao_excluir);
+}
 	mysqli_close($conecta);
 ?>

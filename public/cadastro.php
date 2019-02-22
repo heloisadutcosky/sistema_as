@@ -121,7 +121,7 @@
 
 			<div style="float: left; margin-right: 30px;">
 					<label for="nascimento">Data de nascimento: </label>
-					<input type="date" id="nascimento" name="nascimento" placeholder="dd/mm/aaaa" required>
+					<input type="datetime" id="nascimento" name="nascimento" placeholder="dd/mm/aaaa" required>
 				</div>
 
 				<div>
@@ -177,5 +177,11 @@
 
 <?php 
 	// Fechar conexão
+if (isset($acesso)) {
+	mysqli_free_result($acesso);
+}
+if (isset($operacao_inserir)) {
+	mysqli_free_result($operacao_inserir);
+}
 	mysqli_close($conecta);
 ?>
