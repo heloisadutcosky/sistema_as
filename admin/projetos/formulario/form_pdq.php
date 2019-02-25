@@ -48,7 +48,7 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', atributo_completo2 = '{$atributo_completo2}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = {$escala_min}, escala_max = {$escala_max}, referencia_min = '{$referencia_min}', referencia_max = '{$referencia_max}', img_min = '{$img_min}', img_max = '{$img_max}' WHERE atributo_id = {$atributo_id}";
+			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', definicao_atributo = '{$definicao_atributo}', atributo_completo = '{$atributo_completo}', atributo_completo2 = '{$atributo_completo2}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = {$escala_min}, escala_max = {$escala_max}, referencia_min = '{$referencia_min}', referencia_max = '{$referencia_max}', img_min = '{$img_min}', img_max = '{$img_max}' WHERE atributo_id = {$atributo_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -77,7 +77,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO formularios (projeto_id, conjunto_atributos, descricao_conjunto, atributo, atributo_short, atributo_completo, atributo_completo2, escala_baixo, escala_alto, escala_min, escala_max, referencia_min, referencia_max, img_min, img_max) VALUES ($projeto_id, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$atributo_short', '$atributo_completo', '$atributo_completo2', '$escala_baixo', '$escala_alto', '$escala_min', '$escala_max', '$referencia_min', '$referencia_max', '$img_min', '$img_max')";
+				$cadastrar = "INSERT INTO formularios (projeto_id, conjunto_atributos, descricao_conjunto, atributo, definicao_atributo, atributo_completo, atributo_completo2, escala_baixo, escala_alto, escala_min, escala_max, referencia_min, referencia_max, img_min, img_max) VALUES ($projeto_id, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$definicao_atributo', '$atributo_completo', '$atributo_completo2', '$escala_baixo', '$escala_alto', '$escala_min', '$escala_max', '$referencia_min', '$referencia_max', '$img_min', '$img_max')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
