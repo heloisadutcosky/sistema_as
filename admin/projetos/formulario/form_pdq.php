@@ -34,7 +34,8 @@
 		$descricao_conjunto = utf8_decode($_POST["descricao_conjunto"]);
 		$atributo = utf8_decode($_POST["atributo"]);
 		$atributo_short = $_POST["atributo_short"];
-		$atributo_completo = strtolower($_POST["conjunto_atributos"]) . "_" . strtolower($_POST["atributo_short"]);
+		$atributo_completo = utf8_decode($_POST["atributo_completo"]);
+		$atributo_completo2 = utf8_decode($_POST["atributo_completo2"]);
 		$escala_baixo = utf8_decode($_POST["escala_baixo"]);
 		$escala_alto = utf8_decode($_POST["escala_alto"]);
 		$escala_min = !empty($_POST["escala_min"]) ? $_POST["escala_min"] : 0;
@@ -43,7 +44,7 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = {$escala_min}, escala_max = {$escala_max} WHERE atributo_id = {$atributo_id}";
+			$alterar = "UPDATE formularios SET projeto_id = {$projeto_id}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', atributo_short = '{$atributo_short}', atributo_completo = '{$atributo_completo}', atributo_completo2 = '{$atributo_completo2}', escala_baixo = '{$escala_baixo}', escala_alto = '{$escala_alto}', escala_min = {$escala_min}, escala_max = {$escala_max} WHERE atributo_id = {$atributo_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -72,7 +73,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO formularios (projeto_id, conjunto_atributos, descricao_conjunto, atributo, atributo_short, atributo_completo, escala_baixo, escala_alto, escala_min, escala_max) VALUES ($projeto_id, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$atributo_short', '$atributo_completo', '$escala_baixo', '$escala_alto', '$escala_min', '$escala_max')";
+				$cadastrar = "INSERT INTO formularios (projeto_id, conjunto_atributos, descricao_conjunto, atributo, atributo_short, atributo_completo, atributo_completo2, escala_baixo, escala_alto, escala_min, escala_max) VALUES ($projeto_id, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$atributo_short', '$atributo_completo', '$atributo_completo2', '$escala_baixo', '$escala_alto', '$escala_min', '$escala_max')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
@@ -167,10 +168,16 @@
 			</div>
 
 			<div>
-				<label for="atributo_short">Nome curto para o atributo<small><sup>**</sup></small>:</label>
-				<input type="text" id="atributo_short" name="atributo_short" value="<?php echo $dados["atributo_short"]; ?>" style="margin-bottom: 1px;" required>
-				<small style="font-size: 55%; margin-left: 0px; width: 200px"><sup>**</sup>Sem espaços (colunas = conjunto + nome curto)</small>
+				<label for="atributo_completo">Nome 1 para a planilha:<small><sup>**</sup></small>:</label>
+				<input type="text" id="atributo_completo" name="atributo_completo" value="<?php echo $dados["atributo_completo"]; ?>" style="margin-bottom: 1px;" required>
+				<small style="font-size: 55%; margin-left: 0px; width: 200px"><sup>**</sup>Nome em inglês para cliente</small>
 			</div><br>
+
+			<div>
+				<label for="atributo_completo2">Nome 2 para a planilha:<small><sup>***</sup></small>:</label>
+				<input type="text" id="atributo_completo2" name="atributo_completo2" value="<?php echo $dados["atributo_completo2"]; ?>" style="margin-bottom: 1px;" required>
+				<small style="font-size: 55%; margin-left: 10px; width: 200px"><sup>***</sup>Nome em português para painelistas</small>
+			</div><br>			
 
 			<div>
 				<label for="descricao_conjunto">Definicao do atributo: </label>
