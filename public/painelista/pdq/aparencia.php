@@ -136,7 +136,7 @@
 								
 								<form action="aparencia.php?pagina=<?php echo($pagina + 1); ?>" method="post" align="">
 									<input type="range" id="nota" name="<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
-									<input type="checkbox" name="teste" required>
+									<input type="checkbox" name="teste" style="width: 20px; float: right; margin-right: 20px; margin-top: 22px">
 									<div class="ticks" style="padding-left: <?php echo($dados["escala_min"]*80); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80-50); ?>px">
 										<span class="tick"></span>
 										<span class="tick"></span>
@@ -148,7 +148,7 @@
 									<span id="resultado"></span>
 
 							<?php } ?>
-									
+									<br>
 									<input type="submit" id="botao" value="Confirmar">
 								</form>
 							

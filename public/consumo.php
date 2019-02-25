@@ -211,7 +211,7 @@
 								<?php } ?>
 							</div>
 						<?php } ?>	
-						</div><br>
+						</div><br><br>
 				<?php } ?>
 
 				<?php 
