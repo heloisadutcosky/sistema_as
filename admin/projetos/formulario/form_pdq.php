@@ -33,7 +33,7 @@
 		$conjunto_atributos = utf8_decode($_POST["conjunto_atributos"]);
 		$descricao_conjunto = utf8_decode($_POST["descricao_conjunto"]);
 		$atributo = utf8_decode($_POST["atributo"]);
-		$atributo_short = $_POST["atributo_short"];
+		$definicao_atributo = utf8_decode($_POST["definicao_atributo"]);
 		$atributo_completo = utf8_decode($_POST["atributo_completo"]);
 		$atributo_completo2 = utf8_decode($_POST["atributo_completo2"]);
 		$escala_baixo = utf8_decode($_POST["escala_baixo"]);
