@@ -37,6 +37,7 @@
 	if (isset($_POST["contrato_id"])) {
 		$contrato_id = utf8_decode($_POST["contrato_id"]);
 		$produto = utf8_decode($_POST["produto"]);
+		$url_imagem = utf8_decode($_POST["url_imagem"]);
 		$nome_form = utf8_decode($_POST["nome_form"]);
 		$descricao_projeto = utf8_decode($_POST["descricao_projeto"]);
 		$tipo_avaliacao = utf8_decode($_POST["tipo_avaliacao"]);
@@ -51,7 +52,7 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE projetos SET contrato_id = {$contrato_id}, produto = '{$produto}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}', nome_form = '{$nome_form}', consumo_ativo = '{$consumo_ativo}' WHERE projeto_id = {$projeto_id}";
+			$alterar = "UPDATE projetos SET contrato_id = {$contrato_id}, produto = '{$produto}', url_imagem = '{$url_imagem}', descricao_projeto = '{$descricao_projeto}', tipo_avaliacao = '{$tipo_avaliacao}', escala_min = '{$escala_min}', escala_max = '{$escala_max}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}', form_ativo = '{$form_ativo}', tipo_avaliador = '{$tipo_avaliador}', nome_form = '{$nome_form}', consumo_ativo = '{$consumo_ativo}' WHERE projeto_id = {$projeto_id}";
 
 			echo $alterar;
 
@@ -82,7 +83,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO projetos (contrato_id, produto, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador, nome_form) VALUES ({$contrato_id}, '{$produto}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}', '{$nome_form}')";
+				$cadastrar = "INSERT INTO projetos (contrato_id, produto, url_imagem, descricao_projeto, tipo_avaliacao, escala_min, escala_max, data_inicio, data_fim, form_ativo, tipo_avaliador, nome_form) VALUES ({$contrato_id}, '{$produto}', '{$url_imagem}', '{$descricao_projeto}', '{$tipo_avaliacao}', '{$escala_min}', '{$escala_max}', '{$data_inicio}', '{$data_fim}', '{$form_ativo}', '{$tipo_avaliador}', '{$nome_form}')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
