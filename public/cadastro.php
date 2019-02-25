@@ -57,7 +57,7 @@
 			if (isset($_POST["nome"])) { 
 				$nome = utf8_decode($_POST["nome"]);
 				$sexo = $_POST["sexo"];
-				$nascimento = $_POST["nascimento"];
+				$nascimento = date("Y-m-d", strtotime($_POST["nascimento"]));
 				$escolaridade = utf8_decode($_POST["escolaridade"]);
 				$email = $_POST["email"];
 				$telefone = $_POST["telefone"];

@@ -143,6 +143,9 @@
 	<style type="text/css">
 	</style>
 
+	<script type='text/javascript' src='http://files.rafaelwendel.com/jquery.js'></script>
+	<script type='text/javascript' src='<?php echo($caminho); ?>_js/cep.js'></script>
+
 </head>
 <body>
 	<main>

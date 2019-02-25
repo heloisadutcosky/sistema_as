@@ -64,9 +64,10 @@
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
-		<h2><?php echo $_SESSION["produto"]; ?></h2>
+		
 
 		<article>
+			<h2><?php echo $_SESSION["produto"]; ?></h2><br>
 			<p>Qual sessão você vai realizar hoje?</p>
 		</article>
 

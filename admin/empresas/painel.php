@@ -108,7 +108,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Alteração de usuário</title>
+	<title>Alteração de empresa</title>
 	
 	<meta charset="utf-8">
 

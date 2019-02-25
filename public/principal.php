@@ -81,7 +81,7 @@
 				while($linha = mysqli_fetch_assoc($acesso)) { ?>
 					<img src="
 					<?php echo utf8_encode($linha["url_imagem"]); ?>
-					" width="100" height="70" style="float: left;"><br><br>
+					" width="100" height="75" style="float: left;"><br><br>
 					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&categoria_id=<?php echo $linha["categoria_id"]; ?>&produto=<?php echo utf8_encode($linha["nome_form"]); ?>&funcao=<?php echo $_SESSION["funcao_temp"]; ?>&consumo=<?php echo $linha["consumo_ativo"]; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo utf8_encode($linha["nome_form"]); ?></a></li><br><br>
 				<?php } ?>
 			</ul>
