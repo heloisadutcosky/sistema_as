@@ -3,7 +3,7 @@ $(document).ready( function() {
    $('#cep').blur(function(){
            /* Configura a requisição AJAX */
            $.ajax({
-                url : 'consultar_cep.php', /* URL que será chamada */ 
+                url : '../../_js/consultar_cep.php', /* URL que será chamada */ 
                 type : 'POST', /* Tipo da requisição */ 
                 data: 'cep=' + $('#cep').val(), /* dado que será enviado via POST */
                 dataType: 'json', /* Tipo de transmissão */
