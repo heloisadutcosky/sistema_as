@@ -24,8 +24,6 @@
 
 		$amostra = $_GET["amostra"];
 
-		echo $_SESSION["teste"];
-
 		if ($_SESSION["teste"] == 0) {
 		
 			if (isset($_POST[$_SESSION["atributo_completo"][0]])) {
@@ -191,26 +189,39 @@
 						$_SESSION["atributo_completo"][] = $linhas["atributo_completo"];
 						?>					
 
+						<br><br>
 						<li><b><?php echo utf8_encode($linhas["atributo"]); ?></b></li>
+						<p style="font-size: 95%; font-family: serif;"><?php echo utf8_encode($linhas["definicao_atributo"]); ?></p>
+
+						<div style="position: relative; left: <?php echo($linhas["escala_min"]*80-45); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80+90); ?>px; margin-bottom: 75px; margin-top: 20px">
+							<div style="position: absolute; left: 0px; width: 150px">
+								<p style="font-weight: bold; color: #8B0000; text-align: center; font-size: 85%; font-family: serif;">Referência:</p>
+								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($linhas["referencia_min"]); ?></p>
+							</div>
+							<div style="position: absolute; right: 0px; width: 150px">
+								<p style="font-weight: bold; color: #8B0000; text-align: center; font-size: 85%; font-family: serif;">Referência:</p>
+								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($linhas["referencia_max"]); ?></p>
+							</div>
+						</div>
 
 						<form action="cabines.php?pagina=<?php echo($pagina + 1); ?>&n=<?php echo($n); ?>&amostra=<?php echo($_SESSION["amostras"][$n]); ?>" method="post" align="">
-							<input type="range" id="nota" name="<?php echo $linhas["atributo_completo"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
+							<input type="range" id="nota" name="<?php echo $linhas["atributo_completo"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px; margin-left: 20px" required>
 							<input type="checkbox" name="teste" required>
-							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*60); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*60); ?>px">
+							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*80+20); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-50); ?>px">
 								<span class="tick"></span>
 								<span class="tick"></span>
 							</div>
-							<div class="afterticks" style="padding-left: <?php echo($linhas["escala_min"]*60+25); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*60+25); ?>px">
+							<div class="afterticks" style="padding-left: <?php echo($linhas["escala_min"]*80+45); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-20); ?>px">
 								<span class="aftertick"><?php echo utf8_encode($linhas["escala_baixo"]); ?></span>
 								<span class="aftertick"><?php echo utf8_encode($linhas["escala_alto"]); ?></span>
 							</div>
 							<span id="resultado"></span>
-
+							<br><br>
 					<?php } ?>
 							
-							<input type="submit" id="botao" value="Confirmar">
+							<input type="submit" id="botao" value="Confirmar" style="margin-left: -10px">
 						</form>
-				</ul>
+				</ul><br>
 			</div>
 		</article>
 
@@ -227,9 +238,6 @@
 	// Fechar conexão
 if (isset($acesso)) {
 	mysqli_free_result($acesso);
-}
-if (isset($operacao_inserir)) {
-	mysqli_free_result($operacao_inserir);
 }
 mysqli_close($conecta);
 ?>

@@ -92,7 +92,7 @@
 		.amostra {
 			float: left;
 			width: 60px;
-			margin: 18px 0 0 18px;
+			margin: 18px 0 0 5px;
 			font-size: 120%;
 			font-weight: bold;
 			color: #C2534B;
@@ -115,6 +115,18 @@
 				<ul type="circle">
 
 						<li><b><?php echo utf8_encode($dados["atributo"]); ?></b></li>
+						<p style="font-size: 95%; font-family: serif;"><?php echo utf8_encode($dados["definicao_atributo"]); ?></p><br>
+
+						<div style="position: relative; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80+90); ?>px; margin-bottom: 70px; margin-left: <?php echo($dados["escala_min"]*80-5); ?>px; float: center;">
+							<div style="position: absolute; left: 0px; width: 150px">
+								<p style="font-weight: bold; color: #8B0000; text-align: center; font-size: 85%; font-family: serif;">Referência:</p>
+								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($dados["referencia_min"]); ?></p>
+							</div>
+							<div style="position: absolute; right: 0px; width: 150px">
+								<p style="font-weight: bold; color: #8B0000; text-align: center; font-size: 85%; font-family: serif;">Referência:</p>
+								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($dados["referencia_max"]); ?></p>
+							</div>
+						</div>
 						
 						<div class="reguas">
 
@@ -125,11 +137,11 @@
 								<form action="aparencia.php?pagina=<?php echo($pagina + 1); ?>" method="post" align="">
 									<input type="range" id="nota" name="<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
 									<input type="checkbox" name="teste" required>
-									<div class="ticks" style="padding-left: <?php echo($dados["escala_min"]*60); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60); ?>px">
+									<div class="ticks" style="padding-left: <?php echo($dados["escala_min"]*80); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80-50); ?>px">
 										<span class="tick"></span>
 										<span class="tick"></span>
 									</div>
-									<div class="afterticks" style="padding-left: <?php echo($dados["escala_min"]*60+100); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*60+40); ?>px">
+									<div class="afterticks" style="padding-left: <?php echo($dados["escala_min"]*80+85); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80-10); ?>px">
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_baixo"]); ?></span>
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_alto"]); ?></span>
 									</div>

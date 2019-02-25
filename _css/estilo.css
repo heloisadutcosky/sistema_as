@@ -86,7 +86,7 @@ footer {
 input[type=range] {
   -webkit-appearance: none;
   margin: 18px 0 0 0;
-  width: 600px;
+  width: 750px;
   margin-top: 24px;
 }
 
@@ -95,7 +95,7 @@ input[type=range]:focus {
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-  width: 600px;
+  width: 750px;
   height: 7px;
   cursor: pointer;
   animate: 0.2s;
