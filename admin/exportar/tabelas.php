@@ -32,7 +32,7 @@
 			<h2 class="espaco">OUTRAS INFORMAÇÕES</h2>
 			<br>
 
-			<form action="<?php echo $caminho; ?>_csv/tabelas.php" method="post">
+			<form action="<?php echo $caminho; ?>_csv/tabelas.php" method="get">
 				<div>
 					<label for="tabela">Informações: </label>
 					<select id="tabela" name="tabela" style="width: 330px"><br>

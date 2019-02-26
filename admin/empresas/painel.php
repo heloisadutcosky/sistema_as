@@ -45,11 +45,12 @@
 		$bairro = utf8_decode($_POST["bairro"]);
 		$cidade = utf8_decode($_POST["cidade"]);
 		$estado = utf8_decode($_POST["estado"]);
+		$inscricao_estadual = utf8_decode($_POST["inscricao_estadual"]);
 
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE empresas SET nome_fantasia = '{$nome_fantasia}', relacao = '{$relacao}', razao_social = '{$razao_social}', cnpj = '{$cnpj}', cep = '{$cep}', logradouro = '{$logradouro}', numero_end = '{$numero_end}', complemento = '{$complemento}', bairro = '{$bairro}', cidade = '{$cidade}', estado = '{$estado}' WHERE empresa_id = {$empresa_id}";
+			$alterar = "UPDATE empresas SET nome_fantasia = '{$nome_fantasia}', relacao = '{$relacao}', razao_social = '{$razao_social}', cnpj = '{$cnpj}', cep = '{$cep}', logradouro = '{$logradouro}', numero_end = '{$numero_end}', complemento = '{$complemento}', bairro = '{$bairro}', cidade = '{$cidade}', estado = '{$estado}', inscricao_estadual = '{$inscricao_estadual}' WHERE empresa_id = {$empresa_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -78,7 +79,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO empresas (nome_fantasia, relacao, razao_social, cnpj, cep, logradouro, numero_end, complemento, bairro, cidade, estado) VALUES ('$nome_fantasia', '$relacao', '$razao_social', '$cnpj', '$cep', '$logradouro', '$numero_end', '$complemento', '$bairro', '$cidade', '$estado')";
+				$cadastrar = "INSERT INTO empresas (nome_fantasia, relacao, razao_social, cnpj, cep, logradouro, numero_end, complemento, bairro, cidade, estado, inscricao_estadual) VALUES ('$nome_fantasia', '$relacao', '$razao_social', '$cnpj', '$cep', '$logradouro', '$numero_end', '$complemento', '$bairro', '$cidade', '$estado', '$inscricao_estadual')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
@@ -136,13 +137,13 @@
 
 		<article>
 			<h2 class="espaco"><?php 
-				if ($acao == "alteracao") echo "ALTERAÇÃO DE EMPRESA";
-				if ($acao == "exclusao") echo "EXCLUSÃO DE EMPRESA"; 
+				if ($acao == "alteracao") echo "ALTERAÇÃO DE ";
+				if ($acao == "exclusao") echo "EXCLUSÃO DE "; 
 				?>CADASTRO DE EMPRESA</h2><br>
 
 			<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $empresa_id; ?>" method="post">
 				<div style="float: left; margin-right: 30px;">
-					<label for="nome_fantasia">Nome: </label>
+					<label for="nome_fantasia">Nome fantasia: </label>
 					<input type="text" id="nome_fantasia" name="nome_fantasia" value="<?php echo utf8_encode($dados["nome_fantasia"]) ?>" style="width: 300px;">
 				</div>
 
@@ -197,7 +198,12 @@
 
 				<div>
 					<label for="estado">Estado: </label>
-					<input type="text" id="estado" name="estado" value="<?php echo $dados["estado"] ?>" style="width: 80px"><br>
+					<input type="text" id="estado" name="estado" value="<?php echo $dados["estado"] ?>" style="width: 80px">
+				</div><br>
+
+				<div style="float: left; margin-right: 180px;">
+					<label for="inscricao_estadual">Inscrição estadual: </label>
+					<input type="text" id="inscricao_estadual" name="inscricao_estadual" value="<?php echo $dados["inscricao_estadual"] ?>" style="width: 150px"><br>
 				</div><br>
 
 				<div>
@@ -205,7 +211,7 @@
 						if ($acao == "alteracao") echo "Alterar cadastro";
 						elseif ($acao == "exclusao") echo "Excluir cadastro";
 						else echo "Cadastrar";
-					?>" style="margin-left: 10px"><br>
+					?>" style="margin-left: 10px; margin-top: -8px"><br>
 					<br>
 				</div>
 			</form>

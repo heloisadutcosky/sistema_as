@@ -22,7 +22,7 @@ $(document).ready( function() {
 												$('#cep').val(data.cep);
 												$('#numero').val(data.numero);
  
-												$('#nome_fantasia').focus();
+												$('#inscricao_estadual').focus();
 								}
 					 });   
 	 return false;    

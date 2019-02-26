@@ -34,12 +34,16 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 		<article>
-			<h2 class="espaco">EMPRESAS CADASTRADAS</h2>
+			<h2 class="espaco" style="text-align: center; width: 630px">EMPRESAS CADASTRADAS</h2>
 			<br>
 
 			
-			<div class="botao">
+			<div class="botao" style="float: left; margin-right: 200px;">
 				<a href="painel.php?acao=cadastro">Cadastrar nova empresa</a>
+			</div>
+
+			<div class="botao">
+				<a href="<?php echo($caminho); ?>_csv/tabelas.php?tabela=empresas" style="background-color: #FFF; color: #778899; padding-left: 45px; padding-right: 45px">Exportar dados</a>
 			</div>
 			<br>
 

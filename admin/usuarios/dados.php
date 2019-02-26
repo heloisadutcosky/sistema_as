@@ -34,12 +34,16 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 		<article>
-			<h2 class="espaco">USUÁRIOS ABOUT SOLUTION</h2>
+			<h2 class="espaco" style="text-align: center; width: 550px">USUÁRIOS ABOUT SOLUTION</h2>
 			<br>
 
 			
-			<div class="botao">
+			<div class="botao" style="float: left; margin-right: 140px;">
 				<a href="painel.php?acao=cadastro">Cadastrar novo usuário</a>
+			</div>
+
+			<div class="botao">
+				<a href="<?php echo($caminho); ?>_csv/tabelas.php?tabela=usuarios" style="background-color: #FFF; color: #778899; padding-left: 40px; padding-right: 40px">Exportar dados</a>
 			</div>
 			<br>
 
