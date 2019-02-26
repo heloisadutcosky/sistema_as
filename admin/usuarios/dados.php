@@ -34,11 +34,11 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 		<article>
-			<h2 class="espaco" style="text-align: center; width: 550px">USUÁRIOS ABOUT SOLUTION</h2>
+			<h2 class="espaco" style="text-align: center; width: 630px">USUÁRIOS ABOUT SOLUTION</h2>
 			<br>
 
 			
-			<div class="botao" style="float: left; margin-right: 140px;">
+			<div class="botao" style="float: left; margin-right: 220px;">
 				<a href="painel.php?acao=cadastro">Cadastrar novo usuário</a>
 			</div>
 
@@ -47,21 +47,21 @@
 			</div>
 			<br>
 
-			<div id="cima_tabela" class="usuarios">
+			<div id="cima_tabela" style="width: 630px">
 				<ul>
-				    <li><b>CPF</b></li>
-				    <li><b>Nome</b></li>
-				    <li><b>Classificação</b></li>
+				    <li style="width: 120px; padding-left: 5px"><b>CPF</b></li>
+				    <li style="width: 250px; padding-left: 5px"><b>Nome</b></li>
+				    <li style="width: 100px; padding-left: 5px"><b>Classificação</b></li>
 				</ul>
 			</div>
-			<div id="janela" class="usuarios">
+			<div id="janela" style="width: 630px">
 				<?php
 				    while($linha = mysqli_fetch_assoc($acesso)) {
 				?>
 				<ul>
-				    <li><?php echo utf8_encode($linha["cpf"]) ?></li>
-				    <li><?php echo utf8_encode($linha["nome"]) ?></li>
-				    <li><?php echo utf8_encode($linha["funcao"]) ?></li>
+				    <li style="width: 120px; padding-left: 5px"><?php echo utf8_encode($linha["cpf"]) ?></li>
+				    <li style="width: 250px; padding-left: 5px"><?php echo utf8_encode($linha["nome"]) ?></li>
+				    <li style="width: 100px; padding-left: 5px"><?php echo utf8_encode($linha["funcao"]) ?></li>
 				    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["user_id"] ?>">Alterar</a> </li>
 				    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["user_id"] ?>">Excluir</a> </li>
 				</ul>
