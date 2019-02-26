@@ -38,11 +38,18 @@
 		$relacao = utf8_decode($_POST["relacao"]);
 		$razao_social = utf8_decode($_POST["razao_social"]);
 		$cnpj = utf8_decode($_POST["cnpj"]);
+		$cep = utf8_decode($_POST["cep"]);
+		$logradouro = utf8_decode($_POST["logradouro"]);
+		$numero_end = utf8_decode($_POST["numero"]);
+		$complemento = utf8_decode($_POST["complemento"]);
+		$bairro = utf8_decode($_POST["bairro"]);
+		$cidade = utf8_decode($_POST["cidade"]);
+		$estado = utf8_decode($_POST["estado"]);
 
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE empresas SET nome_fantasia = '{$nome_fantasia}', relacao = '{$relacao}', razao_social = '{$razao_social}', cnpj = '{$cnpj}' WHERE empresa_id = {$empresa_id}";
+			$alterar = "UPDATE empresas SET nome_fantasia = '{$nome_fantasia}', relacao = '{$relacao}', razao_social = '{$razao_social}', cnpj = '{$cnpj}', cep = '{$cep}', logradouro = '{$logradouro}', numero_end = '{$numero_end}', complemento = '{$complemento}', bairro = '{$bairro}', cidade = '{$cidade}', estado = '{$estado}' WHERE empresa_id = {$empresa_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -71,7 +78,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO empresas (nome_fantasia, relacao, razao_social, cnpj) VALUES ('$nome_fantasia', '$relacao', '$razao_social', '$cnpj')";
+				$cadastrar = "INSERT INTO empresas (nome_fantasia, relacao, razao_social, cnpj, cep, logradouro, numero_end, complemento, bairro, cidade, estado) VALUES ('$nome_fantasia', '$relacao', '$razao_social', '$cnpj', '$cep', '$logradouro', '$numero_end', '$complemento', '$bairro', '$cidade', '$estado')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
@@ -118,6 +125,9 @@
 	<style type="text/css">
 	</style>
 
+	<script type='text/javascript' src='http://files.rafaelwendel.com/jquery.js'></script>
+	<script type='text/javascript' src='<?php echo($caminho); ?>_js/cnpj.js'></script>
+
 </head>
 <body>
 	<main>
@@ -131,28 +141,64 @@
 				?>CADASTRO DE EMPRESA</h2><br>
 
 			<form action="painel.php?acao=<?php echo $acao; ?>&codigo=<?php echo $empresa_id; ?>" method="post">
-				<div style="float: left; margin-right: 30px; width: 300px">
+				<div style="float: left; margin-right: 30px;">
 					<label for="nome_fantasia">Nome: </label>
-					<input type="text" id="nome_fantasia" name="nome_fantasia" value="<?php echo utf8_encode($dados["nome_fantasia"]) ?>" style="width: 280px;">
+					<input type="text" id="nome_fantasia" name="nome_fantasia" value="<?php echo utf8_encode($dados["nome_fantasia"]) ?>" style="width: 300px;">
 				</div>
 
 				<div>
 					<label for="relacao">Relação: </label>
-					<select id="relacao" name="relacao"><br>
+					<select id="relacao" name="relacao" style="width: 200px;"><br>
 						<option value="Cliente" <?php if($dados["relacao"] == "Cliente") { ?> selected <?php } ?>>Cliente</option>
 						<option value="Fornecedor" <?php if($dados["relacao"] == "Fornecedor") { ?> selected <?php } ?>>Fornecedor</option>
-					</select><br>
-				</div>
+					</select>
+				</div><br>
 
-				<div style="float: left; margin-right: 30px; width: 300px">
-					<label for="razao_social">Razão social: </label>
-					<input type="text" id="razao_social" name="razao_social" value="<?php echo utf8_encode($dados["razao_social"]) ?>" style="width: 280px;">
+				<div style="float: left; margin-right: 30px">
+					<label for="cnpj">CNPJ: </label>
+					<input type="text" id="cnpj" name="cnpj" value="<?php echo $dados["cnpj"] ?>" style="width: 150px;">
 				</div>
 
 				<div>
-					<label for="cnpj">CNPJ: </label>
-					<input type="text" id="cnpj" name="cnpj" value="<?php echo $dados["cnpj"] ?>">
-				</div><br><br>
+					<label for="razao_social">Razão social: </label>
+					<input type="text" id="nome" name="razao_social" value="<?php echo utf8_encode($dados["razao_social"]) ?>" style="width: 345px;">
+				</div><br>
+
+				<div style="float: left; margin-right: 30px;">
+					<label for="cep">CEP: </label>
+					<input type="text" id="cep" name="cep" value="<?php echo $dados["cep"] ?>" style="width: 150px"><br>
+				</div>
+
+				<div>
+					<label for="logradouro">Logradouro: </label>
+					<input type="text" id="logradouro" name="logradouro" value="<?php echo utf8_encode($dados["logradouro"]) ?>" style="width: 345px"><br>
+				</div>
+
+				<div style="float: left; margin-right: 20px;">
+					<label for="numero">Número: </label>
+					<input type="text" id="numero" name="numero" value="<?php echo $dados["numero_end"] ?>" style="width: 58px"><br>
+				</div>
+
+
+				<div style="float: left; margin-right: 30px;">
+					<label for="bairro">Bairro: </label>
+					<input type="text" id="bairro" name="bairro" value="<?php echo utf8_encode($dados["bairro"]) ?>" style="width: 310px">
+				</div>
+
+				<div>
+					<label for="complemento">Complemento: </label>
+					<input type="text" id="complemento" name="complemento" value="<?php echo $dados["complemento"] ?>" style="width: 80px">
+				</div><br>
+
+				<div style="float: left; margin-right: 30px;">
+					<label for="cidade">Cidade: </label>
+					<input type="text" id="cidade" name="cidade" value="<?php echo utf8_encode($dados["cidade"]) ?>" style="width: 415px">
+				</div>
+
+				<div>
+					<label for="estado">Estado: </label>
+					<input type="text" id="estado" name="estado" value="<?php echo $dados["estado"] ?>" style="width: 80px"><br>
+				</div><br>
 
 				<div>
 					<input type="submit" id="botao" value="<?php 
@@ -177,9 +223,7 @@
 </html>
 
 <?php 
-if (isset($acesso)) {
-	mysqli_free_result($acesso);
-}
+
 if (isset($operacao_cadastrar)) {
 	mysqli_free_result($operacao_cadastrar);
 }

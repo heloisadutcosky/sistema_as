@@ -43,21 +43,21 @@
 			</div>
 			<br>
 
-			<div id="cima_tabela" style="width: 600px">
+			<div id="cima_tabela" style="width: 630px">
 				<ul>
-				    <li style="width: 120px"><b>CNPJ</b></li>
-				    <li style="width: 250px; padding-right: 10px"><b>Nome</b></li>
+				    <li style="width: 120px; padding-left: 5px"><b>CNPJ</b></li>
+				    <li style="width: 280px; padding-left: 5px"><b>Nome</b></li>
 				    <li style="width: 70px"><b>Relação</b></li>
 				</ul>
 			</div>
-			<div id="janela" style="width: 600px">
+			<div id="janela" style="width: 630px">
 				<?php
 				    while($linha = mysqli_fetch_assoc($acesso)) {
 				?>
 				<ul>
-				    <li style="width: 120px"><?php echo utf8_encode($linha["cnpj"]) ?></li>
-				    <li style="width: 250px; padding-right: 10px"><?php echo utf8_encode($linha["razao_social"]) ?></li>
-				    <li style="width: 70px"><?php echo utf8_encode($linha["relacao"]) ?></li>
+				    <li style="width: 120px; padding: 5px"><?php echo utf8_encode($linha["cnpj"]) ?></li>
+				    <li style="width: 280px; padding: 5px"><?php echo utf8_encode($linha["razao_social"]) ?></li>
+				    <li style="width: 70px;"><?php echo utf8_encode($linha["relacao"]) ?></li>
 				    <li><a href="painel.php?acao=alteracao&codigo=<?php echo $linha["empresa_id"] ?>">Alterar</a> </li>
 				    <li><a href="painel.php?acao=exclusao&codigo=<?php echo $linha["empresa_id"] ?>">Excluir</a> </li>
 				</ul>

@@ -53,7 +53,7 @@
 		<ul>
 			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/exportar/formularios.php">Formulários de projetos</a></li>
 			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/exportar/projetos.php">Resultados de projetos</a></li>
-			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/exportar/consumo.php">Questionários de consumo</a></li>
+			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/exportar/tabelas.php">Outras informações</a></li>
 		</ul>
 		<?php } ?>
 	</ul>
