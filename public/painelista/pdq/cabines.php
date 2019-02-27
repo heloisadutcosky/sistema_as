@@ -25,6 +25,7 @@
 		$amostra = $_GET["amostra"];
 
 		if ($_SESSION["teste"] == 0) {
+			echo $_SESSION["atributo_completo"];
 		
 			if (isset($_POST[$_SESSION["atributo_completo"][0]])) {
 
@@ -45,7 +46,7 @@
 
 	// #######################################################################################################################
 
-	$conjunto_atributos = 'Aparência';
+	$conjunto_atributos = 'Aparencia';
 
 	// Abrir consulta ao banco de dados para checar quais são os conjuntos -----------------------------------------------
 	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos <> '{$conjunto_atributos}'";
