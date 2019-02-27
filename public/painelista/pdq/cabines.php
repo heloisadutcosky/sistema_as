@@ -25,7 +25,6 @@
 		$amostra = $_GET["amostra"];
 
 		if ($_SESSION["teste"] == 0) {
-			echo $_SESSION["atributo_completo"];
 		
 			if (isset($_POST[$_SESSION["atributo_completo"][0]])) {
 
@@ -35,8 +34,6 @@
 					$nota = $_POST[$_SESSION["atributo_completo"][$i]]*10;
 
 					$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo_completo', $nota)";
-
-					echo $inserir;
 
 					$operacao_inserir = mysqli_query($conecta, $inserir);
 					}
