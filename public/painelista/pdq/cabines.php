@@ -35,6 +35,8 @@
 
 					$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo_completo', $nota)";
 
+					echo $inserir;
+
 					$operacao_inserir = mysqli_query($conecta, $inserir);
 					}
 			}
@@ -43,7 +45,7 @@
 
 	// #######################################################################################################################
 
-	$conjunto_atributos = 'Aparencia';
+	$conjunto_atributos = 'Aparência';
 
 	// Abrir consulta ao banco de dados para checar quais são os conjuntos -----------------------------------------------
 	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos <> '{$conjunto_atributos}'";
