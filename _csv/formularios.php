@@ -20,6 +20,7 @@ if (isset($_GET["codigo"])) {
 		// create a file pointer connected to the output stream
 		$output = fopen('php://output', 'w');
 
+		fputs($output, $bom =( chr(0xEF) . chr(0xBB) . chr(0xBF) ));
 		// output the column headings
 		fputcsv($output, array("projeto_id", "produto", "conjunto_atributos", "atributo", "definicao_atributo", "referencia_min", "referencia_max"));
 
