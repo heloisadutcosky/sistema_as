@@ -21,10 +21,12 @@ if (isset($_GET["codigo"])) {
 		$output = fopen('php://output', 'w');
 
 		// output the column headings
-		fputcsv($output, array("produto", "conjunto_atributos", "atributo", "definicao_atributo", "referencia_min", "referencia_max"));
+		fputcsv($output, array("projeto_id", "produto", "conjunto_atributos", "atributo", "definicao_atributo", "referencia_min", "referencia_max"));
 
 		// fetch the data
-		$consulta = "SELECT p.produto,
+		$consulta = "SELECT 
+		f.projeto_id,
+		p.produto,
 		f.conjunto_atributos,
 		f.atributo,
 		f.definicao_atributo,
@@ -38,7 +40,7 @@ if (isset($_GET["codigo"])) {
 		
 		// loop over the rows, outputting them
 		while ($row = mysqli_fetch_assoc($acesso)) {
-			fputcsv($output, $row);
+			fputcsv($output, array($row["projeto_id"], utf8_encode($row["produto"]), utf8_encode($row["conjunto_atributos"]), utf8_encode($row["atributo"]), utf8_encode($row["definicao_atributo"]), utf8_encode($row["referencia_min"]), utf8_encode($row["referencia_max"])));
 		}
 }
 ?>
