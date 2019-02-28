@@ -51,25 +51,16 @@
 			if (isset($_POST["$amostra"])) {
 
 				$conjunto_atributos = utf8_decode($dados["conjunto_atributos"]);
-				$atributo_completo = $dados["atributo_completo"];
-				$atributo_id = $dados["atributo_id"];
+				$atributo = $dados["atributo_completo"];
 				$nota = $_POST["$amostra"]*10;
 
-				$consulta = "SELECT * FROM resultados WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$amostra}' AND atributo_id = {$atributo_id}";
-				$acesso = mysqli_query($conecta, $consulta);
-				$dados = mysqli_fetch_assoc($acesso);
+				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo', $nota)";
 
-
-				if (empty($dados)) {
-					$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', $atributo_id, '$atributo_completo', $nota)";
-
-					$operacao_inserir = mysqli_query($conecta, $inserir);
-				} else {
-
-					$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$amostra}' AND atributo_id = {$atributo_id}";
-
-					$operacao_alterar = mysqli_query($conecta, $alterar);
+				if (!$acesso) {
+					die("Falha na insercao dos dados.");
 				}
+
+				$operacao_inserir = mysqli_query($conecta, $inserir);
 			}
 		}
 	}
@@ -107,13 +98,6 @@
 			color: #C2534B;
 		}
 	</style>
-
-	<script type="text/javascript">
-		document.getElementById("nota").disabled = true;
-		function disableBtn() {
-		    document.getElementById("myRange").disabled = true;
-		}
-	</script>
 
 </head>
 <body>

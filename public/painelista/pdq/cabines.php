@@ -13,8 +13,12 @@
 	$projeto_id = $_SESSION["projeto_id"];
 	$sessao = $_SESSION["sessao"];
 
-	//Verificar informações de acesso
-	require_once($caminho . "_incluir/verificacao_usuario.php");
+
+	if(isset($_SESSION["usuario"])) {
+		$user_id = $_SESSION["user_id"];
+	} else {
+		Header("Location:" . $caminho . "login.php");
+	}
 
 	if (isset($_GET["amostra"]))	 {
 
@@ -22,31 +26,17 @@
 
 		if ($_SESSION["teste"] == 0) {
 		
-			if (isset($_POST["atributo" . $_SESSION["atributo_id"][0]])) {
+			if (isset($_POST[$_SESSION["atributo_completo"][0]])) {
 
 				for ($i=0; $i < $_SESSION["n_atributos"]; $i++) {
 
-					$atributo_id = $_SESSION["atributo_id"][$i];
 					$atributo_completo = $_SESSION["atributo_completo"][$i];
-					$nota = $_POST["atributo" . $_SESSION["atributo_id"][$i]]*10;
+					$nota = $_POST[$_SESSION["atributo_completo"][$i]]*10;
 
-					$consulta = "SELECT * FROM resultados WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$amostra}' AND atributo_id = {$atributo_id}";
-					$acesso = mysqli_query($conecta, $consulta);
-					$dados = mysqli_fetch_assoc($acesso);
+					$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo_completo', $nota)";
 
-
-					if (empty($dados)) {
-						$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', $atributo_id, '$atributo_completo', $nota)";
-
-						$operacao_inserir = mysqli_query($conecta, $inserir);
-					} else {
-
-						$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$amostra}' AND atributo_id = {$atributo_id}";
-
-						$operacao_alterar = mysqli_query($conecta, $alterar);
+					$operacao_inserir = mysqli_query($conecta, $inserir);
 					}
-					
-				}
 			}
 		}
 	}
@@ -194,10 +184,8 @@
 				<ul type="circle">
 
 					<?php 
-					$_SESSION["atributo_id"] = array();
 					$_SESSION["atributo_completo"] = array();
 					while($linhas=mysqli_fetch_assoc($acesso)) { 
-						$_SESSION["atributo_id"][] = $linhas["atributo_id"];
 						$_SESSION["atributo_completo"][] = $linhas["atributo_completo"];
 						?>					
 
@@ -217,7 +205,7 @@
 						</div>
 
 						<form action="cabines.php?pagina=<?php echo($pagina + 1); ?>&n=<?php echo($n); ?>&amostra=<?php echo($_SESSION["amostras"][$n]); ?>" method="post" align="">
-							<input type="range" id="nota" name="atributo<?php echo $linhas["atributo_id"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px; margin-left: 20px" required>
+							<input type="range" id="nota" name="<?php echo $linhas["atributo_completo"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px; margin-left: 20px" required>
 							<input type="checkbox" name="teste" required style="width: 20px; float: right; margin-right: 50px; margin-top: 22px">
 							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*80+20); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-50); ?>px">
 								<span class="tick"></span>
