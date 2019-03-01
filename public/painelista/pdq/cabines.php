@@ -25,7 +25,7 @@
 
 		foreach ($_SESSION["atributo_id"] as $atributo_id) {
 
-			$nota = $_POST["atributo" . $atributo_id]*10;
+			$nota = $_POST["atributo" . $atributo_id];
 
 			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
 			$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
@@ -123,7 +123,7 @@
 			<main>
 				<?php include_once($caminho . "_incluir/topo.php"); ?>
 
-				<article>
+				<article style="margin-left: 10px">
 					<h2><?php echo $_SESSION["produto"]; ?></h2>
 					<br>
 					<h3 style="color: #8B0000">CABINES</h3>
@@ -173,6 +173,19 @@
 		  font-weight: bold;
 		  color: #C2534B;
 		}
+
+		#botao {
+		  text-decoration: none;
+		  background-color: #FFF;
+		  margin-left: 20px;
+		  margin-bottom: 1px;
+		  padding: 5px 15px;
+		  color: #778899;;
+		  border: 1px solid #696969;
+		  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+		  font-size: 100%;
+		  width: 200px;
+		}
 	</style>
 
 </head>
@@ -181,6 +194,7 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 		<article>
+			<div style="margin-left: 10px">
 			<h2 style="margin-bottom: 5px;"><?php echo $_SESSION["produto"]; ?></h2>
 			
 			<div style="margin-top: 40px;">
@@ -189,18 +203,18 @@
 				<p><?php echo $descricao_conjunto; ?></p><br>
 
 				<p class="amostra"><?php echo "Amostra " . $_SESSION["amostra"]; ?></p>
-
-				<ul type="circle">
+				</div>
 
 					<?php 
 					
 					while($linhas=mysqli_fetch_assoc($acesso)) { ?>					
 
-						<br><br>
-						<li><b><?php echo utf8_encode($linhas["atributo"]); ?></b></li>
-						<p style="font-size: 95%; font-family: serif;"><?php echo utf8_encode($linhas["definicao_atributo"]); ?></p>
+						<br>
+						<div style="background-color: #F8F8F8; padding-left: 40px; padding-top: 20px; margin-right: 10px">
+						<li style="font-size: 110%; float: left; margin-right: 10px; list-style: circle;"><b><?php echo utf8_encode($linhas["atributo"]); ?>: </b></li>
+						<p style="font-size: 100%; font-family: serif; margin-top: 1px">(<?php echo utf8_encode($linhas["definicao_atributo"]); ?>)</p>
 
-						<div style="position: relative; left: <?php echo($linhas["escala_min"]*80-45); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80+90); ?>px; margin-bottom: 90px; margin-top: 20px">
+						<div style="position: relative; left: <?php echo($linhas["escala_min"]*80-45); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80+95); ?>px; margin-bottom: 80px; margin-top: 10px">
 							<div style="position: absolute; left: 0px; width: 150px">
 								<p style="font-weight: bold; color: #8B0000; text-align: center; font-size: 85%; font-family: serif;">Referência:</p>
 								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($linhas["referencia_min"]); ?></p>
@@ -212,23 +226,40 @@
 						</div>
 
 						<form action="cabines.php" method="post" align="">
-							<input type="range" id="nota" name="atributo<?php echo $linhas["atributo_id"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px; margin-left: 20px" required>
-							<input type="checkbox" name="teste" required style="width: 20px; float: right; margin-right: 50px; margin-top: 22px">
-							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*80+20); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-50); ?>px">
+							<input type="range" id="nota<?php echo $linhas["atributo_id"]; ?>" name="atributo<?php echo $linhas["atributo_id"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px; margin-left: 30px" required>
+							<input type="text" id="atributo<?php echo $linhas["atributo_id"]; ?>" name="atributo<?php echo $linhas["atributo_id"]; ?>" style="width: 30px; margin-left: 5px; border: none; text-align: center; background-color: #F8F8F8;">
+							<input id="<?php echo $linhas["atributo_id"]; ?>" type="checkbox" name="teste" required style="width: 20px; float: right; margin-right: 25px; margin-top: 22px" onclick="ShowHideDiv(this.id)">
+							<script type="text/javascript">
+									function ShowHideDiv(clickedId) {
+							        	var travar = document.getElementById(clickedId).checked ? 1 : 0;
+							        	if (travar == 1) {
+							        		var nota = document.getElementById("nota".concat(clickedId)).value*10;
+							        		document.getElementById("nota".concat(clickedId)).disabled = true;
+							        		document.getElementById("atributo".concat(clickedId)).value = nota.toFixed(1);
+							        	} 
+							        	else {
+							        		document.getElementById("nota".concat(clickedId)).disabled = false;
+							        		document.getElementById("atributo".concat(clickedId)).value = "";
+							        	}
+							    	}
+							</script>
+							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*80+30); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-50); ?>px">
 								<span class="tick"></span>
 								<span class="tick"></span>
 							</div>
-							<div class="afterticks" style="padding-left: <?php echo($linhas["escala_min"]*80+45); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-20); ?>px">
+							<div class="afterticks" style="padding-left: <?php echo($linhas["escala_min"]*80+55); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-20); ?>px; margin-top: 5px">
 								<span class="aftertick"><?php echo utf8_encode($linhas["escala_baixo"]); ?></span>
 								<span class="aftertick"><?php echo utf8_encode($linhas["escala_alto"]); ?></span>
 							</div>
 							<span id="resultado"></span>
+							</div>
 							<br><br>
 					<?php } ?>
 							<input type="hidden" name="amostra" value="<?php echo $_SESSION["amostra"];?>">
-							<input type="submit" id="botao" value="Confirmar" style="margin-left: -10px">
-						</form>
-				</ul><br>
+							<input type="submit" id="botao" value="Confirmar" style="margin-left: 5px">
+							<br>
+						</form><br><br>
+				
 			</div>
 		</article>
 

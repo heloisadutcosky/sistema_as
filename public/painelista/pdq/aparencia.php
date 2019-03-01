@@ -18,11 +18,11 @@
 	$pagina = isset($_GET["pagina"]) ? $_GET["pagina"] : 1;
 
 	// Armazenar respostas anteriores
-	if (isset($_POST["{$_SESSION["amostras"][0]}"])) {
+	if (isset($_POST["amostra{$_SESSION["amostras"][0]}"])) {
 	
 		foreach ($_SESSION["amostras"] as $amostra) {
 
-			$nota = $_POST["$amostra"]*10;
+			$nota = $_POST["amostra{$amostra}"];
 
 			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$amostra}' AND atributo_id = {$_SESSION["atributo_id"]}";
 			$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
@@ -31,6 +31,8 @@
 
 			if (empty($resultados)) {
 				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '$amostra', {$_SESSION["atributo_id"]}, $nota, {$_SESSION["teste"]})";
+
+				echo $inserir;
 
 				$operacao_inserir = mysqli_query($conecta, $inserir);
 			} else {
@@ -95,32 +97,29 @@
 		}
 	</style>
 
-	<script type="text/javascript">
-		document.getElementById("nota").disabled = true;
-		function disableBtn() {
-		    document.getElementById("myRange").disabled = true;
-		}
-	</script>
-
 </head>
 <body>
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		
 		<article>
-		<h2><?php echo $_SESSION["produto"]; ?></h2>
+			
+		<h2 style="margin-left: 10px"><?php echo $_SESSION["produto"]; ?></h2>
 			<!-- Título do atributo avaliado -->
-			<div style="margin-top: 40px;">
+			<div style="margin-top: 30px; margin-left: 10px">
 				<h3 style="font-size: 120%; color: #8B0000;"><?php echo utf8_encode($dados["conjunto_atributos"]); ?></h3>
 				<!-- Explicação do teste -->
 				<p><?php echo utf8_encode($dados["descricao_conjunto"]); ?></p><br>
+			</div>
 
+
+				<div style="margin-left: -5px">
 				<ul type="circle">
 
-						<li><b><?php echo utf8_encode($dados["atributo"]); ?></b></li>
-						<p style="font-size: 95%; font-family: serif;"><?php echo utf8_encode($dados["definicao_atributo"]); ?></p><br>
+						<li style="font-size: 120%; float: left; margin-right: 10px"><b><?php echo utf8_encode($dados["atributo"]); ?></b></li>
+						<p style="font-size: 100%; font-family: serif; padding-top: 2px; margin-bottom: -5px">(<?php echo utf8_encode($dados["definicao_atributo"]); ?>)</p><br>
 
-						<div style="position: relative; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80+90); ?>px; margin-bottom: 70px; margin-left: <?php echo($dados["escala_min"]*80-5); ?>px; float: center;">
+						<div style="position: relative; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80+90); ?>px; margin-bottom: 70px; margin-left: <?php echo($dados["escala_min"]*80-15); ?>px; float: center;">
 							<div style="position: absolute; left: 0px; width: 150px">
 								<p style="font-weight: bold; color: #8B0000; text-align: center; font-size: 85%; font-family: serif;">Referência:</p>
 								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($dados["referencia_min"]); ?></p>
@@ -131,20 +130,38 @@
 							</div>
 						</div>
 						
-						<div class="reguas">
+						<div class="reguas" style="margin-left: -10px">
 
-							<form action="aparencia.php?pagina=<?php echo($pagina + 1); ?>" method="post" align="">
+							<form action="aparencia.php" method="post" align="">
 							<?php foreach ($_SESSION["amostras"] as $amostra) { ?>
 
 								<p class="amostra"><?php echo $amostra; ?></p>
 								
-									<input type="range" id="nota" name="<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
-									<input type="checkbox" name="teste" style="width: 20px; float: right; margin-right: 20px; margin-top: 22px">
+									<input type="range" id="nota<?php echo $amostra; ?>" name="nota<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
+									<input type="text" id="amostra<?php echo $amostra; ?>" name="amostra<?php echo $amostra; ?>" style="width: 30px; margin-left: 5px; border: none; text-align: center;">
+									<input id="<?php echo $amostra; ?>" type="checkbox" name="teste" style="width: 20px; float: right; margin-right: 20px; margin-top: 22px" onclick="ShowHideDiv(this.id)">
+
+									<script type="text/javascript">
+										function ShowHideDiv(clickedId) {
+								        	var travar = document.getElementById(clickedId).checked ? 1 : 0;
+								        	if (travar == 1) {
+								        		var nota = document.getElementById("nota".concat(clickedId)).value*10;
+								        		document.getElementById("nota".concat(clickedId)).disabled = true;		
+								        		document.getElementById("amostra".concat(clickedId)).value = nota.toFixed(1);
+								        	} 
+								        	else {
+								        		document.getElementById("nota".concat(clickedId)).disabled = false;
+								        		document.getElementById("amostra".concat(clickedId)).value ="";
+								        	}
+								    	}
+									</script>
+
+
 									<div class="ticks" style="padding-left: <?php echo($dados["escala_min"]*80); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80-50); ?>px">
 										<span class="tick"></span>
 										<span class="tick"></span>
 									</div>
-									<div class="afterticks" style="padding-left: <?php echo($dados["escala_min"]*80+85); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80-10); ?>px">
+									<div class="afterticks" style="padding-left: <?php echo($dados["escala_min"]*80+85); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80-10); ?>px; margin-top: 5px">
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_baixo"]); ?></span>
 										<span class="aftertick"><?php echo utf8_encode($dados["escala_alto"]); ?></span>
 									</div>
@@ -157,6 +174,7 @@
 							
 						</div>
 				</ul>
+				</div>
 					
 			</div>
 		</article>
