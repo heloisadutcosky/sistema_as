@@ -2,79 +2,75 @@
 
 	$caminho =  "../../../";
 	require_once($caminho . "conexao/conexao.php");
-	
+
 	// Iniciar sessão
 	session_start();
+
+	//Verificar informações de acesso
+	require_once($caminho . "_incluir/verificacao_usuario.php");
+	
+	
 
 	if (isset($_GET["first"])) {
 		$_SESSION["first"] = $_GET["first"];
 	}
 	
-	// Variáveis
-
-	// Variáveis constantes na sessão
-	$projeto_id = $_SESSION["projeto_id"];
-	$conjunto_atributos = 'Aparencia';
-
-
-	if(isset($_SESSION["usuario"])) {
-
-		$user_id = $_SESSION["user_id"];
-
-	} else {
-		Header("Location:" . $caminho . "login.php");
-	}
-
-
-	$sessao = $_SESSION["sessao"];
-
-
-	// Abrir consulta ao banco de dados
-	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$conjunto_atributos}'";
-	$acesso = mysqli_query($conecta, $consulta);
-
-	if (!$acesso) {
-		die("Falha na consulta ao banco.");
-	}
+	$pagina = isset($_GET["pagina"]) ? $_GET["pagina"] : 1;
 
 	// Armazenar respostas anteriores
-	$pagina = isset($_GET["pagina"]) ? $_GET["pagina"] : 1;
+	if (isset($_POST["{$_SESSION["amostras"][0]}"])) {
 	
-	
-	for ($i=1; $i < $pagina; $i++) {
-		$dados = mysqli_fetch_assoc($acesso);
-	}
-	
-
-	if ($_SESSION["teste"] == 0) {
 		foreach ($_SESSION["amostras"] as $amostra) {
-			if (isset($_POST["$amostra"])) {
 
-				$conjunto_atributos = utf8_decode($dados["conjunto_atributos"]);
-				$atributo = $dados["atributo_completo"];
-				$nota = $_POST["$amostra"]*10;
+			$nota = $_POST["$amostra"]*10;
 
-				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo', $nota)";
+			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$amostra}' AND atributo_id = {$_SESSION["atributo_id"]}";
+			$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
+			$resultados = mysqli_fetch_assoc($acesso_resultados);
 
-				if (!$acesso) {
-					die("Falha na insercao dos dados.");
-				}
+
+			if (empty($resultados)) {
+				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '$amostra', {$_SESSION["atributo_id"]}, $nota, {$_SESSION["teste"]})";
 
 				$operacao_inserir = mysqli_query($conecta, $inserir);
+			} else {
+
+				$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$amostra}' AND atributo_id = {$_SESSION["atributo_id"]}";
+
+				$operacao_alterar = mysqli_query($conecta, $alterar);
 			}
 		}
 	}
 
-	if ($pagina > mysqli_num_rows($acesso)) {
+	$atributos_id = array_keys($_SESSION["atributos_id"], "Aparência");
+	$atributo_id = $atributos_id[0];
+	$preenchido=1;
+	while ($preenchido==1) {
+		$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND atributo_id = $atributo_id";
+	
+		$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
+		$n_resultados = mysqli_num_rows($acesso_resultados);
+		
+
+		if ($n_resultados!=count($_SESSION["amostras"])) {
+			$preenchido=0;
+			$_SESSION["atributo_id"] = $atributo_id;
+		}
+
+		$atributo_id = next($atributos_id);
+	}
+
+	if (empty($_SESSION["atributo_id"])) {
 		if ($_SESSION["first"] == 1) {
 			header("location:cabines.php?first=0");
 		} else {
-			header("location:" . $caminho . "logout.php?mensagem=1");
+			header("location:principal.php");
 		}
 	} 
 
-
 	// Próximas variáveis
+	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$_SESSION["projeto_id"]} AND atributo_id={$_SESSION["atributo_id"]}";
+	$acesso = mysqli_query($conecta, $consulta);
 	$dados = mysqli_fetch_assoc($acesso);
 
 ?>
@@ -98,6 +94,13 @@
 			color: #C2534B;
 		}
 	</style>
+
+	<script type="text/javascript">
+		document.getElementById("nota").disabled = true;
+		function disableBtn() {
+		    document.getElementById("myRange").disabled = true;
+		}
+	</script>
 
 </head>
 <body>
@@ -130,11 +133,11 @@
 						
 						<div class="reguas">
 
+							<form action="aparencia.php?pagina=<?php echo($pagina + 1); ?>" method="post" align="">
 							<?php foreach ($_SESSION["amostras"] as $amostra) { ?>
 
 								<p class="amostra"><?php echo $amostra; ?></p>
 								
-								<form action="aparencia.php?pagina=<?php echo($pagina + 1); ?>" method="post" align="">
 									<input type="range" id="nota" name="<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
 									<input type="checkbox" name="teste" style="width: 20px; float: right; margin-right: 20px; margin-top: 22px">
 									<div class="ticks" style="padding-left: <?php echo($dados["escala_min"]*80); ?>px; width: <?php echo(($dados["escala_max"]-$dados["escala_min"])*80-50); ?>px">
@@ -169,9 +172,6 @@
 	// Fechar conexão
 if (isset($acesso)) {
 	mysqli_free_result($acesso);
-}
-if (isset($operacao_inserir)) {
-	mysqli_free_result($operacao_inserir);
 }
 	mysqli_close($conecta);
 ?>

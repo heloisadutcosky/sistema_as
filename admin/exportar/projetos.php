@@ -10,6 +10,11 @@
 
 	//Estabelecer conexão a base de dados
 	require_once($caminho . "conexao/conexao.php");
+
+	if (isset($_GET["apagar"])) {
+		$consulta = "DELETE FROM resultados WHERE teste = 1";
+		$acesso = mysqli_query($conecta, $consulta);
+	}
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +38,7 @@
 			<br>
 
 			<form action="<?php echo $caminho; ?>_csv/resultados.php" method="get">
-				<div>
+				<div style="float: left; margin-right: 30px">
 					<label for="codigo">Projeto: </label>
 					<select id="codigo" name="codigo" style="width: 330px"><br>
 						<option></option>
@@ -44,11 +49,22 @@
 							<option value="<?php echo $dados["projeto_id"]; ?>"><?php echo utf8_encode($dados["nome_form"]); ?></option>
 						<?php } ?>
 					</select>
-				</div><br>
+				</div>
 
 				<div>
+					<input type="checkbox" name="dados_teste" style="float: left; width: 20px; margin-top: 20px">
+					<label for="dados_teste" style="float: left; margin-left: -5px; margin-top: 18px">Dados de teste</label><br>
+				</div><br><br><br><br>
+
+				<div class="botao" style="float: left; margin-right: 180px">
 					<input id="botao" type="submit" value="Exportar resultados" style="width: 150px;"><br>
 				</div>
+
+				<div style="float: left; margin-top: 10px">
+					<a href="projetos.php?apagar=1" style="background-color: #FFF; color: #778899; padding-left: 40px; padding-right: 40px;">Apagar dados de teste</a>
+				</div>
+				<br>
+
 			</form>
 		</article><br><br><br><br>
 

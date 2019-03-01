@@ -78,11 +78,26 @@
 					header("location:consumo.php?codigo={$dados["projeto_id"]}");
 				}
 
-				while($linha = mysqli_fetch_assoc($acesso)) { ?>
-					<img src="
-					<?php echo utf8_encode($linha["url_imagem"]); ?>
-					" width="100" height="75" style="float: left;"><br><br>
-					<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&categoria_id=<?php echo $linha["categoria_id"]; ?>&produto=<?php echo utf8_encode($linha["nome_form"]); ?>&funcao=<?php echo $_SESSION["funcao_temp"]; ?>&consumo=<?php echo $linha["consumo_ativo"]; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo utf8_encode($linha["nome_form"]); ?></a></li><br><br>
+				while($linha = mysqli_fetch_assoc($acesso)) { 
+					$consulta2 = "SELECT * FROM amostras WHERE projeto_id = {$linha["projeto_id"]}";
+					$acesso2 = mysqli_query($conecta, $consulta2);
+					$n_amostras = mysqli_num_rows($acesso2);
+					mysqli_free_result($acesso2);
+
+					$consulta2 = "SELECT * FROM formularios WHERE projeto_id = {$linha["projeto_id"]}";
+					$acesso2 = mysqli_query($conecta, $consulta2);
+					$n_atributos = mysqli_num_rows($acesso2);
+					mysqli_free_result($acesso2);
+
+					$consulta2 = "SELECT * FROM resultados WHERE projeto_id = {$linha["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
+					$acesso2 = mysqli_query($conecta, $consulta2);
+						if (mysqli_num_rows($acesso2) != $n_amostras*$n_atributos) { ?>
+						
+						<img src="
+						<?php echo utf8_encode($linha["url_imagem"]); ?>
+						" width="100" height="75" style="float: left;"><br><br>
+						<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&categoria_id=<?php echo $linha["categoria_id"]; ?>&produto=<?php echo utf8_encode($linha["nome_form"]); ?>&funcao=<?php echo $_SESSION["funcao_temp"]; ?>&consumo=<?php echo $linha["consumo_ativo"]; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo utf8_encode($linha["nome_form"]); ?></a></li><br><br>
+					<?php } ?>
 				<?php } ?>
 			</ul>
 		</nav>

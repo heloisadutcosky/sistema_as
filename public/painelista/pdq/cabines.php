@@ -6,6 +6,11 @@
 	// Iniciar sessão
 	session_start();
 
+	//Verificar informações de acesso
+	require_once($caminho . "_incluir/verificacao_usuario.php");
+
+	
+
 	if (isset($_GET["first"])) {
 		$_SESSION["first"] = $_GET["first"];
 	}
@@ -13,76 +18,88 @@
 	$projeto_id = $_SESSION["projeto_id"];
 	$sessao = $_SESSION["sessao"];
 
+	$_SESSION["atributo_id"] = !empty($_SESSION["atributo_id"]) ? $_SESSION["atributo_id"] : 0;
 
-	if(isset($_SESSION["usuario"])) {
-		$user_id = $_SESSION["user_id"];
-	} else {
-		Header("Location:" . $caminho . "login.php");
-	}
+			
+	if (isset($_POST["atributo" . $_SESSION["atributo_id"][0]])) {
 
-	if (isset($_GET["amostra"]))	 {
+		foreach ($_SESSION["atributo_id"] as $atributo_id) {
 
-		$amostra = $_GET["amostra"];
+			$nota = $_POST["atributo" . $atributo_id]*10;
 
-		if ($_SESSION["teste"] == 0) {
-		
-			if (isset($_POST[$_SESSION["atributo_completo"][0]])) {
-
-				for ($i=0; $i < $_SESSION["n_atributos"]; $i++) {
-
-					$atributo_completo = $_SESSION["atributo_completo"][$i];
-					$nota = $_POST[$_SESSION["atributo_completo"][$i]]*10;
-
-					$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_completo, nota) VALUES ($projeto_id, $sessao, $user_id, '$amostra', '$atributo_completo', $nota)";
-
-					$operacao_inserir = mysqli_query($conecta, $inserir);
-					}
-			}
-		}
-	}
-
-	// #######################################################################################################################
-
-	$conjunto_atributos = 'Aparencia';
-
-	// Abrir consulta ao banco de dados para checar quais são os conjuntos -----------------------------------------------
-	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos <> '{$conjunto_atributos}'";
-	$acesso = mysqli_query($conecta, $consulta);
-	// --------------------------------------------------------------------------------------------------------------------
-
-	// Checar conjuntos de atributos
-	$conjuntos_atributos = array();
-	$descricao_conjuntos = array();
-	for ($i=0; $i < mysqli_num_rows($acesso); $i++) {
-		$row = mysqli_fetch_assoc($acesso);
-		$tabela[] = $row;
-		$conjuntos_atributos[] = $row["conjunto_atributos"];
-		$descricao_conjuntos[] = $row["descricao_conjunto"];
-	}
-	$conjuntos_atributos = array_values(array_unique($conjuntos_atributos));
-	$descricao_conjuntos = array_values(array_unique($descricao_conjuntos));
-	$n_conjuntos = count($conjuntos_atributos);
-	// --------------------------------------------------------------------------------------------------------------------
+			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
+			$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
+			$resultados = mysqli_fetch_assoc($acesso_resultados);
 
 
-	// Ler dados para sessão atual ###############################################################################################
+			if (empty($resultados)) {
+				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ($projeto_id, $sessao, $user_id, '{$_SESSION["amostra"]}', $atributo_id, $nota, {$_SESSION["teste"]})";
 
-	$pagina = isset($_GET["pagina"]) ? $_GET["pagina"] : 0;
-	$n = isset($_GET["n"]) ? $_GET["n"] : -1;
-
-	if ($n == count($_SESSION["amostras"]) - 1 && $pagina == $n_conjuntos) {
-			if ($_SESSION["first"] == 1) {
-				header("location:aparencia.php?first=0");
+				$operacao_inserir = mysqli_query($conecta, $inserir);
 			} else {
-				header("location:" . $caminho . "logout.php?mensagem=1");
+
+				$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
+
+				$operacao_alterar = mysqli_query($conecta, $alterar);
 			}
+			
 		}
+	}
+		
 
-	if ($pagina == $n_conjuntos || ($pagina == 0 && $n==-1)) {
-		$pagina = 0;
-		$n = $n+1;
+	// ##########################################################################################################################
 
-		?>
+
+	// Verificar dados já preenchidos ###########################################################################################
+
+	if (isset($_POST["amostra"])) {
+		$_SESSION["amostra"] = $_POST["amostra"];
+
+		$atributos_id = array_keys(array_diff($_SESSION["atributos_id"], array("Aparência")));
+		$atributo_id = $atributos_id[0];
+
+		$preenchido=1;
+		while ($preenchido==1) {
+			$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND atributo_id = '{$atributo_id}' AND amostra_codigo = '{$_SESSION["amostra"]}'";
+			
+			$acesso = mysqli_query($conecta, $consulta);
+			$n_resultados = mysqli_num_rows($acesso);
+
+			if ($n_resultados == 0) {
+				$preenchido=0;
+
+				$atributo_id = !empty($atributo_id) ? $atributo_id : 0;
+
+				$consulta = "SELECT * FROM formularios WHERE atributo_id = {$atributo_id}";
+				$acesso = mysqli_query($conecta, $consulta);
+				$dados = mysqli_fetch_assoc($acesso);
+
+				$_SESSION["conjunto_atributos"] = $dados["conjunto_atributos"];
+				$_SESSION["atributo_id"] = array_keys($_SESSION["atributos_id"], $_SESSION["conjunto_atributos"]);
+				$_SESSION["n_atributos"] = count($_SESSION["atributo_id"]);
+				$descricao_conjunto = utf8_encode($dados["descricao_conjunto"]);
+			}
+
+			$atributo_id = next($atributos_id);
+		}
+	} else {
+		$_SESSION["conjunto_atributos"] = "";
+	}
+
+	if (empty($_SESSION["conjunto_atributos"])) {
+		
+		if (!isset($_POST["amostra"])) {
+			$_SESSION["amostra"] = $_SESSION["amostras"][0];
+		} else {
+			$_SESSION["amostra"] = $_SESSION["amostras"][array_search($_SESSION["amostra"], $_SESSION["amostras"])+1];
+			if (!$_SESSION["amostra"]) {
+			 	if ($_SESSION["first"] == 1) {
+					header("location:aparencia.php?first=0");
+				} else {
+					header("location:principal.php");
+				}
+			 } 
+		} ?>
 
 		<!DOCTYPE html>
 		<html lang="pt-BR">
@@ -91,6 +108,7 @@
 			<meta charset="utf-8">
 			
 			<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
+			<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_formulario.css">
 			
 			<style>
 				.amostra {
@@ -110,12 +128,16 @@
 					<br>
 					<h3 style="color: #8B0000">CABINES</h3>
 
-					<p>Favor solicitar à atendente a amostra <b class="amostra"><?php echo $_SESSION["amostras"][$n]; ?></b></p>
+					<p>Favor solicitar à atendente a amostra <b class="amostra"><?php echo $_SESSION["amostra"]; ?></b></p>
 					<br>
 
-					<div class="botao" style="margin-left: -20px">
-						<a href="cabines.php?pagina=0&n=<?php echo($n); ?>">Continuar</a>
-					</div>
+					
+					<form action="cabines.php" method="post">
+					<input type="hidden" name="amostra" value="<?php echo $_SESSION["amostra"];?>">
+
+					<input type="submit" id="botao" value="Continuar">
+					
+					</form>
 				</article>
 				<br>
 				<br>
@@ -128,9 +150,6 @@
 		</html>
 		
 	<?php } else {
-
-	$_SESSION["conjunto_atributos"] = $conjuntos_atributos[$pagina];
-	$_SESSION["descricao_conjuntos"] = $descricao_conjuntos[$pagina];
 	
 	// Reabrir consulta ao banco de dados - agora por conjunto
 	mysqli_free_result($acesso);
@@ -138,17 +157,7 @@
 	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$_SESSION["conjunto_atributos"]}'";
 	$acesso = mysqli_query($conecta, $consulta);
 
-	$_SESSION["n_atributos"] = mysqli_num_rows($acesso);
-	
-	// #######################################################################################################################
-
-
-	###############################################################################################
-	###############################################################################################
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -177,17 +186,15 @@
 			<div style="margin-top: 40px;">
 				<h3 style="font-size: 120%; color: #8B0000;"><?php echo utf8_encode($_SESSION["conjunto_atributos"]); ?></h3>
 				
-				<p><?php echo utf8_encode($_SESSION["descricao_conjuntos"]); ?></p><br>
+				<p><?php echo $descricao_conjunto; ?></p><br>
 
-				<p class="amostra"><?php echo "Amostra " . $_SESSION["amostras"][$n]; ?></p>
+				<p class="amostra"><?php echo "Amostra " . $_SESSION["amostra"]; ?></p>
 
 				<ul type="circle">
 
 					<?php 
-					$_SESSION["atributo_completo"] = array();
-					while($linhas=mysqli_fetch_assoc($acesso)) { 
-						$_SESSION["atributo_completo"][] = $linhas["atributo_completo"];
-						?>					
+					
+					while($linhas=mysqli_fetch_assoc($acesso)) { ?>					
 
 						<br><br>
 						<li><b><?php echo utf8_encode($linhas["atributo"]); ?></b></li>
@@ -204,8 +211,8 @@
 							</div>
 						</div>
 
-						<form action="cabines.php?pagina=<?php echo($pagina + 1); ?>&n=<?php echo($n); ?>&amostra=<?php echo($_SESSION["amostras"][$n]); ?>" method="post" align="">
-							<input type="range" id="nota" name="<?php echo $linhas["atributo_completo"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px; margin-left: 20px" required>
+						<form action="cabines.php" method="post" align="">
+							<input type="range" id="nota" name="atributo<?php echo $linhas["atributo_id"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px; margin-left: 20px" required>
 							<input type="checkbox" name="teste" required style="width: 20px; float: right; margin-right: 50px; margin-top: 22px">
 							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*80+20); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-50); ?>px">
 								<span class="tick"></span>
@@ -218,7 +225,7 @@
 							<span id="resultado"></span>
 							<br><br>
 					<?php } ?>
-							
+							<input type="hidden" name="amostra" value="<?php echo $_SESSION["amostra"];?>">
 							<input type="submit" id="botao" value="Confirmar" style="margin-left: -10px">
 						</form>
 				</ul><br>
@@ -232,7 +239,7 @@
 </body>
 </html>
 
-<?php } ?>
+<?php  } ?>
 
 <?php 
 	// Fechar conexão
