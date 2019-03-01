@@ -32,8 +32,6 @@
 			if (empty($resultados)) {
 				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '$amostra', {$_SESSION["atributo_id"]}, $nota, {$_SESSION["teste"]})";
 
-				echo $inserir;
-
 				$operacao_inserir = mysqli_query($conecta, $inserir);
 			} else {
 
