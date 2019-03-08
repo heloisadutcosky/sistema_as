@@ -97,7 +97,7 @@
 		<?php 
 		$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
 		$acesso = mysqli_query($conecta, $consulta);
-		if (mysqli_num_rows($acesso) < count($amostras)*$n_atributos) { ?>
+		if (mysqli_num_rows($acesso) != count($amostras)*$n_atributos) { ?>
 
 			<article style="margin-left: 10px">
 				<h2><?php echo $_SESSION["produto"]; ?></h2><br>

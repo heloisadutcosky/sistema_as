@@ -103,7 +103,7 @@
 
 					$consulta2 = "SELECT * FROM resultados WHERE projeto_id = {$linha["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
 					$acesso2 = mysqli_query($conecta, $consulta2);
-						if ((mysqli_num_rows($acesso2) < $n_amostras*$n_atributos) || $corrigir==1) { 
+						if ((mysqli_num_rows($acesso2) != $n_amostras*$n_atributos) || $corrigir==1) { 
 							$algum = 1; ?>
 						
 						<img src="
