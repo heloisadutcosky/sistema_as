@@ -9,13 +9,14 @@
 	//Verificar informações de acesso
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
-	$_SESSION["funcao_temp"] = isset($_GET["funcao"]) ? $_GET["funcao"] : $_SESSION["funcao"];
+	$funcao_temp = isset($_GET["funcao"]) ? $_GET["funcao"] : $_SESSION["funcao"];
 	$_SESSION["teste"] = isset($_GET["teste"]) ? $_GET["teste"] : 0;
-	$consumo = isset($_GET["consumo"]) ? $_GET["consumo"] : 0;
+	$corrigir = isset($_GET["corrigir"]) ? 1 : 0;
 
 	// Setar projeto e categoria
 	if (isset($_GET["codigo"])) {
 		$_SESSION["projeto_id"] = $_GET["codigo"];
+		echo $_SESSION["projeto_id"];
 
 		$consulta = "SELECT * FROM projetos WHERE projeto_id = {$_SESSION["projeto_id"]}"; 
 		$acesso = mysqli_query($conecta, $consulta);
@@ -25,6 +26,9 @@
 		$_SESSION["categoria_id"] = $dados["categoria_id"];
 		$_SESSION["tipo_avaliador"] = strtolower($dados["tipo_avaliador"]);
 		$_SESSION["tipo_avaliacao"] = $dados["tipo_avaliacao"];
+		$consumo = $dados["consumo_ativo"];
+
+		echo "location:{$_SESSION["tipo_avaliador"]}/{$_SESSION["tipo_avaliacao"]}/principal.php";
 
 		$consulta2 = "SELECT * FROM categorias WHERE categoria_id = {$_SESSION["categoria_id"]}"; 
 		$acesso2 = mysqli_query($conecta, $consulta2);
@@ -39,7 +43,7 @@
 		if ((empty($preenchida) && $consumo == 1) || ($_SESSION["teste"]==1 && $consumo == 1)) {
 			header("location:consumo.php");
 		} else {
-			header("location:{$_SESSION["tipo_avaliador"]}/{$_SESSION["tipo_avaliacao"]}/principal.php");
+			header("location:{$caminho}public/{$_SESSION["tipo_avaliador"]}/{$_SESSION["tipo_avaliacao"]}/principal.php");
 		}
 		
 	} 
@@ -61,23 +65,31 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
 		<article>
-			<p>Muito bem vindo(a), <?php echo $_SESSION["usuario"]; ?>! <u>Qual será a avaliação que você vai realizar hoje?</u></p>
+			<p>Muito bem vindo(a), <?php echo $_SESSION["usuario"]; ?>! 
+				<?php if ($corrigir==1) {
+					$_SESSION["correcao"]=1; ?>
+					<u>Em que projeto você deseja retornar?</u>
+				<?php } else { ?>
+					<u>Qual será a avaliação que você vai realizar hoje?</u>
+				<?php } ?>
+			</p>
 		</article>
 
 		<nav>
 			<ul style="list-style: none;">
 			<?php 
 
-				$consulta = "SELECT * FROM projetos WHERE form_ativo = 1 AND tipo_avaliador = '{$_SESSION["funcao_temp"]}'";
+				$consulta = "SELECT * FROM projetos WHERE form_ativo = 1 AND tipo_avaliador = '{$funcao_temp}'";
 				$acesso = mysqli_query($conecta, $consulta);
 				$rows = mysqli_num_rows($acesso);
 
 				if ($rows == 1) {
 					$dados = mysqli_fetch_assoc($acesso);
 					$_SESSION["form"] = $dados["nome_form"];
-					header("location:consumo.php?codigo={$dados["projeto_id"]}");
+					//header("location:principal.php?codigo={$dados["projeto_id"]}&funcao={$funcao_temp}&teste={$_SESSION["teste"]}");
 				}
 
+				$algum=0;
 				while($linha = mysqli_fetch_assoc($acesso)) { 
 					$consulta2 = "SELECT * FROM amostras WHERE projeto_id = {$linha["projeto_id"]}";
 					$acesso2 = mysqli_query($conecta, $consulta2);
@@ -91,14 +103,19 @@
 
 					$consulta2 = "SELECT * FROM resultados WHERE projeto_id = {$linha["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
 					$acesso2 = mysqli_query($conecta, $consulta2);
-						if (mysqli_num_rows($acesso2) != $n_amostras*$n_atributos) { ?>
+						if ((mysqli_num_rows($acesso2) < $n_amostras*$n_atributos) || $corrigir==1) { 
+							$algum = 1; ?>
 						
 						<img src="
 						<?php echo utf8_encode($linha["url_imagem"]); ?>
 						" width="100" height="75" style="float: left;"><br><br>
-						<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&categoria_id=<?php echo $linha["categoria_id"]; ?>&produto=<?php echo utf8_encode($linha["nome_form"]); ?>&funcao=<?php echo $_SESSION["funcao_temp"]; ?>&consumo=<?php echo $linha["consumo_ativo"]; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo utf8_encode($linha["nome_form"]); ?></a></li><br><br>
+						<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&funcao=<?php echo $funcao_temp; ?>&teste=<?php echo $_SESSION["teste"]; ?>"><?php echo utf8_encode($linha["nome_form"]); ?></a></li><br><br>
 					<?php } ?>
 				<?php } ?>
+
+			<?php if ($algum==0) { ?>
+				<li class="menu"><a href="principal.php?corrigir=1&funcao=<?php echo $funcao_temp; ?>&teste=<?php echo $_SESSION["teste"]; ?>">Corrigir notas</a></li>
+			<?php } ?>
 			</ul>
 		</nav>
 		<br>

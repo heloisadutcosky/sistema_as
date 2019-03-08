@@ -47,10 +47,14 @@
 		$_SESSION["amostras"] = array_keys($amostras, $_SESSION["sessao"]);
 		
 		shuffle($_SESSION["amostras"]);
-		$_SESSION["amostra"] = 0;
-
 	} else {
 		$_SESSION["sessao"] = 0;
+	}
+
+	if (isset($_GET["amostra"])) { 
+		$_SESSION["amostra"] = $_GET["amostra"];
+	} else {
+		$_SESSION["amostra"] = 0;
 	}
 
 ?>
@@ -66,6 +70,22 @@
 		.menu {
 			display: inline-block;
 		}
+		.menu2 {
+			display: inline-block;
+		}
+		li.menu2 a {
+		  text-decoration: none;
+		  background-color: #FFF;
+		  margin-bottom: 1px;
+		  padding: 2px 12px;
+		  color: #C2534B;
+		  border: 1px solid #B8B8B8;
+		}
+
+		li.menu2 a:hover {
+		  background-color: #F99B95;
+		  margin: 0 auto;
+		}
 	</style>
 
 </head>
@@ -77,11 +97,11 @@
 		<?php 
 		$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
 		$acesso = mysqli_query($conecta, $consulta);
-		if (mysqli_num_rows($acesso) != count($amostras)*$n_atributos) { ?>
+		if (mysqli_num_rows($acesso) < count($amostras)*$n_atributos) { ?>
 
-			<article>
+			<article style="margin-left: 10px">
 				<h2><?php echo $_SESSION["produto"]; ?></h2><br>
-				<p>Qual sessão você vai realizar hoje?</p>
+				<p style="margin-bottom: 30px">Qual sessão você vai realizar hoje?</p>
 			
 
 				<nav>
@@ -91,12 +111,12 @@
 								$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$sessao} AND user_id = {$_SESSION["user_id"]}";
 								$acesso = mysqli_query($conecta, $consulta);
 								if (mysqli_num_rows($acesso) != count(array_keys($amostras, $sessao))*$n_atributos) { ?>
-									<li class="menu"><a href="principal.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>">Sessão <?php echo $sessao; ?></a></li>
+									<li class="menu"><a href="principal.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>" style="<?php if ($sessao == $_SESSION["sessao"]) {echo "background-color: #F99B95"; }?>">Sessão <?php echo $sessao; ?></a></li>
 								<?php } ?>
 						<?php } ?>
 					</ul>
 				</nav>
-				<br>
+				<br><br>
 
 
 				<?php if ($_SESSION["sessao"] <> 0) { ?>
@@ -111,8 +131,58 @@
 					<br>
 				<?php } ?>
 			</article>
+		<?php } else if ($_SESSION["correcao"] == 1) { ?>
+
+			<article style="margin-left: 10px">
+				<h2><?php echo $_SESSION["produto"]; ?></h2><br>
+				<p style="margin-bottom: -20px">Em qual amostra você deseja retornar?</p>
+			
+
+				<nav>
+					<ul>
+						<?php foreach ($sessoes as $sessao) { ?>
+							<br><br>
+							<li class="menu"><a>Sessão <?php echo $sessao; ?></a></li>
+							<?php foreach (array_keys($amostras, $sessao) as $amostra) { ?>
+								<li class="menu2"><a href="principal.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>&amostra=<?php echo $amostra; ?>" style="color: #8B0000; font-size: 105%; <?php if ($amostra == $_SESSION["amostra"]) {echo "background-color: #F99B95"; }?>"><b><?php echo $amostra; ?></b></a></li>
+							<?php } ?>
+						<?php } ?>
+					</ul>
+				</nav>
+				<br><br>
+
+				<?php if ($_SESSION["amostra"] <> 0) { ?>
+						<p>Quais atributos você deseja reavaliar?</p>
+						
+					<nav>
+						<ul style="display: inline-block;">
+							<li class="menu"><a>Aparência</a></li>
+							<?php 
+							foreach (array_keys($_SESSION["atributos_id"], "Aparência") as $atributo_id) { 
+								$consulta = "SELECT * FROM formularios WHERE atributo_id = {$atributo_id}";
+								$acesso = mysqli_query($conecta, $consulta);
+								$linha = mysqli_fetch_assoc($acesso);
+								?>
+								<li class="menu2"><a href="aparencia.php?&atributo=<?php echo $linha["atributo_id"]; ?>" style="color: #8B0000;"><?php echo utf8_encode($linha["atributo"]); ?></a></li>
+							<?php } ?>
+
+							<br><br>
+							<?php 
+							$conjunto_anterior = "Aparência";
+							foreach ($_SESSION["atributos_id"] as $conjunto) { 
+								if ($conjunto != $conjunto_anterior) { ?>
+									<li class="menu"><a href="cabines.php?amostra=<?php echo $_SESSION["amostra"]; ?>&conjunto=<?php echo $conjunto; ?>"><?php echo $conjunto; ?></a></li>
+								<?php }
+								$conjunto_anterior = $conjunto;
+							} ?>
+						</ul>
+					</nav>
+					<br>
+				<?php } ?>
+			</article>
+
 		<?php } else { 
-			header("location:{$caminho}public/principal.php?funcao={$_SESSION["funcao_temp"]}&teste={$_SESSION["teste"]}");
+			header("location:{$caminho}public/principal.php?funcao={$_SESSION["tipo_avaliador"]}&teste={$_SESSION["teste"]}");
 		 } ?>
 
 		<?php include_once($caminho . "_incluir/rodape.php"); ?>
@@ -124,7 +194,7 @@
 
 <?php 
 	// Fechar conexão
-	if (isset($acesso)) {
+if (isset($acesso)) {
 	mysqli_free_result($acesso);
 }
 	mysqli_close($conecta);

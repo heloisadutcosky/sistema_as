@@ -40,6 +40,10 @@
 				$operacao_alterar = mysqli_query($conecta, $alterar);
 			}
 		}
+
+		if ($_SESSION["correcao"] == 1) {
+			header("location:principal.php");
+		}
 	}
 
 	$atributos_id = array_keys($_SESSION["atributos_id"], "Aparência");
@@ -60,10 +64,15 @@
 		$atributo_id = next($atributos_id);
 	}
 
+	if (isset($_GET["atributo"])) {
+		$_SESSION["atributo_id"] = $_GET["atributo"];
+	}
+
 	if (empty($_SESSION["atributo_id"])) {
 		if ($_SESSION["first"] == 1) {
 			header("location:cabines.php?first=0");
 		} else {
+			$_SESSION["correcao"] = 0;
 			header("location:principal.php");
 		}
 	} 

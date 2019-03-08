@@ -15,9 +15,6 @@
 		$_SESSION["first"] = $_GET["first"];
 	}
 
-	$projeto_id = $_SESSION["projeto_id"];
-	$sessao = $_SESSION["sessao"];
-
 	$_SESSION["atributo_id"] = !empty($_SESSION["atributo_id"]) ? $_SESSION["atributo_id"] : 0;
 
 			
@@ -27,23 +24,27 @@
 
 			$nota = $_POST["atributo" . $atributo_id];
 
-			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
+			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id};";
 			$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
 			$resultados = mysqli_fetch_assoc($acesso_resultados);
 
-
 			if (empty($resultados)) {
-				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ($projeto_id, $sessao, $user_id, '{$_SESSION["amostra"]}', $atributo_id, $nota, {$_SESSION["teste"]})";
+				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$_SESSION["amostra"]}', $atributo_id, $nota, {$_SESSION["teste"]})";
 
 				$operacao_inserir = mysqli_query($conecta, $inserir);
 			} else {
 
-				$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND user_id = {$user_id} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
+				$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
 
 				$operacao_alterar = mysqli_query($conecta, $alterar);
 			}
 			
 		}
+
+		if ($_SESSION["correcao"] == 1) {
+			header("location:principal.php");
+		}
+
 	}
 		
 
@@ -81,9 +82,24 @@
 			}
 
 			$atributo_id = next($atributos_id);
+			mysqli_free_result($acesso);
 		}
 	} else {
 		$_SESSION["conjunto_atributos"] = "";
+		if ($_SESSION["correcao"] == 1 && isset($_GET["conjunto"])) {
+
+			$_SESSION["conjunto_atributos"] = utf8_decode($_GET["conjunto"]);
+
+			$consulta = "SELECT * FROM formularios WHERE conjunto_atributos = '{$_SESSION["conjunto_atributos"]}' AND projeto_id = {$_SESSION["projeto_id"]}";
+			$acesso = mysqli_query($conecta, $consulta);
+			$dados = mysqli_fetch_assoc($acesso);
+
+			$_SESSION["atributo_id"] = array_keys($_SESSION["atributos_id"], $_SESSION["conjunto_atributos"]);
+			$_SESSION["n_atributos"] = count($_SESSION["atributo_id"]);
+			$descricao_conjunto = utf8_encode($dados["descricao_conjunto"]);
+
+			$_SESSION["amostra"] = $_GET["amostra"];
+		}
 	}
 
 	if (empty($_SESSION["conjunto_atributos"])) {
@@ -96,6 +112,7 @@
 			 	if ($_SESSION["first"] == 1) {
 					header("location:aparencia.php?first=0");
 				} else {
+					$_SESSION["correcao"] = 0;
 					header("location:principal.php");
 				}
 			 } 
@@ -152,9 +169,7 @@
 	<?php } else {
 	
 	// Reabrir consulta ao banco de dados - agora por conjunto
-	mysqli_free_result($acesso);
-
-	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$projeto_id} AND conjunto_atributos = '{$_SESSION["conjunto_atributos"]}'";
+	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$_SESSION["projeto_id"]} AND conjunto_atributos = '{$_SESSION["conjunto_atributos"]}'";
 	$acesso = mysqli_query($conecta, $consulta);
 
 ?>
@@ -274,8 +289,5 @@
 
 <?php 
 	// Fechar conexão
-if (isset($acesso)) {
-	mysqli_free_result($acesso);
-}
 mysqli_close($conecta);
 ?>
