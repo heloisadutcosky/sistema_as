@@ -42,7 +42,7 @@
 		}
 
 		if ($_SESSION["correcao"] == 1) {
-			header("location:principal.php");
+			header("location:{$caminho}public/principal.php?funcao={$_SESSION["tipo_avaliador"]}&teste={$_SESSION["teste"]}");
 		}
 
 	}
@@ -112,7 +112,6 @@
 			 	if ($_SESSION["first"] == 1) {
 					header("location:aparencia.php?first=0");
 				} else {
-					$_SESSION["correcao"] = 0;
 					header("location:principal.php");
 				}
 			 } 

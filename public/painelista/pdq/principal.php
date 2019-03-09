@@ -10,6 +10,7 @@
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
 	$_SESSION["produto"] = isset($_GET["produto"]) ? $_GET["produto"] : $_SESSION["produto"];
+	$_SESSION["correcao"] = isset($_GET["corrigir"]) ? $_GET["corrigir"] : 0;
 
 
 	// Já pegar todas as informações do projeto
@@ -97,7 +98,7 @@
 		<?php 
 		$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
 		$acesso = mysqli_query($conecta, $consulta);
-		if (mysqli_num_rows($acesso) != count($amostras)*$n_atributos) { ?>
+		if ((mysqli_num_rows($acesso) != count($amostras)*$n_atributos) && $_SESSION["correcao"]==0) { ?>
 
 			<article style="margin-left: 10px">
 				<h2><?php echo $_SESSION["produto"]; ?></h2><br>
@@ -144,7 +145,7 @@
 							<br><br>
 							<li class="menu"><a>Sessão <?php echo $sessao; ?></a></li>
 							<?php foreach (array_keys($amostras, $sessao) as $amostra) { ?>
-								<li class="menu2"><a href="principal.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>&amostra=<?php echo $amostra; ?>" style="color: #8B0000; font-size: 105%; <?php if ($amostra == $_SESSION["amostra"]) {echo "background-color: #F99B95"; }?>"><b><?php echo $amostra; ?></b></a></li>
+								<li class="menu2"><a href="principal.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>&amostra=<?php echo $amostra; ?>&corrigir=1" style="color: #8B0000; font-size: 105%; <?php if ($amostra == $_SESSION["amostra"]) {echo "background-color: #F99B95"; }?>"><b><?php echo $amostra; ?></b></a></li>
 							<?php } ?>
 						<?php } ?>
 					</ul>

@@ -12,7 +12,7 @@
 	require_once($caminho . "conexao/conexao.php");
 
 	if (isset($_GET["apagar"])) {
-		$consulta = "DELETE FROM resultados WHERE teste = 1";
+		$consulta = "DELETE FROM resultados WHERE teste = 1 OR user_id=20";
 		$acesso = mysqli_query($conecta, $consulta);
 	}
 ?>
@@ -54,14 +54,15 @@
 				<div>
 					<input type="checkbox" name="dados_teste" style="float: left; width: 20px; margin-top: 20px">
 					<label for="dados_teste" style="float: left; margin-left: -5px; margin-top: 18px">Dados de teste</label><br>
-				</div><br><br><br><br>
+				</div><br><br><br>
 
-				<div class="botao" style="float: left; margin-right: 180px">
-					<input id="botao" type="submit" value="Exportar resultados" style="width: 150px;"><br>
+				<div class="botao">
+					<input id="botao" type="submit" value="Exportar resultados" style="width: 150px; margin-top: 10px"><br>
 				</div>
 
-				<div style="float: left; margin-top: 10px">
-					<a href="projetos.php?apagar=1" style="background-color: #FFF; color: #778899; padding-left: 40px; padding-right: 40px;">Apagar dados de teste</a>
+				<br><br><br><br><br><br>
+				<div>
+					<a href="projetos.php?apagar=1" style="background-color: #FFF; color: #778899; font-size: 75%; margin-left: 10px;">Apagar dados de teste</a>
 				</div>
 				<br>
 

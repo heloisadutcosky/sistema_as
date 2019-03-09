@@ -42,7 +42,7 @@
 		}
 
 		if ($_SESSION["correcao"] == 1) {
-			header("location:principal.php");
+			header("location:{$caminho}public/principal.php?funcao={$_SESSION["tipo_avaliador"]}&teste={$_SESSION["teste"]}");
 		}
 	}
 
@@ -55,13 +55,16 @@
 		$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
 		$n_resultados = mysqli_num_rows($acesso_resultados);
 		
-
 		if ($n_resultados!=count($_SESSION["amostras"])) {
 			$preenchido=0;
 			$_SESSION["atributo_id"] = $atributo_id;
 		}
 
 		$atributo_id = next($atributos_id);
+
+		if (empty($atributo_id)) {
+			$atributo_id=0;
+		}
 	}
 
 	if (isset($_GET["atributo"])) {
