@@ -1,6 +1,6 @@
 <?php 
 
-	$caminho =  "../../../";
+	$caminho =  "../../";
 	require_once($caminho . "conexao/conexao.php");
 	
 	// Iniciar sessão
@@ -16,7 +16,7 @@
 	// Já pegar todas as informações do projeto
 	if (isset($_SESSION["projeto_id"])) {
 
-		$consulta = "SELECT * FROM amostras WHERE projeto_id = " . $_SESSION["projeto_id"];
+		$consulta = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]}";
 		$acesso = mysqli_query($conecta, $consulta);
 
 		$amostras = array();
@@ -26,7 +26,7 @@
 		$sessoes = array_values(array_unique(array_values($amostras)));
 
 		// Abrir consulta ao banco de dados para checar quais são os conjuntos -----------------------------------------------
-		$consulta = "SELECT * FROM formularios WHERE projeto_id = {$_SESSION["projeto_id"]}";
+		$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
 		$acesso = mysqli_query($conecta, $consulta);
 		// --------------------------------------------------------------------------------------------------------------------
 
@@ -96,7 +96,7 @@
 		
 
 		<?php 
-		$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
+		$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND user_id = {$_SESSION["user_id"]}";
 		$acesso = mysqli_query($conecta, $consulta);
 		if ((mysqli_num_rows($acesso) != count($amostras)*$n_atributos) && $_SESSION["correcao"]==0) { ?>
 
@@ -109,10 +109,10 @@
 					<ul>
 						<?php foreach ($sessoes as $sessao) { 
 								
-								$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$sessao} AND user_id = {$_SESSION["user_id"]}";
+								$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$sessao} AND user_id = {$_SESSION["user_id"]}";
 								$acesso = mysqli_query($conecta, $consulta);
 								if (mysqli_num_rows($acesso) != count(array_keys($amostras, $sessao))*$n_atributos) { ?>
-									<li class="menu"><a href="principal.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>" style="<?php if ($sessao == $_SESSION["sessao"]) {echo "background-color: #F99B95"; }?>">Sessão <?php echo $sessao; ?></a></li>
+									<li class="menu"><a href="principal.php?sessao=<?php echo $sessao; ?>" style="<?php if ($sessao == $_SESSION["sessao"]) {echo "background-color: #F99B95"; }?>">Sessão <?php echo $sessao; ?></a></li>
 								<?php } ?>
 						<?php } ?>
 					</ul>
@@ -145,7 +145,7 @@
 							<br><br>
 							<li class="menu"><a>Sessão <?php echo $sessao; ?></a></li>
 							<?php foreach (array_keys($amostras, $sessao) as $amostra) { ?>
-								<li class="menu2"><a href="principal.php?codigo=<?php echo $_SESSION["projeto_id"]; ?>&sessao=<?php echo $sessao; ?>&amostra=<?php echo $amostra; ?>&corrigir=1" style="color: #8B0000; font-size: 105%; <?php if ($amostra == $_SESSION["amostra"]) {echo "background-color: #F99B95"; }?>"><b><?php echo $amostra; ?></b></a></li>
+								<li class="menu2"><a href="principal.php?sessao=<?php echo $sessao; ?>&amostra=<?php echo $amostra; ?>&corrigir=1" style="color: #8B0000; font-size: 105%; <?php if ($amostra == $_SESSION["amostra"]) {echo "background-color: #F99B95"; }?>"><b><?php echo $amostra; ?></b></a></li>
 							<?php } ?>
 						<?php } ?>
 					</ul>
@@ -160,7 +160,7 @@
 							<li class="menu"><a>Aparência</a></li>
 							<?php 
 							foreach (array_keys($_SESSION["atributos_id"], "Aparência") as $atributo_id) { 
-								$consulta = "SELECT * FROM formularios WHERE atributo_id = {$atributo_id}";
+								$consulta = "SELECT * FROM atributos WHERE atributo_id = {$atributo_id}";
 								$acesso = mysqli_query($conecta, $consulta);
 								$linha = mysqli_fetch_assoc($acesso);
 								?>

@@ -1,6 +1,6 @@
 <?php 
 
-	$caminho =  "../../../";
+	$caminho =  "../../";
 	require_once($caminho . "conexao/conexao.php");
 
 	// Iniciar sessão
@@ -24,17 +24,17 @@
 
 			$nota = $_POST["atributo" . $atributo_id];
 
-			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id};";
+			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id};";
 			$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
 			$resultados = mysqli_fetch_assoc($acesso_resultados);
 
 			if (empty($resultados)) {
-				$inserir = "INSERT INTO resultados (projeto_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$_SESSION["amostra"]}', $atributo_id, $nota, {$_SESSION["teste"]})";
+				$inserir = "INSERT INTO resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$_SESSION["amostra"]}', $atributo_id, $nota, {$_SESSION["teste"]})";
 
 				$operacao_inserir = mysqli_query($conecta, $inserir);
 			} else {
 
-				$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
+				$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
 
 				$operacao_alterar = mysqli_query($conecta, $alterar);
 			}
@@ -61,7 +61,7 @@
 
 		$preenchido=1;
 		while ($preenchido==1) {
-			$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND atributo_id = '{$atributo_id}' AND amostra_codigo = '{$_SESSION["amostra"]}'";
+			$consulta = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND atributo_id = '{$atributo_id}' AND amostra_codigo = '{$_SESSION["amostra"]}'";
 			
 			$acesso = mysqli_query($conecta, $consulta);
 			$n_resultados = mysqli_num_rows($acesso);
@@ -71,7 +71,7 @@
 
 				$atributo_id = !empty($atributo_id) ? $atributo_id : 0;
 
-				$consulta = "SELECT * FROM formularios WHERE atributo_id = {$atributo_id}";
+				$consulta = "SELECT * FROM atributos WHERE atributo_id = {$atributo_id}";
 				$acesso = mysqli_query($conecta, $consulta);
 				$dados = mysqli_fetch_assoc($acesso);
 
@@ -90,7 +90,7 @@
 
 			$_SESSION["conjunto_atributos"] = utf8_decode($_GET["conjunto"]);
 
-			$consulta = "SELECT * FROM formularios WHERE conjunto_atributos = '{$_SESSION["conjunto_atributos"]}' AND projeto_id = {$_SESSION["projeto_id"]}";
+			$consulta = "SELECT * FROM atributos WHERE conjunto_atributos = '{$_SESSION["conjunto_atributos"]}' AND formulario_id = {$_SESSION["formulario_id"]}";
 			$acesso = mysqli_query($conecta, $consulta);
 			$dados = mysqli_fetch_assoc($acesso);
 
@@ -168,7 +168,7 @@
 	<?php } else {
 	
 	// Reabrir consulta ao banco de dados - agora por conjunto
-	$consulta = "SELECT * FROM formularios WHERE projeto_id = {$_SESSION["projeto_id"]} AND conjunto_atributos = '{$_SESSION["conjunto_atributos"]}'";
+	$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND conjunto_atributos = '{$_SESSION["conjunto_atributos"]}'";
 	$acesso = mysqli_query($conecta, $consulta);
 
 ?>
@@ -221,21 +221,35 @@
 
 					<?php 
 					
-					while($linhas=mysqli_fetch_assoc($acesso)) { ?>					
+					while($linhas=mysqli_fetch_assoc($acesso)) { 
+
+						$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$linhas["atributo_id"]}";
+						$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes);
+
+						$textos = array();
+						$referencias = array();
+						while ($dados=mysqli_fetch_assoc($acesso_opcoes)) {
+							$textos[$dados["escala"]] = $dados["texto"];
+							$referencias[$dados["escala"]] = $dados["referencia"];
+						} ?>
 
 						<br>
 						<div style="background-color: #F8F8F8; padding-left: 40px; padding-top: 20px; margin-right: 10px">
 						<li style="font-size: 110%; float: left; margin-right: 10px; list-style: circle;"><b><?php echo utf8_encode($linhas["atributo"]); ?>: </b></li>
 						<p style="font-size: 100%; font-family: serif; margin-top: 1px">(<?php echo utf8_encode($linhas["definicao_atributo"]); ?>)</p>
 
-						<div style="position: relative; left: <?php echo($linhas["escala_min"]*80-45); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80+95); ?>px; margin-bottom: 80px; margin-top: 10px">
+						<?php 
+						echo(number_format(min(array_keys($textos)))*80-45);
+						echo(number_format((max(array_keys($textos))-min(array_keys($textos))))*80+95);
+						?>
+						<div style="position: relative; left: <?php echo(number_format(min(array_keys($textos)))*80-45); ?>px; width: <?php echo(number_format((max(array_keys($textos))-min(array_keys($textos))))*80+95); ?>px; margin-bottom: 80px; margin-top: 10px">
 							<div style="position: absolute; left: 0px; width: 150px">
 								<p style="font-weight: bold; color: #8B0000; text-align: center; font-size: 85%; font-family: serif;">Referência:</p>
-								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($linhas["referencia_min"]); ?></p>
+								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($referencias[min(array_keys($referencias))]); ?></p>
 							</div>
 							<div style="position: absolute; right: 0px; width: 150px">
 								<p style="font-weight: bold; color: #8B0000; text-align: center; font-size: 85%; font-family: serif;">Referência:</p>
-								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($linhas["referencia_max"]); ?></p>
+								<p style="text-align: center; font-size: 85%; margin-top: -5px; font-family: serif;"><?php echo utf8_encode($referencias[max(array_keys($referencias))]); ?></p>
 							</div>
 						</div>
 
@@ -257,13 +271,13 @@
 							        	}
 							    	}
 							</script>
-							<div class="ticks" style="padding-left: <?php echo($linhas["escala_min"]*80+30); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-50); ?>px">
+							<div class="ticks" style="padding-left: <?php echo(min(array_keys($textos))*80+30); ?>px; width: <?php echo((max(array_keys($textos))-min(array_keys($textos)))*80-50); ?>px">
 								<span class="tick"></span>
 								<span class="tick"></span>
 							</div>
-							<div class="afterticks" style="padding-left: <?php echo($linhas["escala_min"]*80+55); ?>px; width: <?php echo(($linhas["escala_max"]-$linhas["escala_min"])*80-20); ?>px; margin-top: 5px">
-								<span class="aftertick"><?php echo utf8_encode($linhas["escala_baixo"]); ?></span>
-								<span class="aftertick"><?php echo utf8_encode($linhas["escala_alto"]); ?></span>
+							<div class="afterticks" style="padding-left: <?php echo(min(array_keys($textos))*80+55); ?>px; width: <?php echo number_format((max(array_keys($textos))-min(array_keys($textos)))*80-20); ?>px; margin-top: 5px">
+									<span class="aftertick"><?php echo utf8_encode($textos[min(array_keys($textos))]); ?></span>
+									<span class="aftertick"><?php echo utf8_encode($textos[max(array_keys($textos))]); ?></span>
 							</div>
 							<span id="resultado"></span>
 							</div>

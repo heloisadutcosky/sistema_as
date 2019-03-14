@@ -33,14 +33,9 @@
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/principal.php?detalhe="><b>PRINCIPAL</b></a></li><br>
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/usuarios/dados.php?detalhe=">USUÁRIOS</a></li>
 		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/empresas/dados.php?detalhe=">EMPRESAS</a></li>
-		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/produtos/dados.php?tipo=categorias">CATEGORIAS</a></li>
-		<li class="menulateral"><a href="?detalhe=projetos">PROJETOS</a></li>
-		<?php if ($_SESSION["detalhe"] == "projetos") { ?>
-		<ul>
-			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/contratos/dados.php">Cadastro de contrato</a></li>
-			<li class="submenulateral"><a href="<?php echo($caminho); ?>admin/projetos/dados.php">Cadastro de projeto</a></li>
-		</ul>
-		<?php } ?>
+		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/produtos/dados.php">PRODUTOS</a></li>
+		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/formularios/dados.php">FORMULÁRIOS</a></li>
+		<li class="menulateral"><a href="<?php echo($caminho); ?>admin/projetos/dados.php">PROJETOS</a></li>
 		<li class="menulateral"><a href="?detalhe=questionarios">QUESTIONÁRIOS</a></li>
 		<?php if ($_SESSION["detalhe"] == "questionarios") { ?>
 		<ul>

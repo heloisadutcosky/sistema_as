@@ -18,54 +18,32 @@
 	if (isset($_GET["codigo"])) {
 		$_SESSION["projeto_id"] = $_GET["codigo"];
 
-		$consulta = "SELECT * FROM tb_projetos WHERE projeto_id = {$_SESSION["projeto_id"]}"; 
+		$consulta = "SELECT * FROM projetos WHERE projeto_id = {$_SESSION["projeto_id"]}"; 
 		$acesso = mysqli_query($conecta, $consulta);
 		$dados = mysqli_fetch_assoc($acesso);
 
 		$_SESSION["produto_id"] = $dados["produto_id"];
 		$_SESSION["categoria_id"] = $dados["categoria_id"];
+		$_SESSION["tipo_avaliador"] = strtolower($dados["tipo_avaliador"]);
+		$_SESSION["tipo_avaliacao"] = $dados["tipo_avaliacao"];
+		$consumo = $dados["consumo_ativo"];
 
 		$consulta2 = "SELECT * FROM categorias WHERE categoria_id = {$_SESSION["categoria_id"]}"; 
 		$acesso2 = mysqli_query($conecta, $consulta2);
 		$dados2 = mysqli_fetch_assoc($acesso2);
 		$_SESSION["categoria"] = $dados2["categoria"];
 
-		$consulta2 = "SELECT * FROM produtos WHERE produto_id = {$_SESSION["produto_id"]}"; 
-		$acesso2 = mysqli_query($conecta, $consulta2);
-		$dados2 = mysqli_fetch_assoc($acesso2);
-		$_SESSION["produto"] = $dados2["produto"];
-
-
 		// Redirecionar
-		$consulta = "SELECT * FROM avaliacoes WHERE form_ativo = 1 AND projeto_id = {$_SESSION["projeto_id"]}";
-		$acesso = mysqli_query($conecta, $consulta);
-		$rows = mysqli_num_rows($acesso);
+		$consulta3 = "SELECT * FROM result_consumo WHERE categoria_id = {$_SESSION["categoria_id"]} AND user_id = {$_SESSION["user_id"]}";
+		$acesso3 = mysqli_query($conecta, $consulta3);
+		$preenchida = mysqli_fetch_assoc($acesso3);
 
-		while($linha = mysqli_fetch_assoc($acesso)) { 
-			$consulta2 = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]}";
-			$acesso2 = mysqli_query($conecta, $consulta2);
-			$n_amostras = mysqli_num_rows($acesso2);
-			if ($n_amostras == 0) {
-				$n_amostras = 1;
-			}
-			mysqli_free_result($acesso2);
-
-
-			$consulta2 = "SELECT * FROM atributos WHERE formulario_id = {$linha["formulario_id"]}";
-			$acesso2 = mysqli_query($conecta, $consulta2);
-			$n_atributos = $n_atributos + mysqli_num_rows($acesso2);
-			mysqli_free_result($acesso2);
-			
-
-			$consulta2 = "SELECT * FROM resultados WHERE projeto_id = projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]} AND user_id = {$_SESSION["user_id"]}";
-			$acesso2 = mysqli_query($conecta, $consulta2);
-				if ((mysqli_num_rows($acesso2) != $n_amostras*$n_atributos) && $corrigir==0) { 
-					$_SESSION["formulario_id"] = $linha["formulario_id"];
-					$_SESSION["tipo_avaliador"] = $linha["tipo_avaliador"];
-					$_SESSION["tipo_avaliacao"] = $linha["tipo_avaliacao"];
-					header("location:{$caminho}public/{$linha["tipo_avaliacao"]}/principal.php");
-				}
-			}
+		if ((empty($preenchida) && $consumo == 1) || ($_SESSION["teste"]==1 && $consumo == 1)) {
+			header("location:consumo.php");
+		} else {
+			header("location:{$caminho}public/{$_SESSION["tipo_avaliador"]}/{$_SESSION["tipo_avaliacao"]}/principal.php?corrigir={$corrigir}");
+		}
+		
 	} 
 ?>
 
@@ -101,13 +79,13 @@
 	<main>
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 
-		<article style="margin-left: 30px">
+		<article>
 			
 				<?php if ($corrigir==1) { ?>
-					<p><u>Em qual avaliação você deseja retornar?</u></p>
+					<p><u>Em que projeto você deseja retornar?</u></p>
 				<?php } else { ?>
 					<p>Muito bem vindo(a), <?php echo $_SESSION["usuario"]; ?>! 
-					<u>Qual produto você avaliará hoje?</u>
+					<u>Qual será a avaliação que você vai realizar hoje?</u>
 					</p>
 				<?php } ?>
 		</article>
@@ -126,12 +104,29 @@
 					//header("location:principal.php?codigo={$dados["projeto_id"]}&funcao={$funcao_temp}&teste={$_SESSION["teste"]}");
 				//}
 
-
 				$algum=0;
 				while($linha = mysqli_fetch_assoc($acesso)) { 
+					$consulta2 = "SELECT * FROM tb_amostras WHERE projeto_id = {$linha["projeto_id"]}";
+					$acesso2 = mysqli_query($conecta, $consulta2);
+					$n_amostras = mysqli_num_rows($acesso2);
+					mysqli_free_result($acesso2);
 
+					
+					$consulta2 = "SELECT * FROM avaliacoes WHERE projeto_id = {$linha["projeto_id"]}";
+					$acesso2 = mysqli_query($conecta, $consulta2);
 
-						if (date("Y-m-d") > $linha["data_inicio"] && date("Y-m-d") < $linha["data_fim"]) { 
+					$n_atributos = 0;
+					while ($dados = mysqli_fetch_assoc($acesso2)) {
+						$consulta3 = "SELECT * FROM atributos WHERE formulario_id = {$dados["formulario_id"]}";
+						$acesso3 = mysqli_query($conecta, $consulta3);
+						$n_atributos = $n_atributos + mysqli_num_rows($acesso3);
+						mysqli_free_result($acesso3);
+					}
+					
+
+					$consulta2 = "SELECT * FROM resultados WHERE projeto_id = {$linha["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
+					$acesso2 = mysqli_query($conecta, $consulta2);
+						if ((mysqli_num_rows($acesso2) != $n_amostras*$n_atributos) || $corrigir==1) { 
 							$algum = 1; ?>
 						
 						<img src="

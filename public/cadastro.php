@@ -90,7 +90,7 @@
 				if($_SESSION["funcao"]=="Consumidor") { 
 					header("location:principal.php"); // Redireciona
 				} else {
-					header("location:painelista/cadastro_painel.php");
+					header("location:cadastro_painel.php");
 				} // Redireciona
 			}
 

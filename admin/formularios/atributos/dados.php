@@ -11,14 +11,21 @@
 	//Estabelecer conexão a base de dados
 	require_once($caminho . "conexao/conexao.php");
 
-	$produto = isset($_GET["produto"]) ? $_GET["produto"] : "";
-
 	// Abrir consulta ao banco de dados
-	if (isset($_GET["codigo"])) {
-		$projeto_id = $_GET["codigo"];
-		$tipo_avaliacao = $_GET["avaliacao"];
+	if (isset($_GET["formulario"])) {
+		$_SESSION["formulario_id"] = $_GET["formulario"];
 
-		$consulta = "SELECT * FROM formularios WHERE projeto_id = " . $projeto_id;
+		$consulta = "SELECT * FROM tb_formularios WHERE formulario_id = " . $_SESSION["formulario_id"];
+		$acesso = mysqli_query($conecta, $consulta);
+		$dados = mysqli_fetch_assoc($acesso);
+
+		$_SESSION["tipo_formulario"] = $dados["tipo_formulario"];
+		$_SESSION["nome_formulario"] = $dados["nome_formulario"];
+	}
+
+
+	if (isset($_SESSION["formulario_id"])) {
+		$consulta = "SELECT * FROM atributos WHERE formulario_id = " . $_SESSION["formulario_id"];
 		$acesso = mysqli_query($conecta, $consulta);
 		$dados = mysqli_num_rows($acesso);
 
@@ -29,28 +36,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Formulários</title>
+	<title>Atributos</title>
 	
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas_topo.css">
-
-	<style type="text/css">
-		div#janela li:nth-child(1) {
-		    padding:5px 5px;
-		}
-
-		div#janela li:nth-child(2) {
-		    width:280px;  
-		    padding:5px 2px;
-		}    
-
-		div#janela li:nth-child(3) {
-		    width:0px;  
-		    padding:5px 2px;
-		}
-	</style>
 
 </head>
 <body>
@@ -59,31 +50,32 @@
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
 		<article>
-			<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
+			<h2 class="espaco">Formulário - <?php echo $_SESSION["nome_formulario"]; ?></h2>
 			<br>
 
 			<div class="botao">
-				<a href="form_<?php echo($tipo_avaliacao); ?>.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar atributo</a>
+				<a href="form_<?php echo($_SESSION["tipo_formulario"]); ?>.php?acao=cadastro">Adicionar atributo</a>
 			</div>
 			<br>
 
-			<div id="cima_tabela" class="usuarios">
+			<div id="cima_tabela" style="width: 650px">
 				<ul>
-				    <li><b>Conjunto</b></li>
-				    <li><b>Atributos</b></li>
-				    <li><b></b></li>
+				    <li style="width: 105px"><b>Conjunto</b></li>
+				    <li style="width: 180px"><b>Atributo</b></li>
+				    <li style="width: 160px"><b>Nomes atributo</b></li>
 				</ul>
 			</div>
-			<div id="janela" class="usuarios">
+			<div id="janela" style="width: 650px">
 				<?php
 				    while($linha = mysqli_fetch_assoc($acesso)) {
 				?>
 				<ul>
-				    <li><?php echo utf8_encode($linha["conjunto_atributos"]) ?></li>
-				    <li><?php echo utf8_encode($linha["atributo"]) ?></li>
-				    <li></li>
-				    <li><a href="form_pdq.php?acao=alteracao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_id=<?php echo  $linha["atributo_id"]; ?>">Alterar</a> </li>
-				    <li><a href="form_pdq.php?acao=exclusao&codigo=<?php echo $linha["projeto_id"] ?>&produto=<?php echo $produto; ?>&atributo_id=<?php echo  $linha["atributo_id"]; ?>">Excluir</a> </li>
+				    <li style="width: 105px"><?php echo utf8_encode($linha["conjunto_atributos"]) ?></li>
+				    <li style="width: 180px"><?php echo utf8_encode($linha["atributo"]) ?></li>
+				    <li style="width: 160px"><?php echo utf8_encode($linha["atributo_completo_eng"]) ?></li>
+				    <li style="width: 60px"><a href="form_<?php echo $_SESSION["tipo_formulario"]; ?>.php?acao=alteracao&atributo=<?php echo $linha["atributo_id"] ?>"><?php if(in_array($_SESSION["tipo_formulario"], array("ideal", "hedonica", "pdq"))) { echo "Opções"; } ?></a> </li>
+				    <li style="width: 50px"><a href="form_<?php echo $_SESSION["tipo_formulario"]; ?>.php?acao=alteracao&atributo=<?php echo $linha["atributo_id"] ?>">Alterar</a> </li>
+				    <li style="width: 50px"><a href="form_<?php echo $_SESSION["tipo_formulario"]; ?>.php?acao=exclusao&atributo=<?php echo $linha["atributo_id"] ?>">Excluir</a> </li>
 				</ul>
 				<?php } ?>	
 			</div>
@@ -126,12 +118,12 @@
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 
 		<article>
-			<h2 class="espaco">Formulário - <?php echo $produto; ?></h2>
+			<h2 class="espaco">Formulário - <?php echo $_SESSION["nome_formulario"]; ?></h2>
 
-			<p style="margin-left: 10px;">Ainda não existe um formulário pra esse projeto</p><br><br>
+			<p style="margin-left: 10px;">Nenhum atributo foi cadastrado para esse formulário</p><br><br>
 
 			<div class="botao">
-				<a href="form_<?php echo($tipo_avaliacao); ?>.php?acao=cadastro&codigo=<?php echo $projeto_id ?>&produto=<?php echo $produto; ?>">Adicionar formulário</a>
+				<a href="form_<?php echo($_SESSION["tipo_formulario"]); ?>.php?acao=cadastro">Adicionar atributo</a>
 			</div>
 			<br><br><br><br><br><br><br><br><br><br>
 		</article>

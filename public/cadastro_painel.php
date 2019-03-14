@@ -1,6 +1,6 @@
 <?php 
 
-	$caminho =  "../../";
+	$caminho =  "../";
 	require_once($caminho . "conexao/conexao.php");
 	
 	// Iniciar sessão

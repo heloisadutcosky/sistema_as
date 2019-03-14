@@ -264,9 +264,8 @@
 
 <?php 
 	// Fechar conexão
-	mysqli_free_result($acesso);
-	mysqli_free_result($operacao_cadastrar);
-	mysqli_free_result($operacao_alterar);
-	mysqli_free_result($operacao_excluir);
+	if (isset($acesso)) {
+		mysqli_free_result($acesso);
+	}
 	mysqli_close($conecta);
 ?>

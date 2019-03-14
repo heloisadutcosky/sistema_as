@@ -34,7 +34,7 @@
 		<?php include_once($caminho . "_incluir/topo.php"); ?>
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 		<article>
-			<h2 class="espaco" style="text-align: center; width: 630px">USUÁRIOS ABOUT SOLUTION</h2>
+			<h2 class="espaco" style="text-align: center; width: 630px">USUÁRIOS CADASTRADOS</h2>
 			<br>
 
 			
