@@ -162,6 +162,7 @@
 				
 				<p style="margin-left: 10px">Cadastro geral: </p>
 
+				
 				<div style="float: left; margin-right: 30px;">
 					<label for="nome">Nome: </label>
 					<input type="text" id="nome" name="nome" value="<?php echo utf8_encode($dados["nome"]) ?>">

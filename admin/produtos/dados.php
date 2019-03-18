@@ -235,7 +235,7 @@
 
 						<div>
 							<label for="url_imagem_cat">URL Imagem: </label>
-							<input type="text" id="url_imagem_cat" name="url_imagem_cat" value="<?php echo(utf8_encode($categorias["url_imagem"])); ?>" style="width: 210px" required>
+							<input type="text" id="url_imagem_cat" name="url_imagem_cat" value="<?php echo(utf8_encode($categorias["url_imagem"])); ?>" style="width: 210px">
 						</div>
 					</form>
 				</div>
@@ -298,7 +298,7 @@
 
 						<div style="float: left; margin-right: 10px">
 							<label for="url_imagem">URL imagem: </label>
-							<input type="url" id="url_imagem" name="url_imagem" value="<?php echo(utf8_encode($produtos["url_imagem"])); ?>" style="width: 215px" required>
+							<input type="url" id="url_imagem" name="url_imagem" value="<?php echo(utf8_encode($produtos["url_imagem"])); ?>" style="width: 215px">
 						</div>
 
 						<div>

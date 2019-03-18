@@ -159,7 +159,6 @@
 						<option value="Consumidor" selected>Consumidor</option>
 						<option value="Painelista">Painelista</option>
 						<option value="Candidato">Candidato</option>
-						<option value="Administrador">Administrador</option>
 					</select>
 				</div>
 				</div><br><br>

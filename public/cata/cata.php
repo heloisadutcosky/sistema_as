@@ -133,7 +133,7 @@
 											<div style="float: left; margin-left: 5px">
 												<label for="<?php echo $dados_atributos["atributo_id"]; ?>" style="margin-right: 50px; margin-left: 5px; margin-bottom: 10px; float: left;">
 													<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 10px; float: left; margin-bottom: 10px;"/>
-													<?php echo $dados_atributos["atributo"]; ?>
+													<?php echo utf8_encode($dados_atributos["atributo"]); ?>
 												</label><br><br>
 											</div>
 									<?php } ?>

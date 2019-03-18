@@ -154,16 +154,16 @@
 
 					if (isset($_POST["atributo{$n}"])) {
 						$dados = mysqli_fetch_assoc($acesso);
-						$atributo = $_POST["atributo{$n}"];
+						$atributo = utf8_encode($_POST["atributo{$n}"]);
 						//$definicao_atributo = $_POST["definicao_atributo{$n}"];
-						$atributo_completo_port = $_POST["atributo_completo_port{$n}"];
-						$atributo_completo_eng = $_POST["atributo_completo_eng{$n}"];
+						$atributo_completo_port = utf8_encode($_POST["atributo_completo_port{$n}"]);
+						$atributo_completo_eng = utf8_encode($_POST["atributo_completo_eng{$n}"]);
 					} else {
 						$dados = mysqli_fetch_assoc($acesso);
-						$atributo = $dados["atributo"];
-						$definicao_atributo = $dados["definicao_atributo"];
-						$atributo_completo_port = $dados["atributo_completo_port"];
-						$atributo_completo_eng = $dados["atributo_completo_eng"];
+						$atributo = utf8_encode($dados["atributo"]);
+						$definicao_atributo = utf8_encode($dados["definicao_atributo"]);
+						$atributo_completo_port = utf8_encode($dados["atributo_completo_port"]);
+						$atributo_completo_eng = utf8_encode($dados["atributo_completo_eng"]);
 					}
 			?>
 			

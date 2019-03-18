@@ -53,7 +53,6 @@
 			if ($n_amostras == 0) {
 				if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal"))) {
 					$n_amostras = $n_amostras_hedonica;
-					echo $n_amostras_hedonica;
 				} else {
 					$n_amostras = 1;
 				}
