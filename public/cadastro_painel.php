@@ -82,78 +82,80 @@
 		</header>
 
 		<article style="margin-left: 10px">
-		<h2 class="espaco">CADASTRO PARA PAINELISTAS</h2>
+		<h2 style="margin-left: 20px">CADASTRO PARA PAINELISTAS</h2>
 		<br>
 
 		
 		<form action="cadastro_painel.php" method="post">
 
 			<!-- CADASTRO -->
-			<div style="float: left; margin-right: 30px;">
-				<label for="rg">R.G.: </label>
-				<input type="text" id="rg" name="rg" placeholder="Insira seu R.G. (somente números)" required>
-			</div>
+			<div style="background-color: #F8F8F8; padding: 15px 0px 15px 20px; width: 600px; margin-left: 20px">
+				<div style="float: left; margin-right: 30px;">
+					<label for="rg">R.G.: </label>
+					<input type="text" id="rg" name="rg" placeholder="Insira seu R.G. (somente números)" required style="width: 300px">
+				</div>
 
-			<div>
-				<label for="orgao_emissor">Órgão emissor: </label>
-				<input type="text" id="orgao_emissor" name="orgao_emissor" required placeholder="Ex.: SSP-PR"><br>
-			</div><br>
+				<div>
+					<label for="orgao_emissor">Órgão emissor: </label>
+					<input type="text" id="orgao_emissor" name="orgao_emissor" required placeholder="Ex.: SSP-PR"><br>
+				</div><br>
 
-			<div style="float: left; margin-right: 30px;">
-				<label for="cep">CEP: </label>
-				<input type="text" id="cep" name="cep" placeholder="CEP (Somente números)" required style="width: 100px"><br>
-			</div>
+				<div style="float: left; margin-right: 30px;">
+					<label for="cep">CEP: </label>
+					<input type="text" id="cep" name="cep" placeholder="CEP (Somente números)" required style="width: 200px"><br>
+				</div>
 
-			<div>
-				<label for="rua">Rua: </label>
-				<input type="text" id="rua" name="rua" placeholder="Ex.: Rua das Flores" style="width: 300px"><br>
-			</div>
+				<div>
+					<label for="rua">Rua: </label>
+					<input type="text" id="rua" name="rua" placeholder="Ex.: Rua das Flores" style="width: 300px"><br>
+				</div>
 
-			<div style="float: left; margin-right: 10px;">
-				<label for="numero">Número: </label>
-				<input type="text" id="numero" name="numero" style="width: 80px"><br>
-			</div>
+				<div style="float: left; margin-right: 15px;">
+					<label for="numero">Número: </label>
+					<input type="text" id="numero" name="numero" style="width: 80px"><br>
+				</div>
 
-			<div style="float: left; margin-right: 30px;">
-				<label for="complemento">Complemento: </label>
-				<input type="text" id="complemento" name="complemento" style="width: 80px"><br>
-			</div>
+				<div style="float: left; margin-right: 30px;">
+					<label for="complemento">Complemento: </label>
+					<input type="text" id="complemento" name="complemento" style="width: 80px"><br>
+				</div>
 
-			<div>
-				<label for="bairro">Bairro: </label>
-				<input type="text" id="bairro" name="bairro"><br>
-			</div>
+				<div>
+					<label for="bairro">Bairro: </label>
+					<input type="text" id="bairro" name="bairro" style="width: 300px"><br>
+				</div>
 
-			<div style="float: left; margin-right: 30px;">
-				<label for="cidade">Cidade: </label>
-				<input type="text" id="cidade" name="cidade" style="width: 310px">
-			</div>
+				<div style="float: left; margin-right: 30px;">
+					<label for="cidade">Cidade: </label>
+					<input type="text" id="cidade" name="cidade" style="width: 400px">
+				</div>
 
-			<div>
-				<label for="estado">Estado: </label>
-				<input type="text" id="estado" name="estado" style="width: 80px"><br>
-			</div><br>
+				<div>
+					<label for="estado">Estado: </label>
+					<input type="text" id="estado" name="estado" style="width: 100px"><br>
+				</div><br>
 
-			<div>
-				<label for="intolerancia">Apresenta algum tipo de intolerância? Favor detalhar: </label>
-				<input type="text" id="intolerancia" name="intolerancia" style="width:440px; height: 40px;"><br>
-			</div>
+				<div>
+					<label for="intolerancia">Apresenta algum tipo de intolerância? Favor detalhar: </label>
+					<input type="text" id="intolerancia" name="intolerancia" style="width:545px; height: 40px;"><br>
+				</div>
 
-			<div>
-				<label for="fumante">É fumante? </label>
-				<select id="fumante" name="fumante" style="width: 80px"><br>
-					<option value=0 selected>Não</option>
-					<option value=1>Sim</option>
-				</select>
-			</div>
-			<br>
+				<div>
+					<label for="fumante">É fumante? </label>
+					<select id="fumante" name="fumante" style="width: 100px"><br>
+						<option value=0 selected>Não</option>
+						<option value=1>Sim</option>
+					</select>
+				</div>
+				<br>
 
-			<div>
-				<input type="checkbox" name="concordancia" id="concordancia" style="float: left; width: 15px" required>
-				<p style="font-size: 90%; width: 440px; line-height: 20px">Declaro que concordo com os termos de prestação de serviço à About Solution</p>
-			</div><br>
+				<div>
+					<input type="checkbox" name="concordancia" id="concordancia" style="float: left; width: 15px" required>
+					<p style="font-size: 90%; width: 545px; line-height: 20px">Declaro que concordo com os termos de prestação de serviço à About Solution</p>
+				</div>
+			</div><br><br>
 
-			<input type="submit" id="botao" value="Cadastrar dados"><br>
+			<input type="submit" id="botao" value="Cadastrar dados" style="margin-left: 20px"><br>
 		</form>
 		<br>
 		</article>

@@ -24,18 +24,23 @@
 
 			$nota = $_POST["amostra{$amostra}"];
 
-			$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$amostra}' AND atributo_id = {$_SESSION["atributo_id"]}";
+			$consulta_resultados = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$amostra}' AND atributo_id = {$_SESSION["atributo_id"]}";
 			$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
 			$resultados = mysqli_fetch_assoc($acesso_resultados);
 
+			$consulta = "SELECT * FROM atributos WHERE atributo_id = {$_SESSION["atributo_id"]}";
+			$acesso = mysqli_query($conecta, $consulta);
+			$dados = mysqli_fetch_assoc($acesso);
+			$atributo_completo_eng = $dados["atributo_completo_eng"];
+			$atributo_completo_port = $dados["atributo_completo_port"];
 
 			if (empty($resultados)) {
-				$inserir = "INSERT INTO resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '$amostra', {$_SESSION["atributo_id"]}, $nota, {$_SESSION["teste"]})";
+				$inserir = "INSERT INTO tb_resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo_eng, atributo_completo_port, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$amostra}', {$_SESSION["atributo_id"]}, '{$atributo_completo_eng}', '{$atributo_completo_port}', $nota, {$_SESSION["teste"]})";
 
 				$operacao_inserir = mysqli_query($conecta, $inserir);
 			} else {
 
-				$alterar = "UPDATE resultados SET nota = {$nota} WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$amostra}' AND atributo_id = {$_SESSION["atributo_id"]}";
+				$alterar = "UPDATE tb_resultados SET nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$amostra}' AND atributo_id = {$_SESSION["atributo_id"]}";
 
 				$operacao_alterar = mysqli_query($conecta, $alterar);
 			}
@@ -50,7 +55,7 @@
 	$atributo_id = $atributos_id[0];
 	$preenchido=1;
 	while ($preenchido==1) {
-		$consulta_resultados = "SELECT * FROM resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND atributo_id = $atributo_id";
+		$consulta_resultados = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND atributo_id = $atributo_id";
 	
 		$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
 		$n_resultados = mysqli_num_rows($acesso_resultados);

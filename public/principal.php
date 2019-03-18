@@ -45,26 +45,49 @@
 			$consulta2 = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]}";
 			$acesso2 = mysqli_query($conecta, $consulta2);
 			$n_amostras = mysqli_num_rows($acesso2);
+
+			if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal")) && $n_amostras<>0) {
+				$n_amostras_hedonica = $n_amostras;
+			}
+
 			if ($n_amostras == 0) {
-				$n_amostras = 1;
+				if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal"))) {
+					$n_amostras = $n_amostras_hedonica;
+					echo $n_amostras_hedonica;
+				} else {
+					$n_amostras = 1;
+				}
 			}
 			mysqli_free_result($acesso2);
 
 
 			$consulta2 = "SELECT * FROM atributos WHERE formulario_id = {$linha["formulario_id"]}";
 			$acesso2 = mysqli_query($conecta, $consulta2);
-			$n_atributos = $n_atributos + mysqli_num_rows($acesso2);
+			$n_atributos = mysqli_num_rows($acesso2);
 			mysqli_free_result($acesso2);
 			
 
-			$consulta2 = "SELECT * FROM resultados WHERE projeto_id = projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]} AND user_id = {$_SESSION["user_id"]}";
+			$consulta2 = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]} AND user_id = {$_SESSION["user_id"]}";
 			$acesso2 = mysqli_query($conecta, $consulta2);
-				if ((mysqli_num_rows($acesso2) != $n_amostras*$n_atributos) && $corrigir==0) { 
+			$n_resultados = mysqli_num_rows($acesso2);
+					//echo $linha["tipo_avaliacao"] . "<br>";
+					//echo "resultados = " . $n_resultados . "<br>";
+					//echo "amostras = " . $n_amostras . "<br>";
+					//echo "atributos = " . $n_atributos . "<br>";
+
+				if (($n_resultados != $n_amostras*$n_atributos) && $corrigir==0 && $linha["tipo_avaliacao"] <> "triangular") { 
 					$_SESSION["formulario_id"] = $linha["formulario_id"];
 					$_SESSION["tipo_avaliador"] = $linha["tipo_avaliador"];
 					$_SESSION["tipo_avaliacao"] = $linha["tipo_avaliacao"];
-					header("location:{$caminho}public/{$linha["tipo_avaliacao"]}/principal.php");
+					//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
+					header("location:{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php");
+				} elseif (($n_resultados != $n_atributos) && $corrigir==0 && $linha["tipo_avaliacao"] == "triangular") {
+					$_SESSION["formulario_id"] = $linha["formulario_id"];
+					$_SESSION["tipo_avaliador"] = $linha["tipo_avaliador"];
+					$_SESSION["tipo_avaliacao"] = $linha["tipo_avaliacao"];
+					header("location:{$caminho}public/triangular/principal.php");
 				}
+
 			}
 	} 
 ?>

@@ -20,7 +20,7 @@
 		$dados = mysqli_fetch_assoc($acesso);
 
 		$_SESSION["tipo_formulario"] = $dados["tipo_formulario"];
-		$_SESSION["nome_formulario"] = $dados["nome_formulario"];
+		$_SESSION["nome_formulario"] = utf8_encode($dados["nome_formulario"]);
 	}
 
 
@@ -61,8 +61,8 @@
 			<div id="cima_tabela" style="width: 650px">
 				<ul>
 				    <li style="width: 105px"><b>Conjunto</b></li>
-				    <li style="width: 180px"><b>Atributo</b></li>
-				    <li style="width: 160px"><b>Nomes atributo</b></li>
+				    <li style="width: 200px"><b>Atributo</b></li>
+				    <li style="width: 140px"><b>Nomes atributo</b></li>
 				</ul>
 			</div>
 			<div id="janela" style="width: 650px">
@@ -71,9 +71,9 @@
 				?>
 				<ul>
 				    <li style="width: 105px"><?php echo utf8_encode($linha["conjunto_atributos"]) ?></li>
-				    <li style="width: 180px"><?php echo utf8_encode($linha["atributo"]) ?></li>
-				    <li style="width: 160px"><?php echo utf8_encode($linha["atributo_completo_eng"]) ?></li>
-				    <li style="width: 60px"><a href="form_<?php echo $_SESSION["tipo_formulario"]; ?>.php?acao=alteracao&atributo=<?php echo $linha["atributo_id"] ?>"><?php if(in_array($_SESSION["tipo_formulario"], array("ideal", "hedonica", "pdq"))) { echo "Opções"; } ?></a> </li>
+				    <li style="width: 200px"><?php echo utf8_encode($linha["atributo"]) ?></li>
+				    <li style="width: 140px"><?php echo utf8_encode($linha["atributo_completo_eng"]) ?></li>
+				    <li style="width: 60px"><a href="form_<?php echo $_SESSION["tipo_formulario"]; ?>.php?acao=alteracao&atributo=<?php echo $linha["atributo_id"] ?>"><?php if(in_array($_SESSION["tipo_formulario"], array("ideal", "hedonica"))) { echo "Opções"; } ?></a> </li>
 				    <li style="width: 50px"><a href="form_<?php echo $_SESSION["tipo_formulario"]; ?>.php?acao=alteracao&atributo=<?php echo $linha["atributo_id"] ?>">Alterar</a> </li>
 				    <li style="width: 50px"><a href="form_<?php echo $_SESSION["tipo_formulario"]; ?>.php?acao=exclusao&atributo=<?php echo $linha["atributo_id"] ?>">Excluir</a> </li>
 				</ul>

@@ -31,9 +31,9 @@
 
 		<article>
 			<p>Bem vindo(a), <?php echo utf8_encode($_SESSION["usuario"]); ?>! <u>O que você deseja fazer?</u></p>
-			<br><br>
-			<img src="<?php echo($caminho); ?>/_imagens/fluxo.png" width="650" height="200"
-		title="Fluxo de informações"><br><br><br><br><br><br>
+			<br><br><br><br><br><br>
+			<br><br><br><br><br><br>
+			<br><br><br><br><br>
 		</article>
 		
 

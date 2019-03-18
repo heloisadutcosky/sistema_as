@@ -314,8 +314,6 @@
 						$ns = $_POST["ns_menos{$n_post}"];
 						if (!empty($_POST["sessao{$n_post}_{$ns}"])) {
 							$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n_post}"]} AND sessao = {$_POST["sessao{$n_post}_{$ns}"]}";
-							echo $excluir;
-							echo $n_post;
 							$operacao_excluir = mysqli_query($conecta, $excluir);
 						}
 						$n_sessoes = $_POST["n_sessoes{$n_post}"]-1;
@@ -430,7 +428,6 @@
 									while ($sessao == $dados_sessoes["sessao"]) {
 										$dados_sessoes = mysqli_fetch_assoc($acesso_sessoes);
 									} 
-									echo "Sessão " . $sessao;
 								}
 								$sessao = $dados_sessoes["sessao"];
 								$data = $dados_sessoes["data"];	

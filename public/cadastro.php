@@ -37,7 +37,7 @@
 		</header>
 
 		<article style="margin-left: 10px">
-		<h2 class="espaco">CADASTRO USUÁRIO</h2>
+		<h2 style="margin-left: 20px">CADASTRO USUÁRIO</h2>
 		<br>
 
 		<?php
@@ -96,7 +96,7 @@
 
 
 		} else { ?>
-			<div style="width: 440px; background-color: #F8E0E0; padding: 2px 5px; margin-left: 10px">
+			<div style="width: 600px; background-color: #F8E0E0; padding: 2px 5px; margin-left: 20px">
 				<p style="margin-left: 10px">Esse cpf já está cadastrado no sistema.</p>
 				<p style="margin-left: 10px">Favor realizar o <a href="<?php echo $caminho; ?>login.php">login</a>.</p>
 			</div>
@@ -109,24 +109,25 @@
 
 			<!-- CADASTRO -->
 
+			<div style="background-color: #F8F8F8; padding: 15px 5px 15px 5px; width: 600px; margin-left: 20px">
 			<div style="float: left; margin-right: 30px;">
 				<label for="nome">Nome: </label>
-				<input type="text" id="nome" name="nome" placeholder="Insira seu nome" required>
+				<input type="text" id="nome" name="nome" placeholder="Insira seu nome" required style="width: 250px">
 			</div>
 
 			<div>
 				<label for="cpf">CPF: </label>
-				<input type="text" id="cpf" name="cpf" placeholder="Insira seu CPF (somente números)" required><br>
+				<input type="text" id="cpf" name="cpf" placeholder="Insira seu CPF (somente números)" required style="width: 250px"><br>
 			</div>
 
 			<div style="float: left; margin-right: 30px;">
 					<label for="nascimento">Data de nascimento: </label>
-					<input type="datetime" id="nascimento" name="nascimento" placeholder="dd/mm/aaaa" required>
+					<input type="datetime" id="nascimento" name="nascimento" placeholder="dd/mm/aaaa" required style="width: 250px">
 				</div>
 
 				<div>
 					<label for="sexo">Sexo: </label>			
-					<select list="sexos" id="sexo" name="sexo" selected="<?php echo $dados["sexo"] ?>">
+					<select list="sexos" id="sexo" name="sexo" selected="<?php echo $dados["sexo"] ?>" style="width: 250px">
 							<option value="Feminino" selected>Feminino</option>
 							<option value="Masculino">Masculino</option>
 					</select>
@@ -134,7 +135,7 @@
 
 				<div>
 					<label for="escolaridade">Escolaridade: </label>
-					<select id="escolaridade" name="escolaridade"><br>
+					<select id="escolaridade" name="escolaridade" style="width: 250px"><br>
 						<option value="Ensino Fundamental" selected>Ensino Fundamental</option>
 						<option value="Ensino Médio">Ensino Médio</option>
 						<option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
@@ -144,27 +145,29 @@
 
 				<div style="float: left; margin-right: 30px;">
 					<label for="email">E-mail: </label>
-					<input type="email" id="email" name="email">
+					<input type="email" id="email" name="email" style="width: 250px">
 				</div>
 
 				<div>
 					<label for="telefone">Telefone: </label>
-					<input type="tel" id="telefone" name="telefone">
+					<input type="tel" id="telefone" name="telefone" style="width: 250px">
 				</div><br><br>
 
 				<div>
 					<label for="funcao">Tipo de avaliador: </label>
-					<select id="funcao" name="funcao"><br>
+					<select id="funcao" name="funcao" style="width: 250px"><br>
 						<option value="Consumidor" selected>Consumidor</option>
 						<option value="Painelista">Painelista</option>
 						<option value="Candidato">Candidato</option>
 						<option value="Administrador">Administrador</option>
 					</select>
+				</div>
 				</div><br><br>
 
-				<div>
-					<input type="submit" id="botao" value="Realizar cadastro" style="margin-left: 15px">
+				<div style="margin-left: 15px">
+					<input type="submit" id="botao" value="Realizar cadastro">
 				</div>
+
 			</form>
 			</article>
 

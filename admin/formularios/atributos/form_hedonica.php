@@ -15,6 +15,23 @@
 	$acao = isset($_GET["acao"]) ? $_GET["acao"] : "cadastro";
 	$atributo_id = isset($_GET["atributo"]) ? $_GET["atributo"] : 0;
 
+	// Informação de número de formulários relacionados ao projeto
+	if (isset($_POST["n_mais"])) {
+		$n_escalas = $_POST["n_escalas"]+1;
+	} else if (isset($_POST["n_menos"])) {
+		$n = $_POST["n_menos"];
+		if (!empty($_POST["escala{$n}"])) {
+			$excluir = "DELETE FROM opcoes WHERE atributo_id = {$atributo_id} AND escala = {$_POST["escala{$n}"]}";
+			$operacao_excluir = mysqli_query($conecta, $excluir);
+
+			$n_escalas = $_POST["n_escalas"]-1;
+		}
+	} else if (isset($_POST["n_escalas"])) { 
+		$n_escalas = $_POST["n_escalas"];
+	} else {
+		$n_escalas = 1;
+	}
+
 	// Consultar atributos
 	$consulta = "SELECT * FROM atributos WHERE atributo_id = {$atributo_id}";
 	$acesso = mysqli_query($conecta, $consulta);
@@ -27,16 +44,17 @@
 	$acesso2 = mysqli_query($conecta, $consulta2);
 	// ------------------------------------------------------------------------------
 
-	$conjunto_atributos = isset($_POST["conjunto_atributos"]) ? utf8_decode($_POST["conjunto_atributos"]) : $dados["conjunto_atributos"];
-	$descricao_conjunto = isset($_POST["descricao_conjunto"]) ? utf8_decode($_POST["descricao_conjunto"]) : $dados["descricao_conjunto"];
+	$conjunto_atributos = "";
+	$descricao_conjunto = "";
 
-	if (isset($_POST["atributo"])) {
-		$atributo = utf8_decode($_POST["atributo"]);
+	if (isset($_POST["definicao_atributo"])) {
+		$atributo = "Global";
 		$definicao_atributo = utf8_decode($_POST["definicao_atributo"]);
-		$atributo_completo_port = utf8_decode($_POST["atributo_completo_port"]);
-		$atributo_completo_eng = utf8_decode($_POST["atributo_completo_eng"]);
+		$atributo_completo_port = "hedonica";
+		$atributo_completo_eng = "global_liking";
 
 
+		if (isset($_POST["completo"]) || isset($_POST["novo_conjunto"])) {
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
@@ -78,7 +96,7 @@
 					$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND atributo_completo_eng = '{$atributo_completo_eng}'";
 					$acesso = mysqli_query($conecta, $consulta);
 					$dados_opcoes = mysqli_fetch_assoc($acesso);
-					$atributo_id_temp = $dados_opcoes["atributo_id"];
+					$atributo_id = $dados_opcoes["atributo_id"];
 				}
 			}
 		}
@@ -98,65 +116,66 @@
 		// --------------------------------------------------------------------------
 	}
 	// ------------------------------------------------------------------------------
+} else {
+	$consulta = "SELECT * FROM atributos WHERE atributo_id = {$atributo_id}";
+	$acesso = mysqli_query($conecta, $consulta);
+
+	$dados = mysqli_fetch_assoc($acesso);
+	$atributo = $dados["atributo"];
+	$definicao_atributo = $dados["definicao_atributo"];
+	$atributo_completo_port = $dados["atributo_completo_port"];
+	$atributo_completo_eng = $dados["atributo_completo_eng"];
+}
+
+if (isset($_POST["completo"])) {
+	$atributo = "";
+	$definicao_atributo = "";
+	$atributo_completo_port = "";
+	$atributo_completo_eng = "";
+}
 
 	// Informações preenchidas ------------------------------------------------------
-	$extremos = array("min", "max");
 	$consulta_opcao = "SELECT * FROM opcoes WHERE atributo_id = {$atributo_id}";
 	$acesso_opcao = mysqli_query($conecta, $consulta_opcao);
 
-	foreach ($extremos as $extremo) {
-		if (isset($_POST["texto_{$extremo}"])) {
-			$texto = utf8_decode($_POST["texto_{$extremo}"]);
-			$escala = !empty($_POST["escala_{$extremo}"]) ? $_POST["escala_{$extremo}"] : 0;
-			$referencia = utf8_decode($_POST["referencia_{$extremo}"]);
-			$imagem = utf8_decode($_POST["imagem_{$extremo}"]);
-
-			// Alterar cadastro ---------------------------------------------------------
-			if ($acao == "alteracao") {
-				$opcao = mysqli_fetch_assoc($acesso_opcao);
-					
-				$alterar = "UPDATE opcoes SET escala = '{$escala}', texto = '{$texto}', referencia = '{$referencia}', imagem = '{$imagem}' WHERE opcao_id = {$opcao["opcao_id"]}";
-
-				$operacao_alterar = mysqli_query($conecta, $alterar);
-
-				if (!$operacao_alterar) {
-					echo $alterar;
-					die("Falha na alteração dos dados.");
-				} else {
-					header("location:dados.php");
-				}
-			}
-			// --------------------------------------------------------------------------
+	if (isset($_POST["completo"]) || isset($_POST["novo_conjunto"])) {
+	
+	$n = 1;
+	while ($n <= $n_escalas) {
+		if (isset($_POST["escala{$n}"])) {
+			$opcao = mysqli_fetch_assoc($acesso_opcao);
+			$texto = utf8_decode($_POST["texto{$n}"]);
+			$escala = !empty($_POST["escala{$n}"]) ? $_POST["escala{$n}"] : 0;
+			$referencia = "";
+			$imagem = "";
 
 			// Cadastrar ----------------------------------------------------------------
-			if ($acao == "cadastro" && $atributo_id_temp <> 0) {
+			if (($acao == "cadastro" || $acao == "alteracao") && $atributo_id <> 0) {
 
 				// Verificar existência do atributo na base ------------------------------
 
-				$consulta_atributo = "SELECT * FROM opcoes WHERE atributo_id = {$atributo_id_temp} AND texto = '{$texto}'";
+				$consulta_atributo = "SELECT * FROM opcoes WHERE atributo_id = {$atributo_id} AND escala = '{$escala}'";
 
 				$acesso = mysqli_query($conecta, $consulta_atributo);
 				$existe_atributo = mysqli_fetch_assoc($acesso);
 
-				if (!empty($existe_atributo)) { ?>
-					<p>Esse atributo já foi cadastrado nesse projeto</p>
-				<?php } 
+				if (!empty($existe_atributo)) { 
+					$alterar = "UPDATE opcoes SET escala = '{$escala}', texto = '{$texto}', referencia = '{$referencia}', imagem = '{$imagem}' WHERE opcao_id = {$opcao["opcao_id"]}";
+
+				$operacao_alterar = mysqli_query($conecta, $alterar);
+				} 
 
 				// ----------------------------------------------------------------------
 					
 				else {
-					$cadastrar = "INSERT INTO opcoes (atributo_id, escala, texto, referencia, imagem) VALUES ($atributo_id_temp, '$escala', '$texto', '$referencia', '$imagem')";
+					$cadastrar = "INSERT INTO opcoes (atributo_id, escala, texto, referencia, imagem) VALUES ($atributo_id, '$escala', '$texto', '$referencia', '$imagem')";
 
 					$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
-
-					if (!$operacao_cadastrar) {
-						echo $cadastrar;
-					} else {
-						if (isset($_POST["novo_conjunto"])) {
-							header("location:form_{$_SESSION["tipo_formulario"]}.php?acao=cadastro");
-						}
-					}
 				}
+
+				
+				header("location:dados.php");
+				
 			}
 			// --------------------------------------------------------------------------
 
@@ -176,7 +195,13 @@
 			}
 			// --------------------------------------------------------------------------
 		}
+		$n = $n + 1;
 	}
+}
+
+if (($acao == "cadastro") && (isset($_POST["completo"]) || isset($_POST["novo_conjunto"]))) {
+	$atributo_id = 0;
+}
 
 ?>
 
@@ -203,88 +228,88 @@
 			else echo "Cadastro de Atributo - " . $_SESSION["nome_formulario"]; 
 			?></h2>
 		
-		<form action="form_pdq.php?acao=<?php echo $acao; ?>&atributo=<?php echo $atributo_id; ?>" method="post">
-
-			<div style="background-color: #F8F8F8; padding: 5px 5px 15px 5px; width: 600px">
-				<p style="margin-left: 10px; float: left; margin-right: 10px"><b>Conjunto de atributos: </b></p>
-
-				<div style="margin-top: 15px">
-					<input type="text" id="conjunto_atributos" name="conjunto_atributos" value="<?php echo utf8_encode($conjunto_atributos); ?>" style= "width: 370px;" required>
-				</div><br>
-
-				<div>
-					<label for="descricao_conjunto">Explicação de como avaliá-lo: </label>
-					<input type="text" id="descricao_conjunto" name="descricao_conjunto" value="<?php echo utf8_encode($descricao_conjunto); ?>" style= "width: 550px; height: 40px;">
-				</div>
-			</div><br>
+		<form action="?acao=<?php echo $acao; ?>&atributo=<?php echo $atributo_id; ?>" method="post">
 			
-			<div style="background-color: #F8F8F8; padding: 5px 5px 15px 5px; width: 600px">
+			<div style="background-color: #F8F8F8; padding: 5px 5px 5px 5px; width: 600px">
 				<p style="margin-left: 10px; float: left; margin-right: 10px"><b>Atributo:</b> </p>
 				
 				<div style="margin-top: 15px">
-					<input type="text" id="atributo" name="atributo" value="<?php echo utf8_encode($dados["atributo"]); ?>" style= "width: 470px;" required>
+					<input type="text" id="atributo" name="atributo" value="<?php echo "Global"; ?>" style= "width: 470px;" disabled>
 				</div><br>
 
 				<div>
-					<label for="descricao_conjunto">Definicao do atributo: </label>
-					<input type="text" id="definicao_atributo" name="definicao_atributo" value="<?php echo utf8_encode($dados["definicao_atributo"]); ?>" style= "width: 550px; height: 40px;">
+					<label for="definicao_atributo">Pergunta relacionada à escala hedônica: </label>
+					<input type="text" id="definicao_atributo" name="definicao_atributo" value="<?php echo utf8_encode($definicao_atributo); ?>" style= "width: 550px; height: 40px;">
 				</div><br>
-
-				<div style="margin-bottom: 1px;">
-					<div style="float: left; margin-right: 30px;">
-						<label for="atributo_completo_port">Nome completo em português<small><sup>*</sup></small>:</label>
-						<input type="text" id="atributo_completo_port" name="atributo_completo_port" value="<?php echo $dados["atributo_completo_port"]; ?>" style="width: 250px; margin-bottom: 10px;" required>
-					</div>
-
-					<div>
-						<label for="atributo_completo_eng">Nome completo em inglês<small><sup>*</sup></small>:</label>
-						<input type="text" id="atributo_completo_eng" name="atributo_completo_eng" value="<?php echo $dados["atributo_completo_eng"]; ?>" style="width: 250px; margin-bottom: 10px;" required>
-					</div>
-					<small style="font-size: 55%; margin-left: 10px; width: 200px"><sup>*</sup>Nomes que aparecerão na planilha de resultados</small>
-				</div>
 			</div><br>
 
+			<?php 
+			$consulta = "SELECT * FROM opcoes WHERE atributo_id = {$atributo_id}";
+			$acesso = mysqli_query($conecta, $consulta);
+			if (($acao == "alteracao" || $acao == "exclusao") && (!isset($_POST["atributo"]))) {
+				$n_escalas = mysqli_num_rows($acesso);
+				if ($n_escalas==0) {
+					$n_escalas=1;
+				}
+			}
 
-			<div style="background-color: #F8F8F8; padding: 5px 5px 15px 5px; width: 600px">
+			$n = 1;
+			while ($n <= $n_escalas) {
 
-				<?php 
-				foreach ($extremos as $extremo) {
-					$linha = mysqli_fetch_assoc($acesso2);
-				?>
+				$n_post = $n;
+				if (isset($_POST["n_menos"])) {
+					if ($n>=$_POST["n_menos"]) {
+						$n_post = $n+1;
+					}
+				}
+
+				if (isset($_POST["escala{$n}"])) {
+						$dados = mysqli_fetch_assoc($acesso);
+						$escala = $_POST["escala{$n_post}"];
+						$texto = $_POST["texto{$n_post}"];
+					} else {
+						$dados = mysqli_fetch_assoc($acesso);
+						$escala = $dados["escala"];
+						$texto = utf8_encode($dados["texto"]);
+					}
+
+					if (isset($_POST["completo"])) {
+						$escala = "";
+						$texto = "";
+						$n_escalas = 1;
+					}
+			?>
+				<div style="background-color: #F8F8F8; padding: 20px 5px 0px 5px; width: 600px">
 					<div>
-						<p style="margin-left: 10px"><b>Escala <?php if ($extremo=="min") {echo "Mínima";} else {echo "Máxima";}  ?></b></p>
 						<div style="float: left; margin-right: 20px;">
-							<label for="texto">Texto escala: </label>
-							<input type="text" id="texto" name="texto_<?php echo($extremo); ?>" value="<?php echo utf8_encode($linha["texto"]); ?>" style="width: 440px;">
-						</div>
-						<div>
 							<label for="escala">Valor escala: </label>
-							<input type="number" id="escala" name="escala_<?php echo($extremo); ?>" value="<?php echo $linha["escala"]; ?>" style="width: 70px;">
+							<input type="number" id="escala" name="escala<?php echo($n); ?>" value="<?php echo $escala; ?>" style="width: 70px;">
 						</div>
-
-						<div style="float: left; margin-right: 30px;">
-							<label for="referencia">Referência: </label>
-							<input type="text" id="referencia" name="referencia_<?php echo($extremo); ?>" value="<?php echo utf8_encode($linha["referencia"]); ?>" style="width: 250px;">
-						</div>
-
 						<div>
-							<label for="imagem">Imagem referência: </label>
-							<input type="text" id="imagem" name="imagem_<?php echo($extremo); ?>" value="<?php echo $linha["imagem"]; ?>" style="width: 250px;">
+							<label for="texto">Texto escala: </label>
+							<input type="text" id="texto" name="texto<?php echo($n); ?>" value="<?php echo $texto; ?>" style="width: 330px;">
 						</div>
 					</div><br>
-				<?php } ?>
-			</div><br><br>
-			
 
-			<input type="submit" id="botao" value="<?php 
+					<input type="hidden" name="n_escalas" value="<?php echo($n_escalas); ?>">
+
+					<div style="float: right; margin-top: -60px; margin-right: 40px">
+						<button name="n_menos" type="submit" value="<?php echo $n; ?>" style="width: 40px; margin-top: 10px; font-size: 120%; background-color: #FFF; color: #778899; text-align: center; padding: 0px; float: left; margin-right: 7px">-</button>
+						<?php if ($n == $n_escalas) { ?>
+							<button name="n_mais" type="submit" value="<?php echo $n; ?>" style="width: 40px; margin-top: 10px; font-size: 120%; background-color: #FFF; color: #778899; text-align: center; padding: 0px">+</button>
+						<?php } ?>
+					</div>
+				</div><br>
+			<?php $n = $n + 1;
+			} ?>
+			
+			<br><br>
+			<input type="submit" id="botao" name="completo" value="<?php 
 				if ($acao == "alteracao") echo "Alterar atributo";
 				elseif ($acao == "exclusao") echo "Excluir atributo";
 				else echo "Cadastrar atributo";
 			?>" style="margin-left: 5px; float: left; margin-right: 200px">
 
-			<?php if ($acao == "cadastro") { ?>
-				<input type="submit" id="botao" name="novo_conjunto" value="Cadastrar e abrir novo conjunto" style="background-color: #FFF; color: #778899; padding-left: 5px; padding-right: 5px">
-			<?php } ?>
 		</form>
 		<br><br>
 		</article><br><br>
