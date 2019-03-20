@@ -33,13 +33,13 @@
 		$atributo_completo_port = $dados["atributo_completo_port"];
 
 		if (empty($resultados)) {
-			$inserir = "INSERT INTO tb_resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo_eng, atributo_completo_port, justificativa, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$amostra}', {$atributo_id}, '{$atributo_completo_eng}', '{$atributo_completo_port}', '{$justificativa}', {$nota}, {$_SESSION["teste"]})";
+			$inserir = "INSERT INTO tb_resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo_eng, atributo_completo_port, resposta, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$amostra}', {$atributo_id}, '{$atributo_completo_eng}', '{$atributo_completo_port}', '{$justificativa}', {$nota}, {$_SESSION["teste"]})";
 			echo $inserir;
 
 			$operacao_inserir = mysqli_query($conecta, $inserir);
 		} else {
 
-			$alterar = "UPDATE tb_resultados SET nota = {$nota}, amostra_codigo = '{$amostra}', justificativa = '{$justificativa}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]}";
+			$alterar = "UPDATE tb_resultados SET nota = {$nota}, amostra_codigo = '{$amostra}', resposta = '{$justificativa}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 		}

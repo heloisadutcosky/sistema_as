@@ -119,26 +119,36 @@
 						<form action="" method="post" align="">
 
 
-							<?php 
-									$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
-									$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
-									$dados_atributos = mysqli_fetch_assoc($acesso_atributos)
-									?>
-									<p><?php echo utf8_encode($dados_atributos["descricao_conjunto"]); ?></p>
-									<div style="margin-left: -10px; margin-top: 10px">
-										<?php 
-										$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
+							<?php $conjuntos_atributos = array_unique(array_values($_SESSION["atributos_cata"]));
+									foreach ($conjuntos_atributos as $conjunto_atributos) {								
+										$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND conjunto_atributos = '{$conjunto_atributos}'";
 										$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
-										while ($dados_atributos = mysqli_fetch_assoc($acesso_atributos)) { ?>
-											<div style="float: left; margin-left: 5px">
-												<label for="<?php echo $dados_atributos["atributo_id"]; ?>" style="margin-right: 50px; margin-left: 5px; margin-bottom: 10px; float: left;">
-													<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 10px; float: left; margin-bottom: 10px;"/>
-													<?php echo $dados_atributos["atributo"]; ?>
-												</label><br><br>
-											</div>
+										$dados_atributos = mysqli_fetch_assoc($acesso_atributos);
+										?>
+										<p><?php echo utf8_encode($dados_atributos["descricao_conjunto"]); ?></p>
+										<div style="margin-left: 0px; margin-top: 10px">
+											<?php 
+											
+											foreach ($_SESSION["atributos_cata_random"] as $atributo_id) { 
+												if ($_SESSION["atributos_cata"][$atributo_id] == $conjunto_atributos) {
+												 
+													$consulta_atributos = "SELECT * FROM atributos WHERE atributo_id = {$atributo_id}";
+													$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
+													$dados_atributos = mysqli_fetch_assoc($acesso_atributos)
+													?>
+
+													<div style="float: left; margin-left: 5px">
+														<label for="<?php echo $dados_atributos["atributo_id"]; ?>" style="margin-right: 50px; margin-left: 5px; margin-bottom: 10px; float: left;">
+															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 10px; float: left; margin-bottom: 10px;"/>
+															<?php echo $dados_atributos["atributo"]; ?>
+														</label><br><br>
+													</div>
+											<?php } 
+										} ?>
+										<br><br><br><br>
 									<?php } ?>
 							
-							<br><br><br><br><br><br>
+							<br><br>
 							<input type="hidden" name="amostra" value="<?php echo $_SESSION["amostra"];?>">
 							<input type="submit" id="botao" value="Confirmar" name="completo" style="margin-left: 5px">
 							<br>

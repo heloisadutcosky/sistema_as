@@ -50,6 +50,7 @@
 	if (isset($_POST["atributo"])) {
 		$atributo = utf8_decode($_POST["atributo"]);
 		$definicao_atributo = utf8_decode($_POST["definicao_atributo"]);
+		$disposicao_pergunta = $_POST["disposicao_pergunta"];
 		$atributo_completo_port = utf8_decode($_POST["atributo_completo_port"]);
 		$atributo_completo_eng = utf8_decode($_POST["atributo_completo_eng"]);
 
@@ -58,7 +59,7 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE atributos SET formulario_id = {$_SESSION["formulario_id"]}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', definicao_atributo = '{$definicao_atributo}', atributo_completo_port = '{$atributo_completo_port}', atributo_completo_eng = '{$atributo_completo_eng}' WHERE atributo_id = {$atributo_id}";
+			$alterar = "UPDATE atributos SET formulario_id = {$_SESSION["formulario_id"]}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', definicao_atributo = '{$definicao_atributo}', disposicao_pergunta = '{$disposicao_pergunta}', atributo_completo_port = '{$atributo_completo_port}', atributo_completo_eng = '{$atributo_completo_eng}' WHERE atributo_id = {$atributo_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -87,7 +88,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO atributos (formulario_id, conjunto_atributos, descricao_conjunto, atributo, definicao_atributo, atributo_completo_eng, atributo_completo_port) VALUES ({$_SESSION["formulario_id"]}, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$definicao_atributo', '$atributo_completo_eng', '$atributo_completo_port')";
+				$cadastrar = "INSERT INTO atributos (formulario_id, conjunto_atributos, descricao_conjunto, atributo, definicao_atributo, disposicao_pergunta, atributo_completo_eng, atributo_completo_port) VALUES ({$_SESSION["formulario_id"]}, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$definicao_atributo', '$disposicao_pergunta', '$atributo_completo_eng', '$atributo_completo_port')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
@@ -123,6 +124,7 @@
 	$dados = mysqli_fetch_assoc($acesso);
 	$atributo = $dados["atributo"];
 	$definicao_atributo = $dados["definicao_atributo"];
+	$disposicao_pergunta = $dados["disposicao_pergunta"];
 	$atributo_completo_port = $dados["atributo_completo_port"];
 	$atributo_completo_eng = $dados["atributo_completo_eng"];
 }
@@ -130,6 +132,7 @@
 if (isset($_POST["completo"])) {
 	$atributo = "";
 	$definicao_atributo = "";
+	$disposicao_pergunta = "";
 	$atributo_completo_port = "";
 	$atributo_completo_eng = "";
 }
@@ -154,7 +157,7 @@ if (isset($_POST["completo"])) {
 
 				// Verificar existência do atributo na base ------------------------------
 
-				$consulta_atributo = "SELECT * FROM opcoes WHERE atributo_id = {$atributo_id} AND texto = '{$texto}'";
+				$consulta_atributo = "SELECT * FROM opcoes WHERE atributo_id = {$atributo_id} AND escala = {$escala} AND texto = '{$texto}'";
 
 				$acesso = mysqli_query($conecta, $consulta_atributo);
 				$existe_atributo = mysqli_fetch_assoc($acesso);
@@ -175,6 +178,10 @@ if (isset($_POST["completo"])) {
 
 				if (isset($_POST["novo_conjunto"])) {
 					header("location:form_{$_SESSION["tipo_formulario"]}.php?acao=cadastro");
+				} 
+
+				if ($acao == "alteracao") {
+					header("location:dados.php");
 				}
 			}
 			// --------------------------------------------------------------------------
@@ -255,6 +262,25 @@ if (($acao == "cadastro") && (isset($_POST["completo"]) || isset($_POST["novo_co
 					<input type="text" id="definicao_atributo" name="definicao_atributo" value="<?php echo utf8_encode($definicao_atributo); ?>" style= "width: 550px; height: 40px;">
 				</div><br>
 
+				<div>
+					<label for="disposicao_pergunta">Disposição da pergunta no formulário: </label>
+					<select id="disposicao_pergunta" name="disposicao_pergunta" style= "width: 550px;">
+						<option></option>
+						<option value="text" <?php if ($disposicao_pergunta == "text") { ?>
+							selected
+						<?php } ?>>Texto livre</option>
+						<option value="select" <?php if ($disposicao_pergunta == "select") { ?>
+							selected
+						<?php } ?>>Seleção vertical (dropdown)</option>
+						<option value="lista" <?php if ($disposicao_pergunta == "lista") { ?>
+							selected
+						<?php } ?>>Seleção horizontal (quadradinhos)</option>
+						<option value="checkbox" <?php if ($disposicao_pergunta == "checkbox") { ?>
+							selected
+						<?php } ?>>Checkbox</option>
+					</select>
+				</div><br>
+
 				<div style="margin-bottom: 1px;">
 					<div style="float: left; margin-right: 30px;">
 						<label for="atributo_completo_port">Nome completo em português<small><sup>*</sup></small>:</label>
@@ -308,11 +334,11 @@ if (($acao == "cadastro") && (isset($_POST["completo"]) || isset($_POST["novo_co
 				<div style="background-color: #F8F8F8; padding: 20px 5px 0px 5px; width: 600px">
 					<div>
 						<div style="float: left; margin-right: 20px;">
-							<label for="escala">Valor escala: </label>
+							<label for="escala">Valor: </label>
 							<input type="number" id="escala" name="escala<?php echo($n); ?>" value="<?php echo $escala; ?>" style="width: 70px;">
 						</div>
 						<div>
-							<label for="texto">Texto escala: </label>
+							<label for="texto">Texto: </label>
 							<input type="text" id="texto" name="texto<?php echo($n); ?>" value="<?php echo $texto; ?>" style="width: 330px;">
 						</div>
 					</div><br>

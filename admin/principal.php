@@ -22,6 +22,12 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo_tabelas.css">
 
+	<style type="text/css">
+		.menu {
+			display: inline-block;
+		}
+	</style>
+
 </head>
 <body>
 <main>
@@ -31,7 +37,19 @@
 
 		<article>
 			<p>Bem vindo(a), <?php echo utf8_encode($_SESSION["usuario"]); ?>! <u>O que você deseja fazer?</u></p>
-			<br><br><br><br><br><br>
+			<br><br>
+
+
+			<?php 
+			if ($_SESSION["cpf"] == "08825096917" || $_SESSION["cpf"] == "51226537987") { ?>
+			<p>Em qual tabela você deseja mexer?</p>
+			<ul>
+				<li class="menu"><a href="<?php echo $caminho; ?>conexao/conexao.php?tabela=about_solution" style="<?php if ($_SESSION["tabela"] == "about_solution") {echo "background-color: #F99B95"; }?>">Tabela About Solution</a></li>
+				<li class="menu"><a href="<?php echo $caminho; ?>conexao/conexao.php?tabela=demo" style="<?php if ($_SESSION["tabela"] == "demo") {echo "background-color: #F99B95"; }?>">Tabela demonstrativa</a></li>
+			</ul>
+			<?php } ?>
+
+			<br><br><br><br>
 			<br><br><br><br><br><br>
 			<br><br><br><br><br>
 		</article>

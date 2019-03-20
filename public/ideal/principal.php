@@ -44,6 +44,17 @@
 			$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$formulario_id}";
 			$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
 
+			if ($tipo_formulario == "cata") {
+				$_SESSION["atributos_cata"] = array();
+				while ($linha=mysqli_fetch_assoc($acesso_atributos)) {
+					$_SESSION["atributos_cata"][$linha["atributo_id"]] = $linha["conjunto_atributos"];
+				}
+
+				$_SESSION["atributos_cata_random"] = array_keys($_SESSION["atributos_cata"]);
+				shuffle($_SESSION["atributos_cata_random"]);
+			}
+			
+
 			$_SESSION["n_atributos"] = $_SESSION["n_atributos"] + mysqli_num_rows($acesso_atributos);
 		}
 
@@ -59,6 +70,6 @@
 		header("location:amostra.php");
 
 	} else {
-		//header("location:../principal.php");
+		header("location:../principal.php");
 	}
 ?>

@@ -41,6 +41,9 @@
 		$acesso = mysqli_query($conecta, $consulta);
 		$rows = mysqli_num_rows($acesso);
 
+		$_SESSION["formulario_id"] = array();
+		$_SESSION["tipo_avaliador"] = array();
+		$_SESSION["tipo_avaliacao"] = array();
 		while($linha = mysqli_fetch_assoc($acesso)) { 
 			$consulta2 = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]}";
 			$acesso2 = mysqli_query($conecta, $consulta2);
@@ -75,18 +78,24 @@
 					//echo "atributos = " . $n_atributos . "<br>";
 
 				if (($n_resultados != $n_amostras*$n_atributos) && $corrigir==0 && $linha["tipo_avaliacao"] <> "triangular") { 
-					$_SESSION["formulario_id"] = $linha["formulario_id"];
-					$_SESSION["tipo_avaliador"] = $linha["tipo_avaliador"];
-					$_SESSION["tipo_avaliacao"] = $linha["tipo_avaliacao"];
+					$_SESSION["formulario_id"][$linha["tipo_avaliacao"]] = $linha["formulario_id"];
+					$_SESSION["tipo_avaliador"][$linha["tipo_avaliacao"]] = $linha["tipo_avaliador"];
+					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
 					//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
-					header("location:{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php");
+					
 				} elseif (($n_resultados != $n_atributos) && $corrigir==0 && $linha["tipo_avaliacao"] == "triangular") {
-					$_SESSION["formulario_id"] = $linha["formulario_id"];
-					$_SESSION["tipo_avaliador"] = $linha["tipo_avaliador"];
-					$_SESSION["tipo_avaliacao"] = $linha["tipo_avaliacao"];
-					header("location:{$caminho}public/triangular/principal.php");
+					$_SESSION["formulario_id"][$linha["tipo_avaliacao"]] = $linha["formulario_id"];
+					$_SESSION["tipo_avaliador"][$linha["tipo_avaliacao"]] = $linha["tipo_avaliador"];
+					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
 				}
-
+			}
+			print_r($_SESSION["tipo_avaliacao"]);
+			if (!empty($_SESSION["tipo_avaliacao"])) {
+				$tipo_avaliacao = $_SESSION["tipo_avaliacao"][0];
+				$_SESSION["formulario_id"] = $_SESSION["formulario_id"][$tipo_avaliacao];
+				$_SESSION["tipo_avaliador"] = $_SESSION["tipo_avaliador"][$tipo_avaliacao];
+			
+				header("location:{$caminho}public/{$tipo_avaliacao}/principal.php");
 			}
 	} 
 ?>

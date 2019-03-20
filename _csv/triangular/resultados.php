@@ -54,7 +54,7 @@ if (isset($_GET["projeto"])) {
 		a.amostra_descricao,
 		r.amostra_codigo,
         r.sessao,
-        r.justificativa
+        r.resposta
 		FROM tb_resultados AS r 
         LEFT JOIN usuarios AS u
         ON u.user_id = r.user_id
