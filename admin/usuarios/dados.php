@@ -67,7 +67,7 @@
 				</ul>
 				<?php } ?>
 			</div>
-			<br><br><br><br><br><br>
+			<br><br>
 		</article>
 
 		<div class="direita">

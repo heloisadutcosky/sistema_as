@@ -1,17 +1,8 @@
-<?php 
-
-	if (isset($_GET["tabela"])) {
-		$_SESSION["tabela"] = $_GET["tabela"];
-		header("location:../admin/principal.php");
-	} 
-
-	if (empty($_SESSION["tabela"])) {
-	 	$_SESSION["tabela"] = "about_solution";
-	}	
+<?php 	
 	
 	// Abrir conexão
 	//$conecta = mysqli_connect("localhost", "root", "", "aboutsolution");
-	$conecta = mysqli_connect("localhost", "phpmyadmin", "Lagosta1@", $_SESSION["tabela"]);
+	$conecta = mysqli_connect("localhost", "phpmyadmin", "Lagosta1@", "about_solution");
 
 	// Testar conexão
 	if (mysqli_connect_errno() ){

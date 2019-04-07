@@ -431,17 +431,31 @@
 								}
 								$sessao = $dados_sessoes["sessao"];
 								$data = $dados_sessoes["data"];	
-							} ?>
-							<div style="background-color: #f9ecec; padding: 7px 5px 20px 5px; width: 610px; margin-left: 10px; position: relative;">
+							} 
+							?>
+
+							<?php 
+								$sessao = !empty($sessao) ? $sessao : 0;
+
+								$consulta_amostras = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = $sessao";
+								$acesso_amostras = mysqli_query($conecta, $consulta_amostras);
+
+								if (($acao == "alteracao" || $acao == "exclusao") && (!isset($_POST["empresa_id"]))) {
+									$n_amostras = mysqli_num_rows($acesso_amostras);
+									if ($n_amostras==0) {
+										$n_amostras=1;
+									}
+								} ?>
+							<div style="background-color: #f9ecec; padding: 7px 5px 20px 5px; width: 610px; margin-left: 10px; position: relative; height:<?php echo((ceil($n_amostras / 3) * 55) + 40); ?>px">
 								<p style="margin-left: 8px; position: absolute; left: 10px; top: 5px; color: #660000"><b>Sessão e amostras: </b></p>
 								<div style="position: relative; left: 300px; top: 5px">
-									<div style="float: left; margin-right: 10px">
+									<div style="float: left; margin-right: 10px;">
 										<label for="sessao" style="margin-left: 11px; margin-bottom: 0px;">Sessão: </label>
 										<input type="text" id="sessao" name="sessao<?php echo($n . "_" . $ns); ?>" value="<?php echo $sessao; ?>" style="width: 50px; margin: 0px 5px 5px 10px">
 									</div>
 									<div>
 										<label for="data" style="margin-left: 8px; margin-bottom: 0px">Data: </label>
-										<input type="date" id="data" name="data<?php echo($n . "_" . $ns); ?>" value="<?php echo $data; ?>" style="width: 120px; margin: 0px 10px 5px 5px; font-size: 75%; text-align: center;">
+										<input type="date" id="data" name="data<?php echo($n . "_" . $ns); ?>" value="<?php echo $data; ?>" style="width: 120px; margin: 0px 10px 20px 5px; font-size: 75%; text-align: center;">
 									</div>
 								</div>
 
@@ -456,18 +470,6 @@
 									</div>
 								<?php } ?>
 
-								<?php 
-								$sessao = !empty($sessao) ? $sessao : 0;
-
-								$consulta_amostras = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = $sessao";
-								$acesso_amostras = mysqli_query($conecta, $consulta_amostras);
-
-								if (($acao == "alteracao" || $acao == "exclusao") && (!isset($_POST["empresa_id"]))) {
-									$n_amostras = mysqli_num_rows($acesso_amostras);
-									if ($n_amostras==0) {
-										$n_amostras=1;
-									}
-								} ?>
 
 								<div style="margin-top: 15px; margin-left: 8px">
 									<?php $na = 1;

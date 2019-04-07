@@ -164,6 +164,7 @@
 						<option value="consumo" <?php if($tipo_formulario == "consumo") { ?> selected <?php } ?>>Consumo</option>
 						<option value="selecao_painel" <?php if($tipo_formulario == "selecao_painel") { ?> selected <?php } ?>>Seleção de painel</option>
 						<option value="pdq" <?php if($tipo_formulario == "pdq") { ?> selected <?php } ?>>Painel descritivo quantitativo</option>
+						<option value="pdq_aleatorizado" <?php if($tipo_formulario == "pdq_aleatorizado") { ?> selected <?php } ?>>Painel descritivo quantitativo - Aleatorização Manual</option>
 						<option value="cata" <?php if($tipo_formulario == "cata") { ?> selected <?php } ?>>CATA</option>
 						<option value="ideal" <?php if($tipo_formulario == "ideal") { ?> selected <?php } ?>>Escala do ideal</option>
 						<option value="hedonica" <?php if($tipo_formulario == "hedonica") { ?> selected <?php } ?>>Escala hedônica</option>
