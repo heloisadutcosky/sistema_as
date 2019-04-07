@@ -12,18 +12,36 @@
 	$_SESSION["produto"] = isset($_GET["produto"]) ? $_GET["produto"] : $_SESSION["produto"];
 	$_SESSION["correcao"] = isset($_GET["corrigir"]) ? $_GET["corrigir"] : 0;
 
-
 	// Já pegar todas as informações do projeto
 	if (isset($_SESSION["projeto_id"])) {
 
-		$consulta = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]}";
+		$consulta = "SELECT * FROM avaliacoes WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]}";
 		$acesso = mysqli_query($conecta, $consulta);
+		$linha=mysqli_fetch_assoc($acesso);
+		$aleatorizacao_manual = $linha["aleatorizacao_manual"];
 
-		$amostras = array();
-		while ($linha=mysqli_fetch_assoc($acesso)) {
-			$amostras[$linha["amostra_codigo"]] = $linha["sessao"];
+
+		if ($aleatorizacao_manual == 0) {
+			$consulta = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]}";
+			$acesso = mysqli_query($conecta, $consulta);
+
+			$amostras = array();
+			while ($linha=mysqli_fetch_assoc($acesso)) {
+				$amostras[$linha["amostra_codigo"]] = $linha["sessao"];
+			}
+			$sessoes = array_values(array_unique(array_values($amostras)));
+		} else {
+			$consulta = "SELECT * FROM aleatorizacao WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND user_id = {$_SESSION["user_id"]}";
+			$acesso = mysqli_query($conecta, $consulta);
+
+			$amostras = array();
+			while ($linha=mysqli_fetch_assoc($acesso)) {
+				$amostras[$linha["amostra_descricao"]] = $linha["sessao"];
+			}
+			$sessoes = array_values(array_unique(array_values($amostras)));
 		}
-		$sessoes = array_values(array_unique(array_values($amostras)));
+
+		
 
 		// Abrir consulta ao banco de dados para checar quais são os conjuntos -----------------------------------------------
 		$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
@@ -45,9 +63,26 @@
 	if (isset($_GET["sessao"])) { 
 		$_SESSION["sessao"] = $_GET["sessao"];
 
-		$_SESSION["amostras"] = array_keys($amostras, $_SESSION["sessao"]);
+		if ($aleatorizacao_manual == 0) {
+
+			$_SESSION["amostras"] = array_keys($amostras, $_SESSION["sessao"]);
+			shuffle($_SESSION["amostras"]);
+
+		} else {
+
+			$amostras_descricao = array_keys($amostras, $_SESSION["sessao"]);
+
+			$_SESSION["amostras"] = array();
+			foreach ($amostras_descricao as $amostra_descricao) {
+				$consulta = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND amostra_descricao = '{$amostra_descricao}'";
+				$acesso = mysqli_query($conecta, $consulta);
+				$amostra_codigo = mysqli_fetch_assoc($acesso);
+
+				$_SESSION["amostras"][] = $amostra_codigo["amostra_codigo"];
+			}
+		}
 		
-		shuffle($_SESSION["amostras"]);
+		
 	} else {
 		$_SESSION["sessao"] = 0;
 	}

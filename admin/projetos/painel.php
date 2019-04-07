@@ -108,6 +108,7 @@
 					$tipo_avaliacao = $form["tipo_formulario"];
 
 					$form_ativo = isset($_POST["form_ativo{$n}"]) ? 1 : 0;
+					$aleatorizacao_manual = isset($_POST["aleatorizacao_manual{$n}"]) ? 1 : 0;
 					$tipo_avaliador = utf8_decode($_POST["tipo_avaliador{$n}"]);
 					$descricao_avaliacao = utf8_decode($_POST["descricao_avaliacao{$n}"]);
 					$n_sessoes = $_POST["n_sessoes{$n}"];
@@ -118,12 +119,12 @@
 
 						if (!empty($existe_projeto)) { 
 
-							$alterar = "UPDATE avaliacoes SET form_ativo = {$form_ativo}, tipo_avaliacao = '{$tipo_avaliacao}', tipo_avaliador = '{$tipo_avaliador}', descricao_avaliacao = '{$descricao_avaliacao}' WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id}";
+							$alterar = "UPDATE avaliacoes SET form_ativo = {$form_ativo}, aleatorizacao_manual = {$aleatorizacao_manual}, tipo_avaliacao = '{$tipo_avaliacao}', tipo_avaliador = '{$tipo_avaliador}', descricao_avaliacao = '{$descricao_avaliacao}' WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id}";
 							$operacao_alterar = mysqli_query($conecta, $alterar);
 							echo $alterar;
 
 						} else {
-							$cadastrar = "INSERT INTO avaliacoes (projeto_id, formulario_id, form_ativo, tipo_avaliacao, tipo_avaliador, descricao_avaliacao) VALUES ({$projeto_id}, {$formulario_id}, {$form_ativo}, '{$tipo_avaliacao}', '{$tipo_avaliador}', '{$descricao_avaliacao}')";
+							$cadastrar = "INSERT INTO avaliacoes (projeto_id, formulario_id, form_ativo, aleatorizacao_manual, tipo_avaliacao, tipo_avaliador, descricao_avaliacao) VALUES ({$projeto_id}, {$formulario_id}, {$form_ativo}, {$aleatorizacao_manual}, '{$tipo_avaliacao}', '{$tipo_avaliador}', '{$descricao_avaliacao}')";
 							$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 						}
 
@@ -329,15 +330,18 @@
 						$dados = mysqli_fetch_assoc($acesso);
 						$formulario_id = $_POST["formulario_id{$n_post}"];
 						$form_ativo = isset($_POST["form_ativo{$n_post}"]) ? 1 : 0;
+						$aleatorizacao_manual = isset($_POST["aleatorizacao_manual{$n}"]) ? 1 : 0;
 						$tipo_avaliador = $_POST["tipo_avaliador{$n_post}"];
 						$descricao_avaliacao = $_POST["descricao_avaliacao{$n_post}"];
 					} else {
 						$dados = mysqli_fetch_assoc($acesso);
 						$formulario_id = $dados["formulario_id"];
 						$form_ativo = $dados["form_ativo"];
+						$aleatorizacao_manual = $dados["aleatorizacao_manual"];
 						$tipo_avaliador = $dados["tipo_avaliador"];
 						$descricao_avaliacao = utf8_encode($dados["descricao_avaliacao"]);
-					} ?>
+					} 
+					?>
 
 					<div style="background-color: #F8F8F8; padding: 15px 5px 15px 10px; width: 650px; position: relative;">
 						<div>
@@ -519,6 +523,19 @@
 						$ns = $ns + 1;
 						} ?>
 
+						<?php if ($formulario_id<>"") { 
+							?>
+
+							<div style="float: left; margin-right: 75px; margin-left: 5px">
+								<input type="checkbox" id="aleatorizacao_manual" name="aleatorizacao_manual<?php echo($n); ?>" <?php if ($aleatorizacao_manual == 1) { ?> 
+								checked <?php } ?> style="float: left; width: 10px">
+								<label for="form_ativo" style="width: 400px; margin-left: 0px">Aleatorizar amostras manualmente</label>
+							</div>
+							<div>
+								<a href="aleatorizacao.php?projeto=<?php echo($_SESSION["projeto_id"]);?>&formulario=<?php echo($formulario_id);?>" style="font-size: 85%; color: #696969;">Configurar aleatorização</a>
+							</div><br><br>
+						<?php } ?>
+
 						
 						<div style="float: left; margin-right: 40px; margin-left: 5px">
 							<input type="checkbox" id="form_ativo" name="form_ativo<?php echo($n); ?>" <?php if ($form_ativo == 1) { ?> 
@@ -533,7 +550,11 @@
 							<?php if ($n == $n_forms) { ?>
 								<button name="n_mais" type="submit" value="<?php echo $n; ?>" style="width: 40px; margin-top: 10px; font-size: 120%; background-color: #FFF; color: #778899; text-align: center; padding: 0px">+</button>
 							<?php } ?>
-						</div><br>
+						</div><br><br>
+						
+  
+
+
 						
 					</div><br>
 				<?php 

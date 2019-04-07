@@ -79,9 +79,6 @@
 			     	case 'selecao_painel': ?>
 			     		Seleção de painel
 			     	<?php break;
-			     	case 'pdq_aleatorizado': ?>
-			     		Painel descritivo quantitativo - Aleatorização Manual
-			     	<?php break;
 			     	case 'cata': ?>
 			     		CATA
 			     	<?php break;

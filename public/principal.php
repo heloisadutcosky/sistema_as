@@ -41,6 +41,7 @@
 		$acesso = mysqli_query($conecta, $consulta);
 		$rows = mysqli_num_rows($acesso);
 
+
 		$_SESSION["formulario_id"] = array();
 		$_SESSION["tipo_avaliador"] = array();
 		$_SESSION["tipo_avaliacao"] = array();
@@ -89,6 +90,8 @@
 					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
 				}
 			}
+
+
 			print_r($_SESSION["tipo_avaliacao"]);
 			if (!empty($_SESSION["tipo_avaliacao"])) {
 				$tipo_avaliacao = $_SESSION["tipo_avaliacao"][0];
