@@ -81,7 +81,7 @@
 		}
 	}
 
-	$consulta = "SELECT * FROM aleatorizacao WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} ORDER BY ordem, user_id, sessao";
+	$consulta = "SELECT * FROM aleatorizacao WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} ORDER BY sessao, user_id, ordem";
 	$acesso = mysqli_query($conecta, $consulta);
 
 ?>
