@@ -68,34 +68,21 @@
 			// Alterar cadastro ---------------------------------------------------------
 			if ($acao == "alteracao" || $acao == "cadastro") {
 
-				$consulta_projeto = "SELECT * FROM tb_projetos WHERE empresa_id = {$empresa_id} AND categoria_id = {$categoria_id} AND produto_id = {$produto_id}";
-
-				$acesso = mysqli_query($conecta, $consulta_projeto);
-				$existe_projeto = mysqli_fetch_assoc($acesso);
-
 				if ($acao == "alteracao") {
 					$alterar = "UPDATE tb_projetos SET empresa_id = {$empresa_id}, categoria_id = {$categoria_id}, produto_id = {$produto_id}, descricao_projeto = '{$descricao_projeto}', data_inicio = '{$data_inicio}', data_fim = '{$data_fim}' WHERE projeto_id = {$projeto_id}";
 					$operacao_alterar = mysqli_query($conecta, $alterar);
 				}
 
 				if ($acao == "cadastro") {
-					if (!empty($existe_projeto)) { ?>
-						<p>Esse projeto já foi cadastrado</p>
-					<?php } 
 
+					$cadastrar = "INSERT INTO tb_projetos (empresa_id, categoria_id, produto_id, descricao_projeto, data_inicio, data_fim) VALUES ({$empresa_id}, {$categoria_id}, {$produto_id}, '{$descricao_projeto}', '{$data_inicio}', '{$data_fim}')";
 
-				// ----------------------------------------------------------------------
-					
-					else {
-						$cadastrar = "INSERT INTO tb_projetos (empresa_id, categoria_id, produto_id, descricao_projeto, data_inicio, data_fim) VALUES ({$empresa_id}, {$categoria_id}, {$produto_id}, '{$descricao_projeto}', '{$data_inicio}', '{$data_fim}')";
+					$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
-						$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
-
-						$consulta = "SELECT * FROM tb_projetos WHERE empresa_id = {$empresa_id} AND produto_id = {$produto_id}";
-						$acesso = mysqli_query($conecta, $consulta);
-						$dados_projeto = mysqli_fetch_assoc($acesso);
-						$projeto_id = $dados_projeto["projeto_id"];
-					}
+					$consulta = "SELECT * FROM tb_projetos WHERE empresa_id = {$empresa_id} AND produto_id = {$produto_id}";
+					$acesso = mysqli_query($conecta, $consulta);
+					$dados_projeto = mysqli_fetch_assoc($acesso);
+					$projeto_id = $dados_projeto["projeto_id"];
 				}
 				
 				$n=1;
