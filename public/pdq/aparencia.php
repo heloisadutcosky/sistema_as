@@ -164,7 +164,7 @@
 								<p class="amostra"><?php echo $amostra; ?></p>
 								
 									<input type="range" id="nota<?php echo $amostra; ?>" name="nota<?php echo $amostra; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px;" required>
-									<input type="text" id="amostra<?php echo $amostra; ?>" name="amostra<?php echo $amostra; ?>" style="width: 30px; margin-left: 5px; border: none; text-align: center;">
+									<input type="text" id="amostra<?php echo $amostra; ?>" name="amostra<?php echo $amostra; ?>" style="width: 30px; margin-left: 5px; border: none; text-align: center; color: #FFF;">
 									<input id="<?php echo $amostra; ?>" type="checkbox" name="teste" style="width: 20px; float: right; margin-right: 20px; margin-top: 22px" onclick="ShowHideDiv(this.id)">
 
 									<script type="text/javascript">

@@ -258,7 +258,7 @@
 
 						<form action="cabines.php" method="post" align="">
 							<input type="range" id="nota<?php echo $linhas["atributo_id"]; ?>" name="atributo<?php echo $linhas["atributo_id"]; ?>" min="0" max="10" value="0" step="0.01" style="margin-bottom: 20px; margin-left: 30px" required>
-							<input type="text" id="atributo<?php echo $linhas["atributo_id"]; ?>" name="atributo<?php echo $linhas["atributo_id"]; ?>" style="width: 30px; margin-left: 5px; border: none; text-align: center; background-color: #F8F8F8;">
+							<input type="text" id="atributo<?php echo $linhas["atributo_id"]; ?>" name="atributo<?php echo $linhas["atributo_id"]; ?>" style="width: 30px; margin-left: 5px; border: none; text-align: center; background-color: #F8F8F8; color: #F8F8F8;">
 							<input id="<?php echo $linhas["atributo_id"]; ?>" type="checkbox" name="teste" required style="width: 20px; float: right; margin-right: 25px; margin-top: 22px" onclick="ShowHideDiv(this.id)">
 							<script type="text/javascript">
 									function ShowHideDiv(clickedId) {
