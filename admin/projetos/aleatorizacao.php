@@ -18,27 +18,37 @@
 
 		if ($_POST["atualizar"] == "Yes") {
 			
-			if ($acao == "cadastro" && isset($_POST["user_id"])) {
-				$cadastrar = "INSERT INTO aleatorizacao (projeto_id, formulario_id, user_id, sessao, ordem, amostra_descricao) VALUES ({$projeto_id}, {$formulario_id}, {$_POST["user_id"]}, {$_POST["sessao"]}, {$_POST["ordem"]}, '{$_POST["amostra_descricao"]}')";
-				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
-			}
+			if (isset($_POST["user_id"])) {
 
-			if ($acao == "alteracao" && isset($_POST["user_id"])) {
-				$alterar = "UPDATE aleatorizacao SET amostra_descricao = '{$_POST["amostra_descricao"]}' WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND user_id = {$_POST["user_id"]} AND sessao = {$_POST["sessao"]} AND ordem = {$_POST["ordem"]}";
-				$operacao_alterar = mysqli_query($conecta, $alterar);
+				$consulta = "SELECT * FROM aleatorizacao WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND user_id = {$_POST["user_id"]} AND sessao = {$_POST["sessao"]} AND ordem = {$_POST["ordem"]}";
+				$acesso = mysqli_query($conecta, $consulta);
+				$existe_cadastro = mysqli_fetch_assoc($acesso);
+
+				$consulta2 = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = {$_POST["sessao"]} AND amostra_codigo = '{$_POST["amostra_codigo"]}'";
+				$acesso2 = mysqli_query($conecta, $consulta2);
+				$amostra = mysqli_fetch_assoc($acesso2);
+
+				if (empty($existe_cadastro)) { 
+
+					$cadastrar = "INSERT INTO aleatorizacao (projeto_id, formulario_id, user_id, sessao, ordem, amostra_descricao, amostra_codigo) VALUES ({$projeto_id}, {$formulario_id}, {$_POST["user_id"]}, {$_POST["sessao"]}, {$_POST["ordem"]}, '{$amostra["amostra_descricao"]}', '{$_POST["amostra_codigo"]}')";
+					$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
+				} else {
+					$alterar = "UPDATE aleatorizacao SET amostra_descricao = '{$amostra["amostra_descricao"]}', amostra_codigo = '{$_POST["amostra_codigo"]}' WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND user_id = {$_POST["user_id"]} AND sessao = {$_POST["sessao"]} AND ordem = {$_POST["ordem"]}";
+					$operacao_alterar = mysqli_query($conecta, $alterar);
+				}
 			}
 
 			$user_id = "";
 			$sessao = "";
 			$ordem = "";
-			$amostra_descricao = "";
+			$amostra_codigo = "";
 			$acao = "cadastro";
 
 		} else {
 			$user_id = $_POST["user_id"];
 			$sessao = $_POST["sessao"];
 			$ordem = $_POST["ordem"];
-			$amostra_descricao = "";
+			$amostra_codigo = "";
 		}
 	} else {
 
@@ -51,7 +61,7 @@
 			$user_id = "";
 			$sessao = "";
 			$ordem = "";
-			$amostra_descricao = "";
+			$amostra_codigo = "";
 			$acao = "cadastro";
 
 		} else {
@@ -67,11 +77,11 @@
 			$user_id = $dados["user_id"];
 			$sessao = $dados["sessao"];
 			$ordem = $dados["ordem"];
-			$amostra_descricao = $dados["amostra_descricao"];
+			$amostra_codigo = $dados["amostra_codigo"];
 		}
 	}
 
-	$consulta = "SELECT * FROM aleatorizacao WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id}";
+	$consulta = "SELECT * FROM aleatorizacao WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} ORDER BY ordem, user_id, sessao";
 	$acesso = mysqli_query($conecta, $consulta);
 
 ?>
@@ -102,13 +112,7 @@
 		<?php include_once($caminho . "_incluir/menu_lateral.php"); ?>
 		
 		<article>
-		<h2 class="espaco">PROJETOS ABOUT SOLUTION</h2>
-		<br>
-
-		<div class="botao">
-			<a class="espaco" href="painel.php?acao=cadastro">Adicionar projeto</a><br>
-		</div>
-		<br>
+		<h2 style="margin-left: 20px">Aleatorização</h2>
 		
 		<div id="cima_tabela" style="width: 630px;">
 			<ul>
@@ -133,11 +137,7 @@
 			    <li style="width:65px; margin-left: 5px"><?php echo utf8_encode($linha["sessao"]); ?></li>
 			    <li style="width:65px;"><?php echo $linha["ordem"]; ?></li>
 			    <li style="width:80px;"><?php echo $linha["amostra_descricao"]; ?></li>
-			    <li style="width:70px;"><?php 
-			    	$consulta2 = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = {$linha["sessao"]} AND amostra_descricao = '{$linha["amostra_descricao"]}'";
-					$acesso2 = mysqli_query($conecta, $consulta2);
-					$amostra = mysqli_fetch_assoc($acesso2);
-			    	echo $amostra["amostra_codigo"]; ?></li>
+			    <li style="width:70px;"><?php echo $linha["amostra_codigo"]; ?></li>
 			    
 			    <li style="width:50px;"><a href="aleatorizacao.php?acao=alteracao&projeto=<?php echo $projeto_id; ?>&formulario=<?php echo $formulario_id; ?>&user=<?php echo $linha["user_id"]; ?>&sessao=<?php echo $linha["sessao"]; ?>&ordem=<?php echo $linha["ordem"]; ?>">Alterar</a> </li>
 			    <li style="width:50px;"><a href="aleatorizacao.php?acao=exclusao&projeto=<?php echo $projeto_id; ?>&formulario=<?php echo $formulario_id; ?>&user=<?php echo $linha["user_id"]; ?>&sessao=<?php echo $linha["sessao"]; ?>&ordem=<?php echo $linha["ordem"]; ?>">Excluir</a> </li>
@@ -194,17 +194,17 @@
 
 				<div style="float: left; margin-right: 5px">
 					<label for="ordem">Ordem: </label>
-					<input type="number" id="ordem" name="ordem" value="<?php echo($ordem); ?>" style="width: 45px;">
+					<input type="number" id="ordem" name="ordem" value="<?php echo($ordem); ?>" style="width: 40px;">
 				</div>
-				<div style="float: left; margin-right: 80px">
-					<label for="amostra_descricao">Amostra: </label>
-					<select id="amostra_descricao" name="amostra_descricao" style="width: 100px">
+				<div style="float: left; margin-right: 60px">
+					<label for="amostra_codigo">Amostra: </label>
+					<select id="amostra_codigo" name="amostra_codigo" style="width: 130px">
 						<option></option>
 						<?php 
 						$consulta_amostras = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = {$sessao} ORDER BY amostra_descricao";
 						$acesso_amostras = mysqli_query($conecta, $consulta_amostras);
 						while ($amostra = mysqli_fetch_assoc($acesso_amostras)) { ?>
-							<option value="<?php echo $amostra["amostra_descricao"]; ?>" <?php if($amostra["amostra_descricao"] == $amostra_descricao) { ?> selected <?php } ?>><?php echo utf8_encode($amostra["amostra_descricao"]); ?></option>
+							<option value="<?php echo $amostra["amostra_codigo"]; ?>" <?php if($amostra["amostra_codigo"] == $amostra_codigo) { ?> selected <?php } ?>><?php echo utf8_encode($amostra["amostra_descricao"]) . " - " . utf8_encode($amostra["amostra_codigo"]); ?></option>
 						<?php } ?>
 					</select>
 				</div>
