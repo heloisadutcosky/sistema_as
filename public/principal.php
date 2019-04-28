@@ -84,7 +84,7 @@
 					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
 					//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
 					
-				} elseif (($n_resultados != $n_atributos) && $corrigir==0 && ($linha["tipo_avaliacao"] == "triangular") || $linha["tipo_avaliacao"] == "consumo")) {
+				} elseif (($n_resultados != $n_atributos) && $corrigir==0 && ($linha["tipo_avaliacao"] == "triangular" || $linha["tipo_avaliacao"] == "consumo")) {
 					$_SESSION["formulario_id"][$linha["tipo_avaliacao"]] = $linha["formulario_id"];
 					$_SESSION["tipo_avaliador"][$linha["tipo_avaliacao"]] = $linha["tipo_avaliador"];
 					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
