@@ -155,7 +155,7 @@ if (isset($_POST["completo"])) {
 					$cadastrar = "INSERT INTO opcoes (atributo_id, escala, texto, referencia, imagem) VALUES ($atributo_id, '$escala', '$texto', '$referencia', '$imagem')";
 
 					$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
-				}
+				
 
 				if (isset($_POST["novo_conjunto"])) {
 					header("location:form_{$_SESSION["tipo_formulario"]}.php?acao=cadastro");
