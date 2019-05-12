@@ -159,7 +159,7 @@ if (isset($_POST["completo"])) {
 				$acesso = mysqli_query($conecta, $consulta_atributo);
 				$existe_atributo = mysqli_fetch_assoc($acesso);
 
-				if (!empty($existe_atributo)) { 
+				if ($acao == "alteracao") { 
 					$alterar = "UPDATE opcoes SET escala = '{$escala}', texto = '{$texto}', referencia = '{$referencia}', imagem = '{$imagem}' WHERE opcao_id = {$opcao["opcao_id"]}";
 
 				$operacao_alterar = mysqli_query($conecta, $alterar);

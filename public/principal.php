@@ -50,6 +50,9 @@
 			$acesso2 = mysqli_query($conecta, $consulta2);
 			$n_amostras = mysqli_num_rows($acesso2);
 
+			echo $n_amostras;
+			echo $linha["tipo_avaliacao"];
+
 			if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal")) && $n_amostras<>0) {
 				$n_amostras_hedonica = $n_amostras;
 			}
