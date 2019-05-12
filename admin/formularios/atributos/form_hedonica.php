@@ -152,10 +152,26 @@ if (isset($_POST["completo"])) {
 			// Cadastrar ----------------------------------------------------------------
 			if (($acao == "cadastro" || $acao == "alteracao") && $atributo_id <> 0) {
 
+				// Verificar existência do atributo na base ------------------------------
+
+				$consulta_atributo = "SELECT * FROM opcoes WHERE atributo_id = {$atributo_id} AND texto = '{$texto}' AND escala = {$escala}";
+
+				$acesso = mysqli_query($conecta, $consulta_atributo);
+				$existe_atributo = mysqli_fetch_assoc($acesso);
+
+				if (!empty($existe_atributo)) { 
+					$alterar = "UPDATE opcoes SET escala = '{$escala}', texto = '{$texto}', referencia = '{$referencia}', imagem = '{$imagem}' WHERE opcao_id = {$opcao["opcao_id"]}";
+
+				$operacao_alterar = mysqli_query($conecta, $alterar);
+				} 
+
+				// ----------------------------------------------------------------------
+					
+				else {
 					$cadastrar = "INSERT INTO opcoes (atributo_id, escala, texto, referencia, imagem) VALUES ($atributo_id, '$escala', '$texto', '$referencia', '$imagem')";
 
 					$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
-				
+				}
 
 				if (isset($_POST["novo_conjunto"])) {
 					header("location:form_{$_SESSION["tipo_formulario"]}.php?acao=cadastro");
