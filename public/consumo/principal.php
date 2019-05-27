@@ -51,6 +51,8 @@
 				if (empty($resultados)) {
 					$inserir = "INSERT INTO tb_resultados (projeto_id, formulario_id, user_id, atributo_id, atributo_completo_eng, atributo_completo_port, resposta, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["user_id"]}, {$atributo_id}, '{$atributo_completo_eng}', '{$atributo_completo_port}', '{$resposta}', {$_SESSION["teste"]})";
 
+					echo $inserir;
+
 					$operacao_inserir = mysqli_query($conecta, $inserir);
 				} else {
 
@@ -60,7 +62,7 @@
 				}
 			}
 		}
-		header("location:../principal.php");
+		//header("location:../principal.php");
 	}
 	// ##########################################################################################################################
 
