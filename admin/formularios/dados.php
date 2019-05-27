@@ -76,6 +76,9 @@
 			     	case 'consumo': ?>
 			     		Consumo
 			     	<?php break;
+			     	case 'concordancia': ?>
+			     		Concordância
+			     	<?php break;
 			     	case 'selecao_painel': ?>
 			     		Seleção de painel
 			     	<?php break;

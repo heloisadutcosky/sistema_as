@@ -162,6 +162,7 @@
 					<select type="text" id="tipo_formulario" name="tipo_formulario" style="width: 315px">
 						<option></option>
 						<option value="consumo" <?php if($tipo_formulario == "consumo") { ?> selected <?php } ?>>Consumo</option>
+						<option value="concordancia" <?php if($tipo_formulario == "concordancia") { ?> selected <?php } ?>>Concordância</option>
 						<option value="selecao_painel" <?php if($tipo_formulario == "selecao_painel") { ?> selected <?php } ?>>Seleção de painel</option>
 						<option value="pdq" <?php if($tipo_formulario == "pdq") { ?> selected <?php } ?>>Painel descritivo quantitativo</option>
 						<option value="cata" <?php if($tipo_formulario == "cata") { ?> selected <?php } ?>>CATA</option>

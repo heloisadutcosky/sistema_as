@@ -10,7 +10,11 @@
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
 	$funcao_temp = isset($_GET["funcao"]) ? $_GET["funcao"] : $_SESSION["funcao"];
-	$_SESSION["teste"] = isset($_GET["teste"]) ? $_GET["teste"] : 0;
+	
+	if (!isset($_SESSION["teste"])) {
+		$_SESSION["teste"] = isset($_GET["teste"]) ? $_GET["teste"] : 0;
+	}
+	
 
 	$corrigir = isset($_GET["corrigir"]) ? $_GET["corrigir"] : 0;
 
@@ -50,8 +54,8 @@
 			$acesso2 = mysqli_query($conecta, $consulta2);
 			$n_amostras = mysqli_num_rows($acesso2);
 
-			echo $n_amostras;
-			echo $linha["tipo_avaliacao"];
+			//echo "\n amostras = " . $n_amostras;
+			//echo $linha["tipo_avaliacao"];
 
 			if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal")) && $n_amostras<>0) {
 				$n_amostras_hedonica = $n_amostras;
@@ -70,12 +74,14 @@
 			$consulta2 = "SELECT * FROM atributos WHERE formulario_id = {$linha["formulario_id"]}";
 			$acesso2 = mysqli_query($conecta, $consulta2);
 			$n_atributos = mysqli_num_rows($acesso2);
+			//echo "\n atributos = " . $n_atributos;
 			mysqli_free_result($acesso2);
 			
 
 			$consulta2 = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]} AND user_id = {$_SESSION["user_id"]}";
 			$acesso2 = mysqli_query($conecta, $consulta2);
 			$n_resultados = mysqli_num_rows($acesso2);
+			//echo "\n resultados = " . $n_resultados;
 					//echo $linha["tipo_avaliacao"] . "<br>";
 					//echo "resultados = " . $n_resultados . "<br>";
 					//echo "amostras = " . $n_amostras . "<br>";
@@ -87,15 +93,15 @@
 					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
 					//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
 					
-				} elseif (($n_resultados != $n_atributos) && $corrigir==0 && ($linha["tipo_avaliacao"] == "triangular" || $linha["tipo_avaliacao"] == "consumo")) {
+				} elseif (($n_resultados != $n_atributos) && $corrigir==0 && ($linha["tipo_avaliacao"] == "triangular" || $linha["tipo_avaliacao"] == "consumo" || $linha["tipo_avaliacao"] == "concordancia")) {
 					$_SESSION["formulario_id"][$linha["tipo_avaliacao"]] = $linha["formulario_id"];
 					$_SESSION["tipo_avaliador"][$linha["tipo_avaliacao"]] = $linha["tipo_avaliador"];
 					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
 				}
 			}
 
-
-			print_r($_SESSION["tipo_avaliacao"]);
+			print_r($_SESSION["formulario_id"]);
+			//print_r($_SESSION["tipo_avaliacao"]);
 			if (!empty($_SESSION["tipo_avaliacao"])) {
 				$tipo_avaliacao = $_SESSION["tipo_avaliacao"][0];
 				$_SESSION["formulario_id"] = $_SESSION["formulario_id"][$tipo_avaliacao];
