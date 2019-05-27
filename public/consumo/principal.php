@@ -29,7 +29,7 @@
 							$resposta = $resposta . utf8_decode($_POST["atributo{$dados["atributo_id"]}outro"]);
 						} else {
 							$opcao = in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
-							$resposta = $resposta . $opcao;
+							$resposta = $resposta . $opcao . "|";
 						}
 					}
 				} else {
@@ -62,7 +62,7 @@
 				}
 			}
 		}
-		//header("location:../principal.php");
+		header("location:../principal.php");
 	}
 	// ##########################################################################################################################
 
