@@ -145,22 +145,25 @@
 								
 								<h3 style="font-size: 120%; color: #8B0000;"><?php echo utf8_encode($conjunto_atributos); ?></h3>
 								
-								<?php 
-								$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND conjunto_atributos = '{$conjunto_atributos}'";
-								$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
-								$dados_atributos = mysqli_fetch_assoc($acesso_atributos);
-								?>
-								<p><?php echo utf8_encode($dados_atributos["descricao_conjunto"]); ?></p><br>
 
 								<div style="margin-left: 5px">
-								<?php 							
+								<?php 
+
+								$descricao_conjunto = isset($dados_atributos["descricao_conjunto"]) ? $dados_atributos["descricao_conjunto"] : "";
+
 								$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND conjunto_atributos = '{$conjunto_atributos}'";
 								$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
 
-								while($dados_atributos = mysqli_fetch_assoc($acesso_atributos)) {
+								while($dados_atributos = mysqli_fetch_assoc($acesso_atributos)) { 
 
-									if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
+									if ($descricao_conjunto != $dados_atributos["descricao_conjunto"]) {
+									?>
+									<p><?php echo utf8_encode($dados_atributos["descricao_conjunto"]); ?></p><br>
+									<?php }
+
+										if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
 										<div>
+											<label><?php echo $dados_atributos["disposicao_pergunta"]; ?></label>
 											<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
 										</div>
 
@@ -238,11 +241,11 @@
 											} ?>
 										<?php } ?>
 										<?php if (isset($outro)) { ?>
-											<br><br>
+											<br>
 											<div>
 												<label for="outro">Se <?php echo $outro; ?>, favor indicar qual: </label>
 												<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 200px">
-											</div>
+											</div><br><br>
 										<?php } ?>
 
 

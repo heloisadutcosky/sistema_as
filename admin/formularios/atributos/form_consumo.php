@@ -258,7 +258,7 @@ if (($acao == "cadastro") && (isset($_POST["completo"]) || isset($_POST["novo_co
 				</div><br>
 
 				<div>
-					<label for="descricao_conjunto">Pergunta relacionada ao atributo: </label>
+					<label for="definicao_atributo">Pergunta relacionada ao atributo: </label>
 					<input type="text" id="definicao_atributo" name="definicao_atributo" value="<?php echo utf8_encode($definicao_atributo); ?>" style= "width: 550px; height: 40px;">
 				</div><br>
 
