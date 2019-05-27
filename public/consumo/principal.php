@@ -69,11 +69,14 @@
 	$acesso = mysqli_query($conecta, $consulta);
 	
 	$conjuntos_atributos = array();
+	$descricao_conjunto = array();
 	while ($dados = mysqli_fetch_assoc($acesso)) {
 		$conjuntos_atributos[] = $dados["conjunto_atributos"];
+		$descricao_conjunto[$dados["conjunto_atributos"]] = $dados["descricao_conjunto"];
 	}
 
 	$conjuntos_atributos = array_values(array_unique($conjuntos_atributos));
+	$descricao_conjunto = array_values(array_unique($descricao_conjunto));
 ?>
 
 
@@ -145,26 +148,22 @@
 								
 								<h3 style="font-size: 120%; color: #8B0000;"><?php echo utf8_encode($conjunto_atributos); ?></h3>
 								
+								<p><?php echo utf8_encode($descricao_conjunto[$conjunto_atributos]); ?></p><br>
 
 								<div style="margin-left: 5px">
-								<?php 
 
-								$descricao_conjunto = isset($dados_atributos["descricao_conjunto"]) ? $dados_atributos["descricao_conjunto"] : "";
+								<?php
 
 								$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND conjunto_atributos = '{$conjunto_atributos}'";
 								$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
 
+
 								while($dados_atributos = mysqli_fetch_assoc($acesso_atributos)) { 
 
-									if ($descricao_conjunto != $dados_atributos["descricao_conjunto"]) {
-									?>
-									<p><?php echo utf8_encode($dados_atributos["descricao_conjunto"]); ?></p><br>
-									<?php }
-
-										if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
+									if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
 										<div>
-											<label><?php echo $dados_atributos["disposicao_pergunta"]; ?></label>
-											<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
+											<label for="texto"><?php echo $dados_atributos["definicao_atributo"]; ?></label>
+											<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto">
 										</div>
 
 								<?php } ?>
@@ -241,7 +240,7 @@
 											} ?>
 										<?php } ?>
 										<?php if (isset($outro)) { ?>
-											<br>
+											<br><br>
 											<div>
 												<label for="outro">Se <?php echo $outro; ?>, favor indicar qual: </label>
 												<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 200px">
