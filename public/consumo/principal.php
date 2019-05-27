@@ -76,7 +76,7 @@
 	}
 
 	$conjuntos_atributos = array_values(array_unique($conjuntos_atributos));
-	$descricao_conjunto = array_values(array_unique($descricao_conjunto));
+	//$descricao_conjunto = array_values(array_unique($descricao_conjunto));
 ?>
 
 
@@ -162,9 +162,10 @@
 
 									if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
 										<div>
-											<label for="texto"><?php echo $dados_atributos["definicao_atributo"]; ?></label>
-											<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto">
+											<label for="texto"><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></label>
+											<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 410px">
 										</div>
+										<br><br>
 
 								<?php } ?>
 
