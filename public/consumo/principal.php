@@ -161,8 +161,9 @@
 								while($dados_atributos = mysqli_fetch_assoc($acesso_atributos)) { 
 
 									if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
+										<br>
 										<div>
-											<label for="texto"><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></label>
+											<label for="texto" style="width: 800px"><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></label>
 											<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 410px">
 										</div>
 										<br><br>
