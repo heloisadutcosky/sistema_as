@@ -21,7 +21,7 @@
 
 		$_SESSION["formularios"] = array();
 		while ($linha=mysqli_fetch_assoc($acesso)) {
-			if (in_array($linha["tipo_avaliacao"], array("hedonica", "ideal", "cata"))) {
+			if (in_array($linha["tipo_avaliacao"], array("ideal"))) {
 				$_SESSION["formularios"][$linha["tipo_avaliacao"]] = $linha["formulario_id"];
 			}
 		}

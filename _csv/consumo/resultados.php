@@ -40,7 +40,7 @@ if (isset($_GET["projeto"])) {
 		$nomes_colunas = array_merge(array('Usuario'), $atributos);
 		$colunas = "";
 		foreach ($atributos as $atributo) {
-			$colunas = $colunas . ", SUM(CASE WHEN r.atributo_completo_{$_GET["lingua"]} = '{$atributo}' THEN nota END)";
+			$colunas = $colunas . ", CASE WHEN r.atributo_completo_{$_GET["lingua"]} = '{$atributo}' THEN resposta END";
 		}
 
 		// output headers so that the file is downloaded rather than displayed
