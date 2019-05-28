@@ -57,12 +57,12 @@
 			//echo "\n amostras = " . $n_amostras;
 			//echo $linha["tipo_avaliacao"];
 
-			if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal")) && $n_amostras<>0) {
+			if (in_array($linha["tipo_avaliacao"], array("ideal")) && $n_amostras<>0) {
 				$n_amostras_hedonica = $n_amostras;
 			}
 
 			if ($n_amostras == 0) {
-				if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal"))) {
+				if (in_array($linha["tipo_avaliacao"], array("ideal"))) {
 					$n_amostras = $n_amostras_hedonica;
 				} else {
 					$n_amostras = 1;
