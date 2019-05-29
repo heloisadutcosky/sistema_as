@@ -40,12 +40,12 @@ if (isset($_GET["projeto"])) {
 		$nomes_colunas = array_merge(array('Usuario'), $atributos);
 		$colunas = "";
 		foreach ($atributos as $atributo) {
-			$colunas = $colunas . ", CASE WHEN r.atributo_completo_{$_GET["lingua"]} = '{$atributo}' THEN resposta END";
+			$colunas = $colunas . ", CASE WHEN r.atributo_completo_{$_GET["lingua"]} = '{$atributo}' THEN r.resposta END";
 		}
 
 		// output headers so that the file is downloaded rather than displayed
-		header('Content-Type: text/csv; charset=utf-8');
-		header('Content-Disposition: attachment; filename=data.csv');
+		//header('Content-Type: text/csv; charset=utf-8');
+		//header('Content-Disposition: attachment; filename=data.csv');
 
 		// create a file pointer connected to the output stream
 		$output = fopen('php://output', 'w');
@@ -54,14 +54,13 @@ if (isset($_GET["projeto"])) {
 		fputcsv($output, $nomes_colunas);
 
 		// fetch the data
-		$consulta = "SELECT r.user_id
-		{$colunas}
+		$consulta = "SELECT r.user_id, r.atributo_completo_eng, r.resposta 
 		FROM tb_resultados AS r 
-        LEFT JOIN usuarios AS u
-        ON u.user_id = r.user_id
-		WHERE r.projeto_id = {$_GET["projeto"]} AND r.teste = {$teste}
-		GROUP BY r.user_id";
+		WHERE r.projeto_id = 3 AND r.teste = 1 AND resposta IS NOT NULL
+		GROUP BY r.user_id, r.atributo_completo_eng";
 		$acesso = mysqli_query($conecta, $consulta);
+
+		echo $consulta;
 		
 		// loop over the rows, outputting them
 		while ($row = mysqli_fetch_assoc($acesso)) {
