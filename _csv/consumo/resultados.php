@@ -37,15 +37,15 @@ if (isset($_GET["projeto"])) {
 		}
 		
 
-		$nomes_colunas = array_merge(array('Usuario'), $atributos);
+		$nomes_colunas = array_merge(array('Usuario', 'Atributo', 'Resposta'));
 		$colunas = "";
 		foreach ($atributos as $atributo) {
 			$colunas = $colunas . ", CASE WHEN r.atributo_completo_{$_GET["lingua"]} = '{$atributo}' THEN r.resposta END";
 		}
 
 		// output headers so that the file is downloaded rather than displayed
-		//header('Content-Type: text/csv; charset=utf-8');
-		//header('Content-Disposition: attachment; filename=data.csv');
+		header('Content-Type: text/csv; charset=utf-8');
+		header('Content-Disposition: attachment; filename=data.csv');
 
 		// create a file pointer connected to the output stream
 		$output = fopen('php://output', 'w');
@@ -60,7 +60,7 @@ if (isset($_GET["projeto"])) {
 		GROUP BY r.user_id, r.atributo_completo_eng";
 		$acesso = mysqli_query($conecta, $consulta);
 
-		echo $consulta;
+		//echo $consulta;
 		
 		// loop over the rows, outputting them
 		while ($row = mysqli_fetch_assoc($acesso)) {
