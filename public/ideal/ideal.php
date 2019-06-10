@@ -17,26 +17,46 @@
 		while ($dados = mysqli_fetch_assoc($acesso)) {
 				
 			if (isset($_POST["atributo{$dados["atributo_id"]}"])) {
-				$nota = $_POST["atributo{$dados["atributo_id"]}"];
 
 				$atributo_id = $dados["atributo_id"];
 				$atributo_completo_eng = $dados["atributo_completo_eng"];
 				$atributo_completo_port = $dados["atributo_completo_port"];
+
+
+				if ($dados["disposicao_pergunta"] == "checkbox") {
+
+					$consulta2 = "SELECT * FROM opcoes WHERE atributo_id = {$dados["atributo_id"]}";
+					$acesso2 = mysqli_query($conecta, $consulta2);
+
+					$resposta = "";
+					while ($linha = mysqli_fetch_assoc($acesso2)) {
+						$opcao = in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
+						$resposta = $resposta . $opcao . "|";
+					}
+
+					$nota = 0;
+				} else {
+
+				$nota = $_POST["atributo{$dados["atributo_id"]}"];
+				$resposta = "";
+				}
 
 				$consulta_resultados = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id};";
 				$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
 				$resultados = mysqli_fetch_assoc($acesso_resultados);
 
 				if (empty($resultados)) {
-					$inserir = "INSERT INTO tb_resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo_eng, atributo_completo_port, nota, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$_SESSION["amostra"]}', {$atributo_id}, '{$atributo_completo_eng}', '{$atributo_completo_port}', {$nota}, {$_SESSION["teste"]})";
+					$inserir = "INSERT INTO tb_resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo_eng, atributo_completo_port, nota, teste, resposta) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$_SESSION["amostra"]}', {$atributo_id}, '{$atributo_completo_eng}', '{$atributo_completo_port}', {$nota}, {$_SESSION["teste"]}, '{$resposta}')";
 
 					$operacao_inserir = mysqli_query($conecta, $inserir);
 				} else {
 
-					$alterar = "UPDATE tb_resultados SET nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
+					$alterar = "UPDATE tb_resultados SET resposta = '{$resposta}', nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
 
 					$operacao_alterar = mysqli_query($conecta, $alterar);
 				}
+			
+
 			}
 		}
 
@@ -149,7 +169,9 @@
 
 										while($dados_atributos = mysqli_fetch_assoc($acesso_atributos)) {
 										?>
-												<?php 
+
+											<?php if ($dados_atributos["disposicao_pergunta"] == "lista") {
+												
 												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); ?>
 
@@ -164,8 +186,37 @@
 													<input type="hidden" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
 													<br><br>
 									
+											<?php } ?>
+
+											<?php if ($dados_atributos["disposicao_pergunta"] == "checkbox") {
+
+												$opcoes = array();
+												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
+												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes);
+													while ($dados_opcoes = mysqli_fetch_assoc($acesso_opcoes)) {
+														$opcoes[] = $dados_opcoes["texto"];
+													} 
+
+												$opcoes = array_values(array_unique(array_values($opcoes)));
+												shuffle($opcoes);
+												?>
+
+												<p><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></p>
+
+												<?php 
+												foreach ($opcoes as $opcao) {
+												?>
+													<div style="float: left;">
+														<label for="<?php echo $opcao; ?>" style="margin-right: 20px; float: left;">
+															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>[]" id="<?php echo $opcao; ?>" value="<?php echo $opcao; ?>" style="width: 10px; float: left;"
+											 				/>
+															<?php echo utf8_encode($opcao); ?>
+														</label><br>
+													</div>
+
+												<?php } ?>
+											<?php } ?>
 									<?php } ?>
-									</div>
 								<?php } ?>
 									
 

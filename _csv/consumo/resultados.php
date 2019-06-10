@@ -37,10 +37,27 @@ if (isset($_GET["projeto"])) {
 		}
 		
 
-		$nomes_colunas = array_merge(array('Usuario', 'Atributo', 'Resposta'));
-		$colunas = "";
+		$nomes_colunas = array_merge(array('Usuario'), $atributos);
+
+		$atributo1 = $atributos[0];
+
+		$colunas = "SELECT {$atributo1}.user_id, {$atributo1}.resposta";
+		$colunas2 = "(SELECT user_id, resposta
+		FROM tb_resultados
+		WHERE projeto_id = {$_GET["projeto"]} AND teste = {$teste} AND atributo_completo_{$_GET["lingua"]} = '{$atributo1}'
+		GROUP BY user_id) as $atributo1 ";
+
+		$atributos = array_diff($atributos, array($atributo1));
+		//print_r($atributos);
+
 		foreach ($atributos as $atributo) {
-			$colunas = $colunas . ", CASE WHEN r.atributo_completo_{$_GET["lingua"]} = '{$atributo}' THEN r.resposta END";
+			$colunas = $colunas . ", {$atributo}.resposta";
+			$colunas2 = $colunas2 . "LEFT JOIN
+		(SELECT user_id, resposta
+		FROM tb_resultados
+		WHERE projeto_id = {$_GET["projeto"]} AND teste = {$teste} AND atributo_completo_{$_GET["lingua"]} = '{$atributo}'
+		GROUP BY user_id) as {$atributo}
+		ON {$atributo1}.user_id = {$atributo}.user_id ";
 		}
 
 		// output headers so that the file is downloaded rather than displayed
@@ -54,10 +71,11 @@ if (isset($_GET["projeto"])) {
 		fputcsv($output, $nomes_colunas);
 
 		// fetch the data
-		$consulta = "SELECT r.user_id, r.atributo_completo_port, r.resposta 
-		FROM tb_resultados AS r 
-		WHERE r.projeto_id = {$_GET["projeto"]} AND r.teste = {$teste}
-		GROUP BY r.user_id, r.atributo_completo_port, r.resposta";
+		$consulta = 
+		"{$colunas}
+		FROM
+		{$colunas2}
+		;";
 		$acesso = mysqli_query($conecta, $consulta);
 
 		//echo $consulta;
