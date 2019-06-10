@@ -54,10 +54,10 @@ if (isset($_GET["projeto"])) {
 		fputcsv($output, $nomes_colunas);
 
 		// fetch the data
-		$consulta = "SELECT r.user_id, r.atributo_completo_eng, r.resposta 
+		$consulta = "SELECT r.user_id, r.atributo_completo_port, r.resposta 
 		FROM tb_resultados AS r 
 		WHERE r.projeto_id = {$_GET["projeto"]} AND r.teste = {$teste} AND resposta IS NOT NULL
-		GROUP BY r.user_id, r.atributo_completo_eng";
+		GROUP BY r.user_id, r.atributo_completo_port";
 		$acesso = mysqli_query($conecta, $consulta);
 
 		//echo $consulta;
