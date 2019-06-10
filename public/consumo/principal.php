@@ -34,9 +34,9 @@
 					}
 				} else {
 					if (!empty($_POST["atributo{$dados["atributo_id"]}outro"])) {
-						$resposta = $_POST["atributo{$dados["atributo_id"]}outro"];
+						$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}outro"]);
 					} else {
-						$resposta = $_POST["atributo{$dados["atributo_id"]}"];
+						$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}"]);
 					}
 				}
 
@@ -51,7 +51,7 @@
 				if (empty($resultados)) {
 					$inserir = "INSERT INTO tb_resultados (projeto_id, formulario_id, user_id, atributo_id, atributo_completo_eng, atributo_completo_port, resposta, teste) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["user_id"]}, {$atributo_id}, '{$atributo_completo_eng}', '{$atributo_completo_port}', '{$resposta}', {$_SESSION["teste"]})";
 
-					echo $inserir;
+					//echo $inserir;
 
 					$operacao_inserir = mysqli_query($conecta, $inserir);
 				} else {
@@ -62,7 +62,7 @@
 				}
 			}
 		}
-		header("location:../principal.php");
+		//header("location:../principal.php");
 	}
 	// ##########################################################################################################################
 
