@@ -262,10 +262,14 @@
 												}
 												
 
-												$consulta_opcoes = "SELECT max(escala) as escala FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
+												$consulta_opcoes = "SELECT max(escala) as max_escala, min(escala) as min_escala FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); 
 												$dados_opcoes = mysqli_fetch_assoc($acesso_opcoes);
-												$max_escala = $dados_opcoes["escala"];
+												$max_escala = $dados_opcoes["max_escala"];
+												$min_escala = $dados_opcoes["min_escala"];
+												if ($min_escala<=0) {
+													$max_escala = $max_escala+ $min_escala+1;
+												}
 												
 												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); ?>
