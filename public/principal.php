@@ -14,102 +14,162 @@
 	if (!isset($_SESSION["teste"])) {
 		$_SESSION["teste"] = isset($_GET["teste"]) ? $_GET["teste"] : 0;
 	}
-	
 
 	$corrigir = isset($_GET["corrigir"]) ? $_GET["corrigir"] : 0;
 
-	// Setar projeto e categoria
-	if (isset($_GET["codigo"])) {
-		$_SESSION["projeto_id"] = $_GET["codigo"];
+	$_SESSION["pagina"] = isset($_SESSION["pagina"]) ? $_SESSION["pagina"] : -1;
+	//echo $_SESSION["pagina"];
+	//$_SESSION["paginas"] = isset($_SESSION["paginas"]) ? $_SESSION["paginas"] : array();
+	//print_r($_SESSION["paginas"]);
+	$_SESSION["n_amostra"] = isset($_SESSION["n_amostra"]) ? $_SESSION["n_amostra"] : 0;
 
-		$consulta = "SELECT * FROM tb_projetos WHERE projeto_id = {$_SESSION["projeto_id"]}"; 
-		$acesso = mysqli_query($conecta, $consulta);
-		$dados = mysqli_fetch_assoc($acesso);
+	//if($_SESSION["pagina"] >= count($_SESSION["paginas"])) {
+	//	$_SESSION["pagina"] = 0;
+	//}
 
-		$_SESSION["produto_id"] = $dados["produto_id"];
-		$_SESSION["categoria_id"] = $dados["categoria_id"];
+if (isset($_GET["codigo"])) {
 
-		$consulta2 = "SELECT * FROM categorias WHERE categoria_id = {$_SESSION["categoria_id"]}"; 
-		$acesso2 = mysqli_query($conecta, $consulta2);
-		$dados2 = mysqli_fetch_assoc($acesso2);
-		$_SESSION["categoria"] = $dados2["categoria"];
+	$_SESSION["projeto_id"] = $_GET["codigo"];
 
-		$consulta2 = "SELECT * FROM produtos WHERE produto_id = {$_SESSION["produto_id"]}"; 
-		$acesso2 = mysqli_query($conecta, $consulta2);
-		$dados2 = mysqli_fetch_assoc($acesso2);
-		$_SESSION["produto"] = $dados2["produto"];
+	if($_SESSION["pagina"] == -1) {
+		$_SESSION["pagina"] = 0;
+		$_SESSION["n_amostra"] = 0;
 
+		// Setar projeto e categoria
 
-		// Redirecionar
-		$consulta = "SELECT * FROM avaliacoes WHERE form_ativo = 1 AND projeto_id = {$_SESSION["projeto_id"]}";
-		$acesso = mysqli_query($conecta, $consulta);
-		$rows = mysqli_num_rows($acesso);
+			$consulta = "SELECT * FROM tb_projetos WHERE projeto_id = {$_SESSION["projeto_id"]}"; 
+			$acesso = mysqli_query($conecta, $consulta);
+			$dados = mysqli_fetch_assoc($acesso);
 
+			$_SESSION["produto_id"] = $dados["produto_id"];
+			$_SESSION["categoria_id"] = $dados["categoria_id"];
 
-		$_SESSION["formulario_id"] = array();
-		$_SESSION["tipo_avaliador"] = array();
-		$_SESSION["tipo_avaliacao"] = array();
-		while($linha = mysqli_fetch_assoc($acesso)) { 
-			$consulta2 = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]}";
+			$consulta2 = "SELECT * FROM categorias WHERE categoria_id = {$_SESSION["categoria_id"]}"; 
 			$acesso2 = mysqli_query($conecta, $consulta2);
-			$n_amostras = mysqli_num_rows($acesso2);
+			$dados2 = mysqli_fetch_assoc($acesso2);
+			$_SESSION["categoria"] = $dados2["categoria"];
 
-			//echo "\n amostras = " . $n_amostras;
-			//echo $linha["tipo_avaliacao"];
+			$consulta2 = "SELECT * FROM produtos WHERE produto_id = {$_SESSION["produto_id"]}"; 
+			$acesso2 = mysqli_query($conecta, $consulta2);
+			$dados2 = mysqli_fetch_assoc($acesso2);
+			$_SESSION["produto"] = $dados2["produto"];
 
-			if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal")) && $n_amostras<>0) {
-				$n_amostras_hedonica = $n_amostras;
+
+			// Achar avaliacoes dentro do projeto
+			$consulta = "SELECT * FROM avaliacoes WHERE form_ativo = 1 AND projeto_id = {$_SESSION["projeto_id"]} ORDER BY pagina";
+			$acesso = mysqli_query($conecta, $consulta);
+			$rows = mysqli_num_rows($acesso);
+
+			$_SESSION["paginas"] = array();
+			$_SESSION["formularios_ids"] = array();
+			$_SESSION["tipo_avaliacao"] = array();
+			$amostra_associada = array();
+			while($linha = mysqli_fetch_assoc($acesso)) { 
+				$_SESSION["paginas"][] = $linha["pagina"];
+				$_SESSION["formularios_ids"][$linha["pagina"]] = $linha["formulario_id"];
+				$_SESSION["tipo_avaliacao"][$linha["pagina"]] = $linha["tipo_avaliacao"];
+				$amostra_associada[$linha["pagina"]] = $linha["amostra_associada"];
+						//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
+			}
+			$_SESSION["amostra_associada"] = array_keys($amostra_associada, 1);
+			$_SESSION["sem_amostra_associada"] = array_keys($amostra_associada, 0);
+
+			if (in_array("pdq", $_SESSION["tipo_avaliacao"])) {
+				$paginas = array_keys($_SESSION["tipo_avaliacao"], "pdq");
+				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][$paginas[0]];
+				header("location:{$caminho}public/pdq/principal.php");
 			}
 
-			if ($n_amostras == 0) {
-				if (in_array($linha["tipo_avaliacao"], array("hedonica", "cata", "ideal"))) {
-					$n_amostras = $n_amostras_hedonica;
-				} else {
-					$n_amostras = 1;
+
+			// Achar amostras dentro do projeto
+			$consulta = "SELECT * FROM avaliacoes WHERE projeto_id = {$_SESSION["projeto_id"]}";
+			$acesso = mysqli_query($conecta, $consulta);
+			$linha=mysqli_fetch_assoc($acesso);
+			$aleatorizacao_manual = $linha["aleatorizacao_manual"];
+
+			if ($aleatorizacao_manual == 0) {
+			
+				$consulta = "SELECT * FROM tb_amostras WHERE projeto_id = {$_SESSION["projeto_id"]}";
+				$acesso = mysqli_query($conecta, $consulta);
+
+			} else {
+
+				$consulta = "SELECT * FROM aleatorizacao WHERE projeto_id = {$_SESSION["projeto_id"]} AND user_id = {$_SESSION["user_id"]}";
+				$acesso = mysqli_query($conecta, $consulta);
+			}
+
+			$_SESSION["amostras"] = array();
+			while ($linha=mysqli_fetch_assoc($acesso)) {
+				//echo $linha["data"];
+				//echo date("Y-m-d");
+				if (date("Y-m-d") == $linha["data"]) { 
+					//echo $linha["data"];
+					$_SESSION["amostras"][] = $linha["amostra_codigo"];
+					$_SESSION["sessao"] = $linha["sessao"];
 				}
 			}
-			mysqli_free_result($acesso2);
+
+			//print_r($_SESSION["amostras"]);
+
+			shuffle($_SESSION["amostras"]);
+
+			$_SESSION["amostra"] = $_SESSION["amostras"][$_SESSION["n_amostra"]];
 
 
-			$consulta2 = "SELECT * FROM atributos WHERE formulario_id = {$linha["formulario_id"]}";
-			$acesso2 = mysqli_query($conecta, $consulta2);
-			$n_atributos = mysqli_num_rows($acesso2);
-			//echo "\n atributos = " . $n_atributos;
-			mysqli_free_result($acesso2);
-			
+				//print_r($_SESSION["formularios_ids"]);
+				//print_r($_SESSION["tipo_avaliacao"]);
+				//print_r($_SESSION["amostra_associada"]);
+				//print_r($_SESSION["sem_amostra_associada"]);
 
-			$consulta2 = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$linha["formulario_id"]} AND user_id = {$_SESSION["user_id"]}";
-			$acesso2 = mysqli_query($conecta, $consulta2);
-			$n_resultados = mysqli_num_rows($acesso2);
-			//echo "\n resultados = " . $n_resultados;
-					//echo $linha["tipo_avaliacao"] . "<br>";
-					//echo "resultados = " . $n_resultados . "<br>";
-					//echo "amostras = " . $n_amostras . "<br>";
-					//echo "atributos = " . $n_atributos . "<br>";
+				$pagina = $_SESSION["sem_amostra_associada"][$_SESSION["pagina"]];
+				//echo $pagina;
 
-				if (($n_resultados != $n_amostras*$n_atributos) && $corrigir==0 && $linha["tipo_avaliacao"] <> "triangular" && $linha["tipo_avaliacao"] <> "consumo") { 
-					$_SESSION["formulario_id"][$linha["tipo_avaliacao"]] = $linha["formulario_id"];
-					$_SESSION["tipo_avaliador"][$linha["tipo_avaliacao"]] = $linha["tipo_avaliador"];
-					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
-					//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
-					
-				} elseif (($n_resultados != $n_atributos) && $corrigir==0 && ($linha["tipo_avaliacao"] == "triangular" || $linha["tipo_avaliacao"] == "consumo" || $linha["tipo_avaliacao"] == "concordancia")) {
-					$_SESSION["formulario_id"][$linha["tipo_avaliacao"]] = $linha["formulario_id"];
-					$_SESSION["tipo_avaliador"][$linha["tipo_avaliacao"]] = $linha["tipo_avaliador"];
-					$_SESSION["tipo_avaliacao"][] = $linha["tipo_avaliacao"];
-				}
+	} else {
+		$_SESSION["pagina"] = $_SESSION["pagina"]+1;
+		//echo $_SESSION["pagina"];
+		//echo count($_SESSION["sem_amostra_associada"]);
+
+		if ($_SESSION["pagina"] >= count($_SESSION["sem_amostra_associada"])) {
+
+			//$_SESSION["n_amostra"] = $_SESSION["n_amostra"] + 1;
+			//echo "amostra = " . $_SESSION["n_amostra"] . " \n";
+			//echo count($_SESSION["amostras"]);
+
+			if ($_SESSION["n_amostra"] >= count($_SESSION["amostras"])) {
+				$_SESSION["pagina"] = -1;
+				$_SESSION["paginas"] = array();
+				$_SESSION["sem_amostra_associada"] = array();
+				$_SESSION["amostra_associada"] = array();
+				$_SESSION["formularios_ids"] = array();
+				$_SESSION["tipo_avaliacao"] = array();
+				header("location:{$caminho}public/principal.php");
+			} else {
+				$_SESSION["pagina"] = -1;
+				$_SESSION["amostra"] = $_SESSION["amostras"][$_SESSION["n_amostra"]];
+				header("location:{$caminho}public/amostra.php");
 			}
-
-			print_r($_SESSION["formulario_id"]);
-			//print_r($_SESSION["tipo_avaliacao"]);
-			if (!empty($_SESSION["tipo_avaliacao"])) {
-				$tipo_avaliacao = $_SESSION["tipo_avaliacao"][0];
-				$_SESSION["formulario_id"] = $_SESSION["formulario_id"][$tipo_avaliacao];
-				$_SESSION["tipo_avaliador"] = $_SESSION["tipo_avaliador"][$tipo_avaliacao];
 			
-				header("location:{$caminho}public/{$tipo_avaliacao}/principal.php");
-			}
-	} 
+		} else {
+
+		$pagina = $_SESSION["sem_amostra_associada"][$_SESSION["pagina"]];
+		//echo $pagina;
+		}
+		
+	}
+	
+	if (!empty($pagina)) {
+		$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][$pagina];
+
+		//echo $_SESSION["formulario_id"];
+
+		$tipo_avaliacao = $_SESSION["tipo_avaliacao"][$pagina];
+		//echo $tipo_avaliacao;
+		//echo $_SESSION["pagina"];
+		header("location:{$caminho}public/avaliacao/{$tipo_avaliacao}.php");
+	}
+
+	}
+	 
 ?>
 
 <!DOCTYPE html>

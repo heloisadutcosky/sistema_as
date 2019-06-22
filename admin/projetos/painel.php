@@ -96,9 +96,11 @@
 
 					$form_ativo = isset($_POST["form_ativo{$n}"]) ? 1 : 0;
 					$aleatorizacao_manual = isset($_POST["aleatorizacao_manual{$n}"]) ? 1 : 0;
+					$amostra_associada = isset($_POST["amostra_associada{$n}"]) ? 1 : 0;
 					$tipo_avaliador = utf8_decode($_POST["tipo_avaliador{$n}"]);
 					$descricao_avaliacao = utf8_decode($_POST["descricao_avaliacao{$n}"]);
-					$n_sessoes = $_POST["n_sessoes{$n}"];
+					$pagina = $_POST["pagina{$n}"];
+					$n_sessoes = $_POST["n_sessoes"];
 
 					$consulta_projeto = "SELECT * FROM avaliacoes WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id}";
 						$acesso = mysqli_query($conecta, $consulta_projeto);
@@ -106,43 +108,46 @@
 
 						if (!empty($existe_projeto)) { 
 
-							$alterar = "UPDATE avaliacoes SET form_ativo = {$form_ativo}, aleatorizacao_manual = {$aleatorizacao_manual}, tipo_avaliacao = '{$tipo_avaliacao}', tipo_avaliador = '{$tipo_avaliador}', descricao_avaliacao = '{$descricao_avaliacao}' WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id}";
+							$alterar = "UPDATE avaliacoes SET pagina = {$pagina}, amostra_associada = {$amostra_associada}, form_ativo = {$form_ativo}, aleatorizacao_manual = {$aleatorizacao_manual}, tipo_avaliacao = '{$tipo_avaliacao}', tipo_avaliador = '{$tipo_avaliador}', descricao_avaliacao = '{$descricao_avaliacao}' WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id}";
 							$operacao_alterar = mysqli_query($conecta, $alterar);
 							echo $alterar;
 
 						} else {
-							$cadastrar = "INSERT INTO avaliacoes (projeto_id, formulario_id, form_ativo, aleatorizacao_manual, tipo_avaliacao, tipo_avaliador, descricao_avaliacao) VALUES ({$projeto_id}, {$formulario_id}, {$form_ativo}, {$aleatorizacao_manual}, '{$tipo_avaliacao}', '{$tipo_avaliador}', '{$descricao_avaliacao}')";
+							$cadastrar = "INSERT INTO avaliacoes (projeto_id, formulario_id, amostra_associada, pagina, form_ativo, aleatorizacao_manual, tipo_avaliacao, tipo_avaliador, descricao_avaliacao) VALUES ({$projeto_id}, {$formulario_id}, {$amostra_associada}, {$pagina}, {$form_ativo}, {$aleatorizacao_manual}, '{$tipo_avaliacao}', '{$tipo_avaliador}', '{$descricao_avaliacao}')";
 							$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 						}
 
+						$n= $n+1;
+				}
+						
 						$ns=1;
 						while ($ns <= $n_sessoes) {
-							$sessao = $_POST["sessao{$n}_{$ns}"];
-							$data = empty($_POST["data{$n}_{$ns}"]) ? "0000-00-00" : $_POST["data{$n}_{$ns}"];
-							$n_amostras = $_POST["n_amostras{$n}_{$ns}"];
+							$sessao = $_POST["sessao{$ns}"];
+							$data = empty($_POST["data{$ns}"]) ? "0000-00-00" : $_POST["data{$ns}"];
+							$n_amostras = $_POST["n_amostras{$ns}"];
 
 							$na=1;
 							while ($na <= $n_amostras) {
-								$amostra_codigo = $_POST["amostra_codigo{$n}_{$ns}_{$na}"];
-								$amostra_descricao = utf8_decode($_POST["amostra_descricao{$n}_{$ns}_{$na}"]);
+								$amostra_codigo = $_POST["amostra_codigo{$ns}_{$na}"];
+								$amostra_descricao = utf8_decode($_POST["amostra_descricao{$ns}_{$na}"]);
 
-								$consulta_projeto = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = {$sessao} AND amostra_codigo = '{$amostra_codigo}'";
+								$consulta_projeto = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND amostra_codigo = '{$amostra_codigo}'";
 								$acesso = mysqli_query($conecta, $consulta_projeto);
 								$existe_projeto = mysqli_fetch_assoc($acesso);
 
 								if (!empty($existe_projeto)) { 
-									$alterar = "UPDATE tb_amostras SET data = '{$data}', amostra_descricao = '{$amostra_descricao}' WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = {$sessao} AND amostra_codigo = '{$amostra_codigo}'";
+									$alterar = "UPDATE tb_amostras SET data = '{$data}', amostra_descricao = '{$amostra_descricao}' WHERE projeto_id = {$projeto_id} AND sessao = {$sessao} AND amostra_codigo = '{$amostra_codigo}'";
 									$operacao_alterar = mysqli_query($conecta, $alterar);
 								} else {
-									$cadastrar = "INSERT INTO tb_amostras (projeto_id, formulario_id, sessao, data, amostra_codigo, amostra_descricao) VALUES ({$projeto_id}, {$formulario_id}, {$sessao}, '{$data}', '{$amostra_codigo}', '{$amostra_descricao}')";
+									$cadastrar = "INSERT INTO tb_amostras (projeto_id, sessao, data, amostra_codigo, amostra_descricao) VALUES ({$projeto_id}, {$sessao}, '{$data}', '{$amostra_codigo}', '{$amostra_descricao}')";
 									$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 								}
 								$na = $na + 1;
 							}
 							$ns= $ns+1;
 						}
-					$n= $n+1;
-				}
+
+						
 
 				header("location:dados.php");
 			}
@@ -296,17 +301,17 @@
 					}
 
 					// Achar número de sessões da avaliação-----------------------------------------
-					if (isset($_POST["ns_mais{$n_post}"])) {
-						$n_sessoes = $_POST["n_sessoes{$n_post}"]+1;
-					} else if (isset($_POST["ns_menos{$n_post}"])) {
-						$ns = $_POST["ns_menos{$n_post}"];
-						if (!empty($_POST["sessao{$n_post}_{$ns}"])) {
-							$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n_post}"]} AND sessao = {$_POST["sessao{$n_post}_{$ns}"]}";
+					if (isset($_POST["ns_mais"])) {
+						$n_sessoes = $_POST["n_sessoes"]+1;
+					} else if (isset($_POST["ns_menos"])) {
+						$ns = $_POST["ns_menos"];
+						if (!empty($_POST["sessao{$ns}"])) {
+							$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n_post}"]} AND sessao = {$_POST["sessao{$ns}"]}";
 							$operacao_excluir = mysqli_query($conecta, $excluir);
 						}
-						$n_sessoes = $_POST["n_sessoes{$n_post}"]-1;
-					} else if (isset($_POST["n_sessoes{$n_post}"])) {
-						$n_sessoes = $_POST["n_sessoes{$n_post}"];
+						$n_sessoes = $_POST["n_sessoes"]-1;
+					} else if (isset($_POST["n_sessoes"])) {
+						$n_sessoes = $_POST["n_sessoes"];
 					} else {
 						$n_sessoes = 1;
 					}
@@ -317,6 +322,8 @@
 						$dados = mysqli_fetch_assoc($acesso);
 						$formulario_id = $_POST["formulario_id{$n_post}"];
 						$form_ativo = isset($_POST["form_ativo{$n_post}"]) ? 1 : 0;
+						$amostra_associada = isset($_POST["amostra_associada{$n_post}"]) ? 1 : 0;
+						$pagina = $_POST["pagina{$n_post}"];
 						$aleatorizacao_manual = isset($_POST["aleatorizacao_manual{$n}"]) ? 1 : 0;
 						$tipo_avaliador = $_POST["tipo_avaliador{$n_post}"];
 						$descricao_avaliacao = $_POST["descricao_avaliacao{$n_post}"];
@@ -324,6 +331,8 @@
 						$dados = mysqli_fetch_assoc($acesso);
 						$formulario_id = $dados["formulario_id"];
 						$form_ativo = $dados["form_ativo"];
+						$amostra_associada = $dados["amostra_associada"];
+						$pagina = $dados["pagina"];
 						$aleatorizacao_manual = $dados["aleatorizacao_manual"];
 						$tipo_avaliador = $dados["tipo_avaliador"];
 						$descricao_avaliacao = utf8_encode($dados["descricao_avaliacao"]);
@@ -360,6 +369,42 @@
 							</select>
 						</div><br>
 
+						<div>
+							<label for="pagina">Página: </label>
+							<input type="number" id="pagina" name="pagina<?php echo($n); ?>" value="<?php echo $pagina; ?>" style="width: 50px;" required>
+						</div><br>
+
+						<div style="float: left; margin-right: 40px; margin-left: 5px">
+							<input type="checkbox" id="amostra_associada" name="amostra_associada<?php echo($n); ?>" <?php if ($amostra_associada == 1) { ?> 
+							checked <?php } ?> style="float: left; width: 10px">
+							<label for="form_ativo" style="width: 495px; margin-left: 0px">A página está associada a amostras</label>
+						</div>
+
+						<div style="float: left; margin-right: 40px; margin-left: 5px">
+							<input type="checkbox" id="form_ativo" name="form_ativo<?php echo($n); ?>" <?php if ($form_ativo == 1) { ?> 
+							checked <?php } ?> style="float: left; width: 10px">
+							<label for="form_ativo" style="width: 495px; margin-left: 0px">Habilitar avaliação no sistema para os respectivos usuários</label>
+						</div>
+
+						<input type="hidden" name="n_forms" value="<?php echo($n_forms); ?>">
+
+						<div style="float: left; margin-top: -15px">
+							<button name="n_menos" type="submit" value="<?php echo $n; ?>" style="width: 40px; margin-top: 10px; font-size: 120%; background-color: #FFF; color: #778899; text-align: center; padding: 0px; float: left; margin-right: 7px">-</button>
+							<?php if ($n == $n_forms) { ?>
+								<button name="n_mais" type="submit" value="<?php echo $n; ?>" style="width: 40px; margin-top: 10px; font-size: 120%; background-color: #FFF; color: #778899; text-align: center; padding: 0px">+</button>
+							<?php } ?>
+						</div><br><br>
+						
+  
+
+
+						
+					</div><br>
+				<?php 
+				$n = $n + 1;
+				} ?>
+					</div>
+
 
 						<?php 
 						$formulario_id = !empty($formulario_id) ? $formulario_id : 0;
@@ -387,33 +432,33 @@
 						while ($ns <= $n_sessoes) {
 
 							$ns_post = $ns;
-							if (isset($_POST["ns_menos{$n_post}"])) {
-								if ($ns>=$_POST["ns_menos{$n_post}"]) {
+							if (isset($_POST["ns_menos"])) {
+								if ($ns>=$_POST["ns_menos"]) {
 									$ns_post = $ns+1;
 								}
 							}
 
 							// Achar número de amostras da sessão-------------------------------------------
-							if (isset($_POST["na_mais{$n_post}_{$ns_post}"])) {
-								$n_amostras = $_POST["n_amostras{$n_post}_{$ns_post}"]+1;
-							} else if (isset($_POST["na_menos{$n_post}_{$ns_post}"])) {
-								$na = $_POST["na_menos{$n_post}_{$ns_post}"];
-								if (!empty($_POST["amostra_codigo{$n_post}_{$ns_post}_{$na}"])) {
-									$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n_post}"]} AND sessao = {$_POST["sessao{$n_post}_{$ns_post}"]} AND amostra_codigo = '{$_POST["amostra_codigo{$n_post}_{$ns_post}_{$na}"]}'";
+							if (isset($_POST["na_mais{$ns_post}"])) {
+								$n_amostras = $_POST["n_amostras{$ns_post}"]+1;
+							} else if (isset($_POST["na_menos{$ns_post}"])) {
+								$na = $_POST["na_menos{$ns_post}"];
+								if (!empty($_POST["amostra_codigo{$ns_post}_{$na}"])) {
+									$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n_post}"]} AND sessao = {$_POST["sessao{$ns_post}"]} AND amostra_codigo = '{$_POST["amostra_codigo{$ns_post}_{$na}"]}'";
 									$operacao_excluir = mysqli_query($conecta, $excluir);
 								}
-								$n_amostras = $_POST["n_amostras{$n_post}_{$ns_post}"]-1;
-							} else if (isset($_POST["n_amostras{$n_post}_{$ns_post}"])) {
-								$n_amostras = $_POST["n_amostras{$n_post}_{$ns_post}"];
+								$n_amostras = $_POST["n_amostras{$ns_post}"]-1;
+							} else if (isset($_POST["n_amostras{$ns_post}"])) {
+								$n_amostras = $_POST["n_amostras{$ns_post}"];
 							} else {
 								$n_amostras = 1;
 							}
 							
 							// ------------------------------------------------------------------------------
 
-							if (isset($_POST["sessao{$n_post}_{$ns_post}"])) {
-								$sessao = $_POST["sessao{$n_post}_{$ns_post}"];
-								$data = $_POST["data{$n_post}_{$ns_post}"];
+							if (isset($_POST["sessao"])) {
+								$sessao = $_POST["sessao"];
+								$data = $_POST["data"];
 							} else {
 								if (!empty($sessao)) {
 									while ($sessao == $dados_sessoes["sessao"]) {
@@ -437,27 +482,28 @@
 										$n_amostras=1;
 									}
 								} ?>
+						<div style="background-color: #F8F8F8; padding: 15px 5px 15px 10px; width: 650px; position: relative;">
 							<div style="background-color: #f9ecec; padding: 7px 5px 20px 5px; width: 610px; margin-left: 10px; position: relative; height:<?php echo((ceil($n_amostras / 3) * 55) + 40); ?>px">
 								<p style="margin-left: 8px; position: absolute; left: 10px; top: 5px; color: #660000"><b>Sessão e amostras: </b></p>
 								<div style="position: relative; left: 300px; top: 5px">
 									<div style="float: left; margin-right: 10px;">
 										<label for="sessao" style="margin-left: 11px; margin-bottom: 0px;">Sessão: </label>
-										<input type="text" id="sessao" name="sessao<?php echo($n . "_" . $ns); ?>" value="<?php echo $sessao; ?>" style="width: 50px; margin: 0px 5px 5px 10px">
+										<input type="text" id="sessao" name="sessao<?php echo($ns); ?>" value="<?php echo $sessao; ?>" style="width: 50px; margin: 0px 5px 5px 10px">
 									</div>
 									<div>
 										<label for="data" style="margin-left: 8px; margin-bottom: 0px">Data: </label>
-										<input type="date" id="data" name="data<?php echo($n . "_" . $ns); ?>" value="<?php echo $data; ?>" style="width: 120px; margin: 0px 10px 20px 5px; font-size: 75%; text-align: center;">
+										<input type="date" id="data" name="data<?php echo($ns); ?>" value="<?php echo $data; ?>" style="width: 120px; margin: 0px 10px 20px 5px; font-size: 75%; text-align: center;">
 									</div>
 								</div>
 
-								<input type="hidden" name="n_sessoes<?php echo($n); ?>" value="<?php echo($n_sessoes); ?>">
+								<input type="hidden" name="n_sessoes" value="<?php echo($n_sessoes); ?>">
 
 								<div style="position: absolute; right: 50px; top: 24px">
-									<button name="ns_menos<?php echo($n); ?>" type="submit" value="<?php echo($ns); ?>" style="width: 25px; font-size: 100%; background-color: #404040; color: #FFF; text-align: center; padding: 0px; padding-bottom: 1px; margin: 0px">-</button>
+									<button name="ns_menos" type="submit" value="<?php echo($ns); ?>" style="width: 25px; font-size: 100%; background-color: #404040; color: #FFF; text-align: center; padding: 0px; padding-bottom: 1px; margin: 0px">-</button>
 								</div>
 								<?php if ($ns == $n_sessoes) { ?>
 									<div style="position: absolute; right: 20px; top: 24px">
-										<button name="ns_mais<?php echo($n); ?>" type="submit" value="<?php echo($ns); ?>" style="width: 25px; font-size: 100%; background-color: #404040; color: #FFF; text-align: center; padding: 0px; padding-bottom: 1px; margin: 0px">+</button>
+										<button name="ns_mais" type="submit" value="<?php echo($ns); ?>" style="width: 25px; font-size: 100%; background-color: #404040; color: #FFF; text-align: center; padding: 0px; padding-bottom: 1px; margin: 0px">+</button>
 									</div>
 								<?php } ?>
 
@@ -467,16 +513,16 @@
 									while ($na <= $n_amostras) { 
 
 										$na_post = $na;
-										if (isset($_POST["na_menos{$n_post}_{$ns_post}"])) {
-											if ($na>=$_POST["na_menos{$n_post}_{$ns_post}"]) {
+										if (isset($_POST["na_menos{$ns_post}"])) {
+											if ($na>=$_POST["na_menos{$ns_post}"]) {
 												$na_post = $na+1;
 											}
 										}
 
-										if (isset($_POST["amostra_codigo{$n_post}_{$ns_post}_{$na_post}"])) {
+										if (isset($_POST["amostra_codigo{$ns_post}_{$na_post}"])) {
 											$dados_amostras = mysqli_fetch_assoc($acesso_amostras);
-											$amostra_codigo = $_POST["amostra_codigo{$n_post}_{$ns_post}_{$na_post}"];
-											$amostra_descricao = $_POST["amostra_descricao{$n_post}_{$ns_post}_{$na_post}"];
+											$amostra_codigo = $_POST["amostra_codigo{$ns_post}_{$na_post}"];
+											$amostra_descricao = $_POST["amostra_descricao{$ns_post}_{$na_post}"];
 										} else {
 											$dados_amostras = mysqli_fetch_assoc($acesso_amostras);
 											$amostra_codigo = $dados_amostras["amostra_codigo"];
@@ -486,18 +532,18 @@
 										<div style="background-color: #8c8c8c; padding: 3px 5px 3px 2px; width: 180px; float: left; margin: 2px 5px 5px 5px;">
 											<div style="float: left;">
 												<label for="amostra_descricao" style="color: #FFF; margin-left: 5px">Amostra: </label>
-												<input type="text" id="amostra_descricao" name="amostra_descricao<?php echo($n . "_" . $ns . "_" . $na); ?>" value="<?php echo $amostra_descricao; ?>" style="width: 90px; margin: 2px 2px 5px 5px">
+												<input type="text" id="amostra_descricao" name="amostra_descricao<?php echo($ns . "_" . $na); ?>" value="<?php echo $amostra_descricao; ?>" style="width: 90px; margin: 2px 2px 5px 5px">
 											</div>
 											<div style="float: left;">
 												<label for="amostra_codigo" style="color: #FFF; margin-left: 5px">Código: </label>
-												<input type="text" id="amostra_codigo" name="amostra_codigo<?php echo($n . "_" . $ns . "_" . $na); ?>" value="<?php echo $amostra_codigo; ?>" style="width: 40px; margin: 2px 5px 5px 5px">
+												<input type="text" id="amostra_codigo" name="amostra_codigo<?php echo($ns . "_" . $na); ?>" value="<?php echo $amostra_codigo; ?>" style="width: 40px; margin: 2px 5px 5px 5px">
 											</div>
 
-											<input type="hidden" name="n_amostras<?php echo($n . "_" . $ns); ?>" value="<?php echo($n_amostras); ?>">
+											<input type="hidden" name="n_amostras<?php echo($ns); ?>" value="<?php echo($n_amostras); ?>">
 
-											<button name="na_menos<?php echo($n . "_" . $ns); ?>" type="submit" value="<?php echo($na); ?>" style="width: 18px; font-size: 80%; background-color: #660000; color:#FFF; text-align: center; padding: 0px; position: relative; left: 2px; top: 2px; margin: 0px;">-</button>
+											<button name="na_menos<?php echo($ns); ?>" type="submit" value="<?php echo($na); ?>" style="width: 18px; font-size: 80%; background-color: #660000; color:#FFF; text-align: center; padding: 0px; position: relative; left: 2px; top: 2px; margin: 0px;">-</button>
 											<?php if ($na == $n_amostras) { ?>
-												<button name="na_mais<?php echo($n . "_" . $ns); ?>" type="submit" value="<?php echo($na); ?>" style="width: 18px; font-size: 80%; background-color: #660000; color: #FFF; text-align: center; vertical-align: middle; padding: 0px; margin: 0px;  position: relative; left: 2px; bottom: -2px">+</button>
+												<button name="na_mais<?php echo($ns); ?>" type="submit" value="<?php echo($na); ?>" style="width: 18px; font-size: 80%; background-color: #660000; color: #FFF; text-align: center; vertical-align: middle; padding: 0px; margin: 0px;  position: relative; left: 2px; bottom: -2px">+</button>
 											<?php } ?>
 										</div>
 									<?php 
@@ -522,33 +568,11 @@
 								<a href="aleatorizacao.php?projeto=<?php echo($_SESSION["projeto_id"]);?>&formulario=<?php echo($formulario_id);?>" style="font-size: 85%; color: #696969;">Configurar aleatorização</a>
 							</div><br><br>
 						<?php } ?>
+			</div>
 
-						
-						<div style="float: left; margin-right: 40px; margin-left: 5px">
-							<input type="checkbox" id="form_ativo" name="form_ativo<?php echo($n); ?>" <?php if ($form_ativo == 1) { ?> 
-							checked <?php } ?> style="float: left; width: 10px">
-							<label for="form_ativo" style="width: 495px; margin-left: 0px">Habilitar avaliação no sistema para os respectivos usuários</label>
-						</div>
-
-						<input type="hidden" name="n_forms" value="<?php echo($n_forms); ?>">
-
-						<div style="float: left; margin-top: -15px">
-							<button name="n_menos" type="submit" value="<?php echo $n; ?>" style="width: 40px; margin-top: 10px; font-size: 120%; background-color: #FFF; color: #778899; text-align: center; padding: 0px; float: left; margin-right: 7px">-</button>
-							<?php if ($n == $n_forms) { ?>
-								<button name="n_mais" type="submit" value="<?php echo $n; ?>" style="width: 40px; margin-top: 10px; font-size: 120%; background-color: #FFF; color: #778899; text-align: center; padding: 0px">+</button>
-							<?php } ?>
-						</div><br><br>
-						
-  
-
-
-						
-					</div><br>
-				<?php 
-				$n = $n + 1;
-				} ?>
 
 			<div>
+
 				<input name="completo" type="submit" id="botao" value="<?php 
 					if ($acao == "alteracao") echo "Alterar cadastro";
 					if ($acao == "exclusao") echo "Excluir cadastro";

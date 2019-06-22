@@ -11,13 +11,12 @@
 
 	if (isset($_POST["completo"])) {
 
-		$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
-		$acesso = mysqli_query($conecta, $consulta);
-		
-		while ($dados = mysqli_fetch_assoc($acesso)) {
-				
-			if (isset($_POST["atributo{$dados["atributo_id"]}"])) {
-				$nota = $_POST["atributo{$dados["atributo_id"]}"];
+			$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
+			$acesso = mysqli_query($conecta, $consulta);
+			
+			while ($dados = mysqli_fetch_assoc($acesso)) {
+					
+				$nota = isset($_POST["atributo{$dados["atributo_id"]}"]) ? 1 : 0;
 
 				$atributo_id = $dados["atributo_id"];
 				$atributo_completo_eng = $dados["atributo_completo_eng"];
@@ -38,16 +37,9 @@
 					$operacao_alterar = mysqli_query($conecta, $alterar);
 				}
 			}
-		}
 
-		$_SESSION["formulario_id"] = array_values($_SESSION["formularios"])[array_search($_SESSION["formulario_id"], array_values($_SESSION["formularios"]))+1];
-		if (!$_SESSION["formulario_id"]) {
-			$_SESSION["amostra"] = $_SESSION["amostras"][array_search($_SESSION["amostra"], $_SESSION["amostras"])+1];
-			header("location:amostra.php");
-		} else {
-			$_SESSION["tipo_formulario"] = array_keys($_SESSION["formularios"], $_SESSION["formulario_id"])[0];
-			header("location:{$_SESSION["tipo_formulario"]}.php");
-		}
+		
+			header("location:{$caminho}public/amostra.php");
 	}
 		
 
@@ -57,7 +49,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Hedônica</title>
+	<title>CATA</title>
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" type="text/css" href="<?php echo($caminho); ?>_css/estilo2.css">
@@ -91,7 +83,7 @@
 		  color: #626161;
 
 		  border: 1px solid #C1B7B7;
-		  width: 65px;
+		  width: 80px;
 		  height: 60px;
 		  vertical-align: middle;
 		  text-decoration: none;
@@ -121,47 +113,39 @@
 
 
 							<?php 
-									$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
-									$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
-									$dados_atributos = mysqli_fetch_assoc($acesso_atributos);
+									$consulta_conjunto = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
+									$acesso_conjunto = mysqli_query($conecta, $consulta_conjunto);
+									$dados_conjunto = mysqli_fetch_assoc($acesso_conjunto)
 									?>
-
-									<p><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></p>
-									<div style="margin-left: 5px;">
+									<p><?php echo utf8_encode($dados_conjunto["descricao_conjunto"]); ?></p>
+									<div style="margin-left: -10px; margin-top: 10px">
+										
 										<?php 
-										$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
-										$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes);
-
-										while ($dados_opcoes = mysqli_fetch_assoc($acesso_opcoes)) {
-										?>
-											<li class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
-										<?php } ?>
-											<input type="hidden" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
-									</div>
-
-								<script type="text/javascript">
-									function armazenarValor(clickedId) {
-										var nota = document.getElementById(clickedId).value;
-										var atributoId = "atributo".concat(clickedId.substring(0, clickedId.indexOf("-")));
-							        	document.getElementById(atributoId).value = nota;
-
-							        	var elements = document.getElementsByClassName(atributoId);
-
-							        	for(var i = 0; i < elements.length; i++) {
-										  if (elements[i].value != nota) {
-										    elements[i].style.backgroundColor = "";
-										  } 
+										$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND descricao_conjunto = '{$dados_conjunto["descricao_conjunto"]}'";
+										$acesso = mysqli_query($conecta, $consulta);
+										
+										$atributos = array();
+										while ($linha = mysqli_fetch_assoc($acesso)) { 
+											$atributos[] = $linha["atributo_id"];
 										}
+										shuffle($atributos);
 
-										if (document.getElementById(clickedId).style.backgroundColor == "#FFE1E1") {
-										  document.getElementById(clickedId).style.backgroundColor = "";
-										} else {
-										  document.getElementById(clickedId).style.backgroundColor = "#FFE1E1";
-										}
-							    	}
-								</script>
+										foreach ($atributos as $atributo) {
+
+											$consulta_atributos = "SELECT * FROM atributos WHERE atributo_id = {$atributo}";
+											$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
+											$dados_atributos = mysqli_fetch_assoc($acesso_atributos);
+
+											?>
+											<div style="margin-left: 5px">
+												<label for="<?php echo $dados_atributos["atributo_id"]; ?>" style="margin-right: 50px; margin-left: 5px; margin-bottom: 10px;">
+													<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 20px; float: left; margin-bottom: 10px;"/>
+													<?php echo utf8_encode($dados_atributos["atributo"]); ?>
+												</label><br><br>
+											</div>
+									<?php } ?>
 							
-							<br><br><br><br>
+							<br><br><br><br><br><br>
 							<input type="hidden" name="amostra" value="<?php echo $_SESSION["amostra"];?>">
 							<input type="submit" id="botao" value="Confirmar" name="completo" style="margin-left: 5px">
 							<br>
@@ -176,7 +160,6 @@
 	</main>
 </body>
 </html>
-
 
 <?php 
 	// Fechar conexão

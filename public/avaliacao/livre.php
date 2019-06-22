@@ -28,17 +28,44 @@
 					$consulta2 = "SELECT * FROM opcoes WHERE atributo_id = {$dados["atributo_id"]}";
 					$acesso2 = mysqli_query($conecta, $consulta2);
 
-					$resposta = "";
 					while ($linha = mysqli_fetch_assoc($acesso2)) {
-						$opcao = in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
-						$resposta = $resposta . $opcao . "|";
+						$nota = in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
+						$resposta = utf8_decode($linha["texto"]);
+
+
+						$consulta_resultados_opcoes = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id} AND resposta = '{$resposta}'";
+						$acesso_resultados_opcoes = mysqli_query($conecta, $consulta_resultados_opcoes);
+						$resultados_opcoes = mysqli_fetch_assoc($acesso_resultados_opcoes);
+
+						if (empty($resultados_opcoes)) {
+							$inserir_opcoes = "INSERT INTO tb_resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo_eng, atributo_completo_port, nota, teste, resposta) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$_SESSION["amostra"]}', {$atributo_id}, '{$atributo_completo_eng}', '{$atributo_completo_port}', {$nota}, {$_SESSION["teste"]}, '{$resposta}')";
+
+							echo $inserir_opcoes;
+
+							$operacao_inserir_opcoes = mysqli_query($conecta, $inserir_opcoes);
+						} else {
+
+							$alterar_opcoes = "UPDATE tb_resultados SET nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id} AND resposta = '{$resposta}'";
+
+							echo $alterar_opcoes;
+
+							$operacao_alterar_opcoes = mysqli_query($conecta, $alterar_opcoes);
+						}
 					}
 
-					$nota = 0;
+					
 				} else {
 
 				$nota = $_POST["atributo{$dados["atributo_id"]}"];
 				$resposta = "";
+
+				$esquecido = array();
+				if ($dados["disposicao_pergunta"] == "lista") {
+					if (empty($nota)) {
+						$esquecido[] = $dados["atributo_id"];
+					}
+				}
+
 				}
 
 				$consulta_resultados = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id};";
@@ -60,15 +87,16 @@
 			}
 		}
 
-		$_SESSION["formulario_id"] = array_values($_SESSION["formularios"])[array_search($_SESSION["formulario_id"], array_values($_SESSION["formularios"]))+1];
-		if (!$_SESSION["formulario_id"]) {
-			$_SESSION["amostra"] = $_SESSION["amostras"][array_search($_SESSION["amostra"], $_SESSION["amostras"])+1];
-			echo $_SESSION["amostra"];
-			header("location:amostra.php");
-		} else {
-			$_SESSION["tipo_formulario"] = array_keys($_SESSION["formularios"], $_SESSION["formulario_id"])[0];
-			header("location:{$_SESSION["tipo_formulario"]}.php");
+		if (empty($esquecido)) {
+		
+
+			if (!$_SESSION["amostra"]) {
+				header("location:{$caminho}public/principal.php");
+			} else {
+				header("location:{$caminho}public/amostra.php");
+			}
 		}
+		
 	}
 	// ##########################################################################################################################
 
@@ -116,7 +144,7 @@
 		li {	
 		  display: inline-block;
 		  text-decoration: none;
-		  background-color: #F7F6F6;
+		  background-color: #BD5555;
 		  margin: 1px;
 		  padding: 5px 5px;
 		  color: #626161;
@@ -128,8 +156,8 @@
 		  text-decoration: none;
 		  text-align: center;
 
-		  font-size: 75%;
-		  color: #626161;
+		  font-size: 90%;
+		  color: #FFF;
 		}
 
 		li:hover {
@@ -170,23 +198,103 @@
 										while($dados_atributos = mysqli_fetch_assoc($acesso_atributos)) {
 										?>
 
-											<?php if ($dados_atributos["disposicao_pergunta"] == "lista") {
-												
+
+
+											<?php if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
+													<br>
+													<div>
+														<label for="texto"><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></label><br>
+														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 410px">
+													</div>
+													<br><br>
+
+											<?php } ?>
+
+
+
+
+
+											<?php if ($dados_atributos["disposicao_pergunta"] == "select") {
+								
 												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); ?>
 
 												<p><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></p>
-												
-												<?php 
-												while ($dados_opcoes = mysqli_fetch_assoc($acesso_opcoes)) {
-												?>
-													<li style="width: 80px" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
+
+												<div>
+													<select name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 410px">
+														<option value="NA"></option>
+														<?php 
+														while ($dados_opcoes = mysqli_fetch_assoc($acesso_opcoes)) { ?>
+															<option value="<?php echo $dados_opcoes["texto"]; ?>"><?php echo utf8_encode($dados_opcoes["texto"]); ?></option>
+														<?php 
+															if(strpos("x".strtolower($dados_opcoes["texto"]), "outr")) {
+																$outro = strtolower($dados_opcoes["texto"]);
+															}
+														} ?>
+													</select>
+												</div>
+												<?php if (isset($outro)) { ?>
+													<br>
+													<div>
+														<label for="outro">Se <?php echo $outro; ?>, favor indicar qual: </label>
+														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 200px">
+													</div>
 												<?php } ?>
+												<br><br>
+											<?php } ?>
+
+
+
+
+
+											<?php if ($dados_atributos["disposicao_pergunta"] == "lista") { ?>
+
+												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
+
+												<?php if (isset($esquecido)) {
+													if (in_array($dados_atributos["atributo_id"], $esquecido)) { ?>
+
+														<p style="color: #8B0000"><b>Ops, parece que você esqueceu de responder essa pergunta</b></p>
+													
+												<?php }
+												}
+												
+
+												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
+												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); 
+												$n_opcoes = mysqli_num_rows($acesso_opcoes);
+												
+												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
+												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); ?>
+
+
+												<p><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></p>
+												
+												<?php
+				
+												while ($dados_opcoes = mysqli_fetch_assoc($acesso_opcoes)) {
+
+
+												?>
+													<li style="width: <?php echo floor(900/$n_opcoes-100); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
+												<?php 
+
+													$opcao = "";
+
+												} ?>
 													
 													<input type="hidden" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
 													<br><br>
+
+												</div><br>
 									
 											<?php } ?>
+
+
+
+
+
 
 											<?php if ($dados_atributos["disposicao_pergunta"] == "checkbox") {
 
@@ -206,9 +314,9 @@
 												<?php 
 												foreach ($opcoes as $opcao) {
 												?>
-													<div style="float: left;">
-														<label for="<?php echo $opcao; ?>" style="margin-right: 20px; float: left;">
-															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>[]" id="<?php echo $opcao; ?>" value="<?php echo $opcao; ?>" style="width: 10px; float: left;"
+													<div style="padding: 10px">
+														<label for="<?php echo $opcao; ?>" style="margin-right: 20px; float: left; font-size: 115%">
+															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>[]" id="<?php echo $opcao; ?>" value="<?php echo $opcao; ?>" style="transform: scale(1.5); ;width: 30px; float: left;"
 											 				/>
 															<?php echo utf8_encode($opcao); ?>
 														</label><br>

@@ -70,18 +70,15 @@
 
 					// Verificar existência do projeto na base ------------------------------
 
-					$consulta_projeto = "SELECT * FROM tb_formularios WHERE categoria_id = {$categoria_id} AND produto_id = {$produto_id} AND projeto_id = {$projeto_id} AND tipo_formulario = '{$tipo_formulario}'";
+					//$consulta_projeto = "SELECT * FROM tb_formularios WHERE categoria_id = {$categoria_id} AND produto_id = {$produto_id} AND projeto_id = {$projeto_id} AND tipo_formulario = '{$tipo_formulario}'";
 
-					$acesso = mysqli_query($conecta, $consulta_projeto);
-					$existe_projeto = mysqli_fetch_assoc($acesso);
+					//$acesso = mysqli_query($conecta, $consulta_projeto);
+					//$existe_projeto = mysqli_fetch_assoc($acesso);
 
-					if (!empty($existe_projeto)) { ?>
-						<p>Esse projeto já foi cadastrado</p>
-					<?php } 
-
+					
 					// ----------------------------------------------------------------------
 						
-					else {
+					//else {
 						$cadastrar = "INSERT INTO tb_formularios (nome_formulario, tipo_formulario, categoria_id, produto_id, projeto_id, escala_min, escala_max, form_ativo) VALUES ('{$nome_formulario}', '{$tipo_formulario}', {$categoria_id}, {$produto_id}, {$projeto_id}, '{$escala_min}', '{$escala_max}', '{$form_ativo}')";
 
 						$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
@@ -92,7 +89,7 @@
 						} else {
 							header("location:dados.php");
 						}
-					}
+					//}
 				}
 				// --------------------------------------------------------------------------
 
@@ -129,7 +126,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-	<title>Alteração de usuário</title>
+	<title>Alteração de form</title>
 	
 	<meta charset="utf-8">
 
@@ -161,14 +158,8 @@
 					<label for="tipo_formulario">Tipo de formulário: </label>
 					<select type="text" id="tipo_formulario" name="tipo_formulario" style="width: 315px">
 						<option></option>
-						<option value="consumo" <?php if($tipo_formulario == "consumo") { ?> selected <?php } ?>>Consumo</option>
-						<option value="concordancia" <?php if($tipo_formulario == "concordancia") { ?> selected <?php } ?>>Concordância</option>
-						<option value="selecao_painel" <?php if($tipo_formulario == "selecao_painel") { ?> selected <?php } ?>>Seleção de painel</option>
+						<option value="livre" <?php if($tipo_formulario == "livre") { ?> selected <?php } ?>>Livre</option>
 						<option value="pdq" <?php if($tipo_formulario == "pdq") { ?> selected <?php } ?>>Painel descritivo quantitativo</option>
-						<option value="cata" <?php if($tipo_formulario == "cata") { ?> selected <?php } ?>>CATA</option>
-						<option value="ideal" <?php if($tipo_formulario == "ideal") { ?> selected <?php } ?>>Escala do ideal</option>
-						<option value="hedonica" <?php if($tipo_formulario == "hedonica") { ?> selected <?php } ?>>Escala hedônica</option>
-						<option value="triangular" <?php if($tipo_formulario == "triangular") { ?> selected <?php } ?>>Teste triangular</option>
 					</select>
 				</div>
 

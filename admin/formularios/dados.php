@@ -52,9 +52,10 @@
 		
 		<div id="cima_tabela" style="width: 650px;">
 			<ul>
-			    <li style="width: 120px;"><b>Categoria</b></li>
-			    <li style="width: 140px;"><b>Produto</b></li>
-			    <li style="width: 150px;"><b>Tipo de teste</b></li>
+			    <li style="width: 180px;"><b>Formulário</b></li>
+			    <li style="width: 100px;"><b>Categoria</b></li>
+			    <li style="width: 110px;"><b>Produto</b></li>
+			    <li style="width: 50px;"><b>Tipo</b></li>
 			</ul>
 		</div>
 		<div id="janela" style="width: 650px;">
@@ -62,40 +63,23 @@
 			    while($linha = mysqli_fetch_assoc($acesso)) {
 			?>
 			<ul>
-				<li style="width: 120px;"><?php 
+				<li style="width: 180px;"><?php echo utf8_encode($linha["nome_formulario"]); ?></li>
+				<li style="width: 100px;"><?php 
 			    	$consulta2 = "SELECT * FROM categorias WHERE categoria_id={$linha["categoria_id"]}";
 					$acesso2 = mysqli_query($conecta, $consulta2);
 					$dados = mysqli_fetch_assoc($acesso2);
 					echo utf8_encode($dados["categoria"]); ?></li>
-			    <li style="width: 140px;"><?php 
+			    <li style="width: 110px;"><?php 
 			    	$consulta2 = "SELECT * FROM produtos WHERE produto_id={$linha["produto_id"]}";
 					$acesso2 = mysqli_query($conecta, $consulta2);
 					$dados = mysqli_fetch_assoc($acesso2);
 					echo utf8_encode($dados["produto"]); ?></li>
-			    <li style="width: 180px;"><?php switch ($linha["tipo_formulario"]) {
-			     	case 'consumo': ?>
-			     		Consumo
-			     	<?php break;
-			     	case 'concordancia': ?>
-			     		Concordância
-			     	<?php break;
-			     	case 'selecao_painel': ?>
-			     		Seleção de painel
-			     	<?php break;
-			     	case 'cata': ?>
-			     		CATA
-			     	<?php break;
-			     	case 'hedonica': ?>
-			     		Escala hedônica
-			     	<?php break;
-			     	case 'ideal': ?>
-			     		Escala do ideal
-			     	<?php break;
-			     	case 'triangular': ?>
-			     		Teste triangular
+			    <li style="width: 50px;"><?php switch ($linha["tipo_formulario"]) {
+			     	case 'pdq': ?>
+			     		PDQ
 			     	<?php break;
 			     	default: ?>
-			     		Painel descritivo quantitativo
+			     		Livre
 			     	<?php break;
 			     } ?></li>
 			    <li style="width: 65px;"><a href="atributos/dados.php?formulario=<?php echo $linha["formulario_id"]; ?>">Atributos</a> </li>
