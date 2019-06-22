@@ -29,8 +29,8 @@
 					$acesso2 = mysqli_query($conecta, $consulta2);
 
 					while ($linha = mysqli_fetch_assoc($acesso2)) {
-						$nota = in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
 						$resposta = utf8_decode($linha["texto"]);
+						$nota = in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
 
 
 						$consulta_resultados_opcoes = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id} AND resposta = '{$resposta}'";
@@ -78,7 +78,7 @@
 					$operacao_inserir = mysqli_query($conecta, $inserir);
 				} else {
 
-					$alterar = "UPDATE tb_resultados SET resposta = '{$resposta}', nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
+					$alterar = "UPDATE tb_resultados SET nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
 
 					$operacao_alterar = mysqli_query($conecta, $alterar);
 				}
@@ -147,6 +147,7 @@
 		  background-color: #BD5555;
 		  margin: 1px;
 		  padding: 5px 5px;
+		  padding-top: 10px;
 		  color: #626161;
 
 		  border: 1px solid #C1B7B7;
@@ -156,7 +157,7 @@
 		  text-decoration: none;
 		  text-align: center;
 
-		  font-size: 90%;
+		  font-size: 100%;
 		  color: #FFF;
 		}
 
@@ -261,9 +262,10 @@
 												}
 												
 
-												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
+												$consulta_opcoes = "SELECT max(escala) as escala FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); 
-												$n_opcoes = mysqli_num_rows($acesso_opcoes);
+												$dados_opcoes = mysqli_fetch_assoc($acesso_opcoes);
+												$max_escala = $dados_opcoes["escala"];
 												
 												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); ?>
@@ -277,7 +279,7 @@
 
 
 												?>
-													<li style="width: <?php echo floor(900/$n_opcoes-100); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
+													<li style="width: <?php echo floor(900/$max_escala-20); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
 												<?php 
 
 													$opcao = "";
