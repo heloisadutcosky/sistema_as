@@ -88,7 +88,7 @@
 						$nota = $_POST["atributo{$dados["atributo_id"]}"];
 						$resposta = "";
 
-						if (empty($nota) || $dados["disposicao_pergunta"] == "lista") {
+						if (empty($nota) && $dados["disposicao_pergunta"] == "lista") {
 							$esquecido[] = $dados["atributo_id"];
 						}
 					}
@@ -364,7 +364,7 @@
 
 
 												?>
-													<li style="width: <?php echo floor(850/$max_escala); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
+													<li style="width: <?php echo floor(800/$max_escala); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
 												<?php 
 
 													$opcao = "";
