@@ -30,7 +30,11 @@
 
 					while ($linha = mysqli_fetch_assoc($acesso2)) {
 						$resposta = utf8_decode($linha["texto"]);
-						$nota = in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
+						print_r($_POST["atributo{$dados["atributo_id"]}"]);
+						echo $linha["texto"];
+						//echo in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"]));
+						$nota = in_array(utf8_encode($linha["texto"]), array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
+						echo $nota;
 
 
 						$consulta_resultados_opcoes = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id} AND resposta = '{$resposta}'";
@@ -40,16 +44,17 @@
 						if (empty($resultados_opcoes)) {
 							$inserir_opcoes = "INSERT INTO tb_resultados (projeto_id, formulario_id, sessao, user_id, amostra_codigo, atributo_id, atributo_completo_eng, atributo_completo_port, nota, teste, resposta) VALUES ({$_SESSION["projeto_id"]}, {$_SESSION["formulario_id"]}, {$_SESSION["sessao"]}, {$_SESSION["user_id"]}, '{$_SESSION["amostra"]}', {$atributo_id}, '{$atributo_completo_eng}', '{$atributo_completo_port}', {$nota}, {$_SESSION["teste"]}, '{$resposta}')";
 
-							echo $inserir_opcoes;
+							//echo $inserir_opcoes;
 
 							$operacao_inserir_opcoes = mysqli_query($conecta, $inserir_opcoes);
 						} else {
 
 							$alterar_opcoes = "UPDATE tb_resultados SET nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id} AND resposta = '{$resposta}'";
 
-							echo $alterar_opcoes;
+							//echo $alterar_opcoes;
 
 							$operacao_alterar_opcoes = mysqli_query($conecta, $alterar_opcoes);
+							//echo $alterar_opcoes;
 						}
 					}
 
@@ -78,9 +83,10 @@
 					$operacao_inserir = mysqli_query($conecta, $inserir);
 				} else {
 
-					$alterar = "UPDATE tb_resultados SET nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
+					$alterar = "UPDATE tb_resultados SET nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id} AND resposta = ''";
 
-					$operacao_alterar = mysqli_query($conecta, $alterar);
+					$alterar = mysqli_query($conecta, $alterar);
+					echo $alterar;
 				}
 			
 
@@ -202,7 +208,7 @@
 											$atributos[] = $dados_atributos["atributo_id"];
 										}
 
-										if ($conjunto_atributos = "Afirmações") {
+										if ($conjunto_atributos == "Afirmações") {
 											shuffle($atributos);
 										}
 
@@ -350,7 +356,7 @@
 												?>
 													<div style="padding: 10px">
 														<label for="<?php echo $opcao; ?>" style="margin-right: 20px; float: left; font-size: 115%">
-															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>[]" id="<?php echo $opcao; ?>" value="<?php echo $opcao; ?>" style="transform: scale(1.5); ;width: 30px; float: left;"
+															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>[]" id="<?php echo $opcao; ?>" value="<?php echo utf8_encode($opcao); ?>" style="transform: scale(1.5); ;width: 30px; float: left;"
 											 				/>
 															<?php echo utf8_encode($opcao); ?>
 														</label><br>

@@ -31,7 +31,7 @@
 			$excluir = "DELETE FROM avaliacoes WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n}"]}";
 			$operacao_excluir = mysqli_query($conecta, $excluir);
 
-			$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n}"]}";
+			$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id}";
 			$operacao_excluir = mysqli_query($conecta, $excluir);
 
 			$n_forms = $_POST["n_forms"]-1;
@@ -306,7 +306,7 @@
 					} else if (isset($_POST["ns_menos"])) {
 						$ns = $_POST["ns_menos"];
 						if (!empty($_POST["sessao{$ns}"])) {
-							$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n_post}"]} AND sessao = {$_POST["sessao{$ns}"]}";
+							$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND sessao = {$_POST["sessao{$ns}"]}";
 							$operacao_excluir = mysqli_query($conecta, $excluir);
 						}
 						$n_sessoes = $_POST["n_sessoes"]-1;
@@ -409,11 +409,11 @@
 						<?php 
 						$formulario_id = !empty($formulario_id) ? $formulario_id : 0;
 
-						$consulta_sessoes = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = 1";
+						$consulta_sessoes = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND sessao = 1";
 						$acesso_sessoes = mysqli_query($conecta, $consulta_sessoes);
 						$n_amostras_temp = mysqli_num_rows($acesso_sessoes);
 
-						$consulta_sessoes = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id}";
+						$consulta_sessoes = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id}";
 						$acesso_sessoes = mysqli_query($conecta, $consulta_sessoes);
 
 						if (($acao == "alteracao" || $acao == "exclusao") && (!isset($_POST["empresa_id"]))) {
@@ -444,7 +444,7 @@
 							} else if (isset($_POST["na_menos{$ns_post}"])) {
 								$na = $_POST["na_menos{$ns_post}"];
 								if (!empty($_POST["amostra_codigo{$ns_post}_{$na}"])) {
-									$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$_POST["formulario_id{$n_post}"]} AND sessao = {$_POST["sessao{$ns_post}"]} AND amostra_codigo = '{$_POST["amostra_codigo{$ns_post}_{$na}"]}'";
+									$excluir = "DELETE FROM tb_amostras WHERE projeto_id = {$projeto_id} AND sessao = {$_POST["sessao{$ns_post}"]} AND amostra_codigo = '{$_POST["amostra_codigo{$ns_post}_{$na}"]}'";
 									$operacao_excluir = mysqli_query($conecta, $excluir);
 								}
 								$n_amostras = $_POST["n_amostras{$ns_post}"]-1;
@@ -473,7 +473,7 @@
 							<?php 
 								$sessao = !empty($sessao) ? $sessao : 0;
 
-								$consulta_amostras = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND formulario_id = {$formulario_id} AND sessao = $sessao";
+								$consulta_amostras = "SELECT * FROM tb_amostras WHERE projeto_id = {$projeto_id} AND sessao = $sessao";
 								$acesso_amostras = mysqli_query($conecta, $consulta_amostras);
 
 								if (($acao == "alteracao" || $acao == "exclusao") && (!isset($_POST["empresa_id"]))) {

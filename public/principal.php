@@ -17,7 +17,10 @@
 
 	$corrigir = isset($_GET["corrigir"]) ? $_GET["corrigir"] : 0;
 
+
+
 	$_SESSION["pagina"] = isset($_SESSION["pagina"]) ? $_SESSION["pagina"] : -1;
+	$_SESSION["pagina"] = isset($_GET["pagina"]) ? -1 : $_SESSION["pagina"];
 	//echo $_SESSION["pagina"];
 	//$_SESSION["paginas"] = isset($_SESSION["paginas"]) ? $_SESSION["paginas"] : array();
 	//print_r($_SESSION["paginas"]);
@@ -252,7 +255,7 @@ if (isset($_GET["codigo"])) {
 						}
 						echo utf8_encode($dados2["url_imagem"]); ?>
 						" width="100" height="75" style="float: left;"><br><br>
-						<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&funcao=<?php echo $funcao_temp; ?>&teste=<?php echo $_SESSION["teste"]; ?>&corrigir=<?php echo $corrigir; ?>"><?php echo utf8_encode($produto); ?></a></li><br><br>
+						<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&funcao=<?php echo $funcao_temp; ?>&teste=<?php echo $_SESSION["teste"]; ?>&corrigir=<?php echo $corrigir; ?>&pagina=0"><?php echo utf8_encode($produto); ?></a></li><br><br>
 					<?php } ?>
 				<?php } ?>
 
