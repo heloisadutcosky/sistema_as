@@ -108,7 +108,7 @@
 					$alterar = "UPDATE tb_resultados SET nota = {$nota}, resposta = '{$resposta}', atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
 
 					$alterar = mysqli_query($conecta, $alterar);
-					echo $alterar;
+					//echo $alterar;
 				}
 			
 			}
