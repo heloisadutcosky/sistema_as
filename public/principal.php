@@ -60,12 +60,14 @@ if (isset($_GET["codigo"])) {
 						//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
 			}
 			
+			print_r($tipo_avaliacao);
+			echo in_array("pdq", $tipo_avaliacao);
 
 			if (in_array("pdq", $tipo_avaliacao)) {
 				//echo array_keys($tipo_avaliacao, "pdq")[0];
 				//echo $_SESSION["formularios_ids"][array_keys($tipo_avaliacao, "pdq")[0]];
 				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][0];
-				header("location:{$caminho}public/pdq/principal.php");
+				//header("location:{$caminho}public/pdq/principal.php");
 			}
 
 				//print_r($_SESSION["formularios_ids"]);
@@ -143,9 +145,9 @@ if (isset($_GET["codigo"])) {
 		
 
 		if ($_SESSION["amostra"] == 0) {
-			header("location:{$caminho}public/avaliacao/livre.php");
+			//header("location:{$caminho}public/avaliacao/livre.php");
 		} else {
-			header("location:{$caminho}public/amostra.php");
+			//header("location:{$caminho}public/amostra.php");
 		}
 }	
 	 
