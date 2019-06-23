@@ -14,6 +14,7 @@
 		$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
 		$acesso = mysqli_query($conecta, $consulta);
 		
+		$esquecido = array();
 		while ($dados = mysqli_fetch_assoc($acesso)) {
 				
 			if (isset($_POST["atributo{$dados["atributo_id"]}"])) {
@@ -29,12 +30,18 @@
 					$acesso2 = mysqli_query($conecta, $consulta2);
 
 					while ($linha = mysqli_fetch_assoc($acesso2)) {
+
 						$resposta = utf8_decode($linha["texto"]);
-						print_r($_POST["atributo{$dados["atributo_id"]}"]);
+						print_r($_POST["atributo{$linha["atributo_id"]}"]);
 						echo $linha["texto"];
 						//echo in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"]));
 						$nota = in_array(utf8_encode($linha["texto"]), array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
 						echo $nota;
+
+						if(strpos("x".strtolower($linha["texto"]), "outr")) {
+							$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}outro"]);
+							$nota = 1;
+						}
 
 
 						$consulta_resultados_opcoes = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id} AND resposta = '{$resposta}'";
@@ -61,17 +68,30 @@
 					
 				} else {
 
-				$nota = $_POST["atributo{$dados["atributo_id"]}"];
-				$resposta = "";
+					if ($dados["disposicao_pergunta"] == "select") {
 
-				$esquecido = array();
-				if ($dados["disposicao_pergunta"] == "lista") {
-					if (empty($nota)) {
-						$esquecido[] = $dados["atributo_id"];
+						$nota = 0;
+						$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}"]);
+
+						if(strpos("x".strtolower($_POST["atributo{$dados["atributo_id"]}"]), "outr")) {
+							$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}outro"]);
+							$nota = 0;
+						}
+
+					} else if ($dados["disposicao_pergunta"] == "text") {
+						$nota = 0;
+						$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}"]);
+
+					} else {
+						$nota = $_POST["atributo{$dados["atributo_id"]}"];
+						$resposta = "";
+
+						if (empty($nota)) {
+							$esquecido[] = $dados["atributo_id"];
+						}
 					}
-				}
 
-				}
+				
 
 				$consulta_resultados = "SELECT * FROM tb_resultados WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id};";
 				$acesso_resultados = mysqli_query($conecta, $consulta_resultados);
@@ -83,27 +103,43 @@
 					$operacao_inserir = mysqli_query($conecta, $inserir);
 				} else {
 
-					$alterar = "UPDATE tb_resultados SET nota = {$nota}, atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id} AND resposta = ''";
+					$alterar = "UPDATE tb_resultados SET nota = {$nota}, resposta = '{$resposta}', atributo_completo_eng = '{$atributo_completo_eng}', atributo_completo_port = '{$atributo_completo_port}' WHERE projeto_id = {$_SESSION["projeto_id"]} AND formulario_id = {$_SESSION["formulario_id"]} AND sessao = {$_SESSION["sessao"]} AND user_id = {$_SESSION["user_id"]} AND amostra_codigo = '{$_SESSION["amostra"]}' AND atributo_id = {$atributo_id}";
 
 					$alterar = mysqli_query($conecta, $alterar);
 					echo $alterar;
 				}
 			
-
 			}
 		}
+	}
 
 		if (empty($esquecido)) {
-		
 
-			if (!$_SESSION["amostra"]) {
-				header("location:{$caminho}public/principal.php");
+			$amostra = $_SESSION["amostra"];
+
+			$_SESSION["pagina"] = $_SESSION["pagina"]+1;
+
+			$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][$_SESSION["pagina"]];
+			$_SESSION["amostra"] = $_SESSION["amostras"][$_SESSION["pagina"]];
+
+			if (!empty($_SESSION["formulario_id"])) {
+
+				if ($_SESSION["amostra"] == 0 || $_SESSION["amostra"] == $amostra) {
+					header("location:{$caminho}public/avaliacao/livre.php");
+				} else {
+					header("location:{$caminho}public/amostra.php");
+				}
+			
 			} else {
-				header("location:{$caminho}public/amostra.php");
+				unset($_SESSION["pagina"]);
+				unset($_SESSION["formularios_ids"]);
+				unset($_SESSION["amostras"]);
+				header("location:{$caminho}public/principal.php");
+				
 			}
 		}
-		
-	}
+	}	
+
 	// ##########################################################################################################################
 
 
@@ -181,7 +217,11 @@
 			<div style="margin-left: 10px">
 			<h2 style="margin-bottom: 5px;"><?php echo $_SESSION["produto"]; ?></h2>
 
+			<?php if ($_SESSION["amostra"]<>0) { ?>
+
 				<p class="amostra"><?php echo "Amostra " . $_SESSION["amostra"]; ?></p><br>
+
+			<?php } ?>
 
 						<form action="" method="post" align="">
 
@@ -230,8 +270,8 @@
 														<label for="texto"><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></label><br>
 														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 410px">
 													</div>
-													<br><br>
-												</div>
+													<br>
+												</div><br><br>
 
 											<?php } ?>
 
@@ -254,6 +294,7 @@
 													<select name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 410px">
 														<option value="NA"></option>
 														<?php 
+														$outro = "";
 														while ($dados_opcoes = mysqli_fetch_assoc($acesso_opcoes)) { ?>
 															<option value="<?php echo $dados_opcoes["texto"]; ?>"><?php echo utf8_encode($dados_opcoes["texto"]); ?></option>
 														<?php 
@@ -263,16 +304,16 @@
 														} ?>
 													</select>
 												</div>
-												<?php if (isset($outro)) { ?>
+												<?php if (!empty($outro)) { ?>
 													<br>
 													<div>
-														<label for="outro">Se <?php echo $outro; ?>, favor indicar qual: </label>
+														<label for="outro">Se <?php echo $outro; ?>, favor indicar qual(is): </label>
 														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 200px">
 													</div>
 												<?php } ?>
-												<br><br>
+												<br>
 
-												</div>
+												</div><br><br>
 											<?php } ?>
 
 
@@ -319,12 +360,12 @@
 													$opcao = "";
 
 												} ?>
-													<input type="checkbox" style="transform: scale(1.2); margin-left: 10px" required>
+													
 													
 													<input type="hidden" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
-													<br><br>
+													<br>
 
-												</div><br>
+												</div><br><br>
 									
 											<?php } ?>
 
@@ -352,21 +393,37 @@
 												<p><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></p>
 
 												<?php 
+												$outro = "";
 												foreach ($opcoes as $opcao) {
 												?>
 													<div style="padding: 10px">
 														<label for="<?php echo $opcao; ?>" style="margin-right: 20px; float: left; font-size: 115%">
-															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>[]" id="<?php echo $opcao; ?>" value="<?php echo utf8_encode($opcao); ?>" style="transform: scale(1.5); ;width: 30px; float: left;"
+															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>[]" id="<?php echo $opcao; ?>" value="<?php echo utf8_encode($opcao); ?>" style="transform: scale(1.2); ;width: 30px; float: left;"
 											 				/>
 															<?php echo utf8_encode($opcao); ?>
 														</label><br>
 													</div>
 
-												<?php } ?>
+													<?php 
+															if(strpos("x".strtolower($opcao), "outr")) {
+																$outro = strtolower($opcao);
+															} ?>
+
+														<?php } ?>
+
+													<?php if (!empty($outro)) { ?>
+														<br>
+														<div>
+															<label for="outro">Se <?php echo $outro; ?>, favor indicar qual(is): </label>
+															<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 200px">
+														</div>
+													<?php } ?>
+													<br>
+
 											<?php } ?>
 									<?php } ?>
 
-											</div>
+											</div><br><br>
 								<?php } ?>
 									
 

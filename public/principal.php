@@ -18,23 +18,10 @@
 	$corrigir = isset($_GET["corrigir"]) ? $_GET["corrigir"] : 0;
 
 
-
-	$_SESSION["pagina"] = isset($_SESSION["pagina"]) ? $_SESSION["pagina"] : -1;
-	$_SESSION["pagina"] = isset($_GET["pagina"]) ? -1 : $_SESSION["pagina"];
-	//echo $_SESSION["pagina"];
-	//$_SESSION["paginas"] = isset($_SESSION["paginas"]) ? $_SESSION["paginas"] : array();
-	//print_r($_SESSION["paginas"]);
-	$_SESSION["n_amostra"] = isset($_SESSION["n_amostra"]) ? $_SESSION["n_amostra"] : 0;
-
-	//if($_SESSION["pagina"] >= count($_SESSION["paginas"])) {
-	//	$_SESSION["pagina"] = 0;
-	//}
-
 if (isset($_GET["codigo"])) {
 
 	$_SESSION["projeto_id"] = $_GET["codigo"];
 
-	if($_SESSION["pagina"] == -1) {
 		$_SESSION["pagina"] = 0;
 		$_SESSION["n_amostra"] = 0;
 
@@ -59,23 +46,18 @@ if (isset($_GET["codigo"])) {
 
 
 			// Achar avaliacoes dentro do projeto
-			$consulta = "SELECT * FROM avaliacoes WHERE form_ativo = 1 AND projeto_id = {$_SESSION["projeto_id"]} ORDER BY pagina";
+			$consulta = "SELECT * FROM avaliacoes WHERE form_ativo = 1 AND projeto_id = {$_SESSION["projeto_id"]} ORDER BY pagina, amostra_associada";
 			$acesso = mysqli_query($conecta, $consulta);
 			$rows = mysqli_num_rows($acesso);
 
-			$_SESSION["paginas"] = array();
-			$_SESSION["formularios_ids"] = array();
-			$_SESSION["tipo_avaliacao"] = array();
+			$formularios_ids = array();
 			$amostra_associada = array();
 			while($linha = mysqli_fetch_assoc($acesso)) { 
-				$_SESSION["paginas"][] = $linha["pagina"];
-				$_SESSION["formularios_ids"][$linha["pagina"]] = $linha["formulario_id"];
-				$_SESSION["tipo_avaliacao"][$linha["pagina"]] = $linha["tipo_avaliacao"];
-				$amostra_associada[$linha["pagina"]] = $linha["amostra_associada"];
+				$formularios_ids[] = $linha["formulario_id"];
+				$amostra_associada[] = $linha["amostra_associada"];
 						//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
 			}
-			$_SESSION["amostra_associada"] = array_keys($amostra_associada, 1);
-			$_SESSION["sem_amostra_associada"] = array_keys($amostra_associada, 0);
+			
 
 			if (in_array("pdq", $_SESSION["tipo_avaliacao"])) {
 				$paginas = array_keys($_SESSION["tipo_avaliacao"], "pdq");
@@ -88,18 +70,8 @@ if (isset($_GET["codigo"])) {
 				//print_r($_SESSION["amostra_associada"]);
 				//print_r($_SESSION["sem_amostra_associada"]);
 
-				$pagina = $_SESSION["sem_amostra_associada"][$_SESSION["pagina"]];
-				//echo $pagina;
 
-	} else {
-		$_SESSION["pagina"] = $_SESSION["pagina"]+1;
-		//echo $_SESSION["pagina"];
-		//echo count($_SESSION["sem_amostra_associada"]);
-
-		if ($_SESSION["pagina"] >= count($_SESSION["sem_amostra_associada"])) {
-
-
-				// Achar amostras dentro do projeto
+			// Achar amostras dentro do projeto
 			$consulta = "SELECT * FROM avaliacoes WHERE projeto_id = {$_SESSION["projeto_id"]}";
 			$acesso = mysqli_query($conecta, $consulta);
 			$linha=mysqli_fetch_assoc($acesso);
@@ -116,62 +88,62 @@ if (isset($_GET["codigo"])) {
 				$acesso = mysqli_query($conecta, $consulta);
 			}
 
-			$_SESSION["amostras"] = array();
+			$amostras = array();
 			while ($linha=mysqli_fetch_assoc($acesso)) {
 				//echo $linha["data"];
 				//echo date("Y-m-d");
 				if (date("Y-m-d") == $linha["data"]) { 
 					//echo $linha["data"];
-					$_SESSION["amostras"][] = $linha["amostra_codigo"];
+					$amostras[] = $linha["amostra_codigo"];
 					$_SESSION["sessao"] = $linha["sessao"];
 				}
 			}
 
 			//print_r($_SESSION["amostras"]);
 
-			shuffle($_SESSION["amostras"]);
+			//Definir ordem de apresentação
+			print_r($amostra_associada);
+			print_r($formularios_ids);
 
-			$_SESSION["amostra"] = $_SESSION["amostras"][$_SESSION["n_amostra"]];
-			
+			$_SESSION["formularios_ids"] = array();
+			$_SESSION["amostras"] = array();
 
+			$pagina = 0;
+			while ($pagina < count($_SESSION["paginas"])) {
+					if ($amostra_associada[$pagina] == 0) {
+						$_SESSION["formularios_ids"][] = $formularios_ids[$pagina];
+						$_SESSION["amostras"][] = 0;
+					} 
+					$pagina = $pagina +1;
+				}
 
-			//$_SESSION["n_amostra"] = $_SESSION["n_amostra"] + 1;
-			//echo "amostra = " . $_SESSION["n_amostra"] . " \n";
-			//echo count($_SESSION["amostras"]);
+			shuffle($amostras);
 
-			if ($_SESSION["n_amostra"] >= count($_SESSION["amostras"])) {
-				$_SESSION["pagina"] = -1;
-				$_SESSION["paginas"] = array();
-				$_SESSION["sem_amostra_associada"] = array();
-				$_SESSION["amostra_associada"] = array();
-				$_SESSION["formularios_ids"] = array();
-				$_SESSION["tipo_avaliacao"] = array();
-				header("location:{$caminho}public/principal.php");
-			} else {
-				$_SESSION["pagina"] = -1;
-				$_SESSION["amostra"] = $_SESSION["amostras"][$_SESSION["n_amostra"]];
-				header("location:{$caminho}public/amostra.php");
+			foreach ($amostras as $amostra) {
+				$pagina = 0;
+				while ($pagina < count($_SESSION["paginas"])) {
+					if ($amostra_associada[$pagina] == 1) {
+						$_SESSION["formularios_ids"][] = $formularios_ids[$pagina];
+						$_SESSION["amostras"][] = $amostra;
+					}
+					$pagina = $pagina +1;
+				}
 			}
-			
-		} else {
 
-		$pagina = $_SESSION["sem_amostra_associada"][$_SESSION["pagina"]];
-		//echo $pagina;
-		}
-		
-	}
+			print_r($_SESSION["amostras"]);
+			print_r($_SESSION["formularios_ids"]);
 	
-	if (!empty($pagina)) {
-		$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][$pagina];
-
-		//echo $_SESSION["formulario_id"];
-
-		$tipo_avaliacao = $_SESSION["tipo_avaliacao"][$pagina];
-		//echo $tipo_avaliacao;
 		//echo $_SESSION["pagina"];
-		header("location:{$caminho}public/avaliacao/{$tipo_avaliacao}.php");
-	}
+	
+		$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][$_SESSION["pagina"]];
+		$_SESSION["amostra"] = $_SESSION["amostras"][$_SESSION["pagina"]];
+		
 
+		if ($_SESSION["amostra"] == 0) {
+			header("location:{$caminho}public/avaliacao/livre.php");
+		} else {
+			header("location:{$caminho}public/amostra.php");
+		}
 	}
 	 
 ?>

@@ -60,7 +60,7 @@
 		// Alterar cadastro ---------------------------------------------------------
 		if ($acao == "alteracao") {
 				
-			$alterar = "UPDATE atributos SET formulario_id = {$_SESSION["formulario_id"]}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', definicao_atributo = '{$definicao_atributo}', disposicao_pergunta = '{$disposicao_pergunta}', atributo_completo_port = '{$atributo_completo_port}', atributo_completo_eng = '{$atributo_completo_eng}', ordem = {$ordem} WHERE atributo_id = {$atributo_id}";
+			$alterar = "UPDATE atributos SET formulario_id = {$_SESSION["formulario_id"]}, conjunto_atributos = '{$conjunto_atributos}', descricao_conjunto = '{$descricao_conjunto}', atributo = '{$atributo}', definicao_atributo = '{$definicao_atributo}', disposicao_pergunta = '{$disposicao_pergunta}', atributo_completo_port = '{$atributo_completo_port}', atributo_completo_eng = '{$atributo_completo_eng}', ordem = '{$ordem}' WHERE atributo_id = {$atributo_id}";
 
 			$operacao_alterar = mysqli_query($conecta, $alterar);
 
@@ -89,7 +89,7 @@
 			// ----------------------------------------------------------------------
 				
 			else {
-				$cadastrar = "INSERT INTO atributos (formulario_id, conjunto_atributos, descricao_conjunto, atributo, definicao_atributo, disposicao_pergunta, atributo_completo_eng, atributo_completo_port, ordem) VALUES ({$_SESSION["formulario_id"]}, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$definicao_atributo', '$disposicao_pergunta', '$atributo_completo_eng', '$atributo_completo_port', $ordem)";
+				$cadastrar = "INSERT INTO atributos (formulario_id, conjunto_atributos, descricao_conjunto, atributo, definicao_atributo, disposicao_pergunta, atributo_completo_eng, atributo_completo_port, ordem) VALUES ({$_SESSION["formulario_id"]}, '$conjunto_atributos', '$descricao_conjunto', '$atributo', '$definicao_atributo', '$disposicao_pergunta', '$atributo_completo_eng', '$atributo_completo_port', '$ordem')";
 
 				$operacao_cadastrar = mysqli_query($conecta, $cadastrar);
 
