@@ -148,9 +148,9 @@ if (isset($_GET["codigo"])) {
 		
 
 		if ($_SESSION["amostra"] == 0) {
-			header("location:{$caminho}public/avaliacao/livre.php");
+			//header("location:{$caminho}public/avaliacao/livre.php");
 		} else {
-			header("location:{$caminho}public/amostra.php");
+			//header("location:{$caminho}public/amostra.php");
 		}
 
 	}
