@@ -136,9 +136,7 @@
 				header("location:{$caminho}public/principal.php");
 				
 			}
-		} else {
-
-		}
+		} 
 	}	
 
 	// ##########################################################################################################################
@@ -227,7 +225,10 @@
 						<form action="" method="post" align="">
 
 								<?php 
+
 									foreach ($conjuntos_atributos as $conjunto_atributos) { ?>
+
+										<div style="position: relative;">
 										
 										<h3 style="font-size: 120%; color: #8B0000;"><?php echo utf8_encode($conjunto_atributos); ?></h3>
 										
@@ -264,12 +265,12 @@
 
 											<?php if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
 
-												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: 5px; margin-right: 10px;">
+												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
 
 													<br>
 													<div>
 														<label for="texto"><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></label><br>
-														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 880px; height: 40px; font-size: 110%; margin-top: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}"]) ?>"<?php } ?>>
+														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 880px; height: 40px; font-size: 105%; margin-top: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}"]) ?>"<?php } ?>>
 													</div>
 													<br>
 												</div><br>
@@ -283,7 +284,7 @@
 											<?php if ($dados_atributos["disposicao_pergunta"] == "select") { ?>
 
 												<br>
-												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -5px; margin-right: 10px; margin-bottom: 10px; position: relative;">
+												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px; margin-bottom: 10px; position: relative;">
 
 												<?php
 
@@ -317,7 +318,7 @@
 													<br>
 													<div>
 														<label for="outro">Se <?php echo $outro; ?>, favor indicar qual(is): </label>
-														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 300px; font-size: 110%; margin-left: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}outro"]) ?>"<?php } ?>>
+														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 300px; font-size: 100%; margin-left: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}outro"]) ?>"<?php } ?>>
 													</div>
 												<?php } ?>
 												<br>
@@ -432,15 +433,16 @@
 														<br>
 														<div>
 															<label for="outro">Se <?php echo $outro; ?>, favor indicar qual(is): </label>
-															<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 300px; font-size: 110%; margin-left: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}outro"]) ?>"<?php } ?>>
+															<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 300px; font-size: 100%; margin-left: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}outro"]) ?>"<?php } ?>>
 														</div>
 													<?php } ?>
 													<br>
+												</div>
 
 											<?php } ?>
-											</div>
+
 									<?php } ?>
-											
+									</div>
 								<?php } ?>
 									
 
