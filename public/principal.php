@@ -116,8 +116,8 @@ if (isset($_GET["codigo"])) {
 			$pagina = 0;
 			while ($pagina < count($formularios_ids)) {
 					if ($amostra_associada[$pagina] == 0) {
-						$_SESSION["formularios_ids"][] = $formularios_ids[$pagina];
-						$_SESSION["amostras"][] = 0;
+						$_SESSION["formularios_ids"][$pagina] = $formularios_ids[$pagina];
+						$_SESSION["amostras"][$pagina] = 0;
 					} 
 					$pagina = $pagina +1;
 				}
@@ -128,12 +128,15 @@ if (isset($_GET["codigo"])) {
 				$pagina = 0;
 				while ($pagina < count($formularios_ids)) {
 					if ($amostra_associada[$pagina] == 1) {
-						$_SESSION["formularios_ids"][] = $formularios_ids[$pagina];
-						$_SESSION["amostras"][] = $amostra;
+						$_SESSION["formularios_ids"][$pagina] = $formularios_ids[$pagina];
+						$_SESSION["amostras"][$pagina] = $amostra;
 					}
 					$pagina = $pagina +1;
 				}
 			}
+
+			$_SESSION["formularios_ids"] = array_values(ksort($_SESSION["formularios_ids"]));
+			$_SESSION["amostras"] = array_values(ksort($_SESSION["amostras"]));
 
 			//print_r($_SESSION["amostras"]);
 			//print_r($_SESSION["formularios_ids"]);
