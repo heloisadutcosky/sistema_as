@@ -66,7 +66,7 @@ if (isset($_GET["codigo"])) {
 			if (in_array("pdq", $tipo_avaliacao)) {
 				//echo array_keys($tipo_avaliacao, "pdq")[0];
 				//echo $_SESSION["formularios_ids"][array_keys($tipo_avaliacao, "pdq")[0]];
-				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][array_keys($tipo_avaliacao, "pdq")[0]];
+				$_SESSION["formulario_id"] = $formularios_ids[array_keys($tipo_avaliacao, "pdq")[0]];
 				header("location:{$caminho}public/pdq/principal.php");
 			} else {
 
