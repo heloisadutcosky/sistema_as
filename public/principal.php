@@ -61,7 +61,7 @@ if (isset($_GET["codigo"])) {
 			}
 			
 			print_r($tipo_avaliacao);
-			echo in_array("pdq", $tipo_avaliacao);
+			echo "aqui:" . in_array("pdq", $tipo_avaliacao);
 
 			if (in_array("pdq", $tipo_avaliacao)) {
 				//echo array_keys($tipo_avaliacao, "pdq")[0];
