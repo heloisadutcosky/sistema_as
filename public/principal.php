@@ -61,8 +61,10 @@ if (isset($_GET["codigo"])) {
 			}
 			
 
-			if (in_array("pdq", $tipo_avaliacao) {
-				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][0];
+			if (in_array("pdq", $tipo_avaliacao)) {
+				echo array_keys($tipo_avaliacao, "pdq")[0];
+				echo $_SESSION["formularios_ids"][array_keys($tipo_avaliacao, "pdq")[0]];
+				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][array_keys($tipo_avaliacao, "pdq")[0]];
 				header("location:{$caminho}public/pdq/principal.php");
 			}
 
@@ -199,12 +201,6 @@ if (isset($_GET["codigo"])) {
 				$consulta = "SELECT * FROM tb_projetos";
 				$acesso = mysqli_query($conecta, $consulta);
 				$rows = mysqli_num_rows($acesso);
-
-				//if ($rows == 1) {
-				//	$dados = mysqli_fetch_assoc($acesso);
-				//	$_SESSION["form"] = $dados["nome_form"];
-					//header("location:principal.php?codigo={$dados["projeto_id"]}&funcao={$funcao_temp}&teste={$_SESSION["teste"]}");
-				//}
 
 
 				$algum=0;
