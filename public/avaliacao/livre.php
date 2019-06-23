@@ -9,7 +9,7 @@
 	//Verificar informações de acesso
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
-	echo {$_SESSION["formulario_id"]};
+	//echo {$_SESSION["formulario_id"]};
 
 	if (isset($_POST["completo"])) {
 

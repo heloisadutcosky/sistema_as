@@ -140,11 +140,11 @@ if (isset($_GET["codigo"])) {
 		
 
 		if ($_SESSION["amostra"] == 0) {
-			header("location:{$caminho}public/avaliacao/livre.php");
+			//header("location:{$caminho}public/avaliacao/livre.php");
 		} else {
-			header("location:{$caminho}public/amostra.php");
+			//header("location:{$caminho}public/amostra.php");
 		}
-	}
+}	
 	 
 ?>
 
@@ -228,7 +228,7 @@ if (isset($_GET["codigo"])) {
 						}
 						echo utf8_encode($dados2["url_imagem"]); ?>
 						" width="100" height="75" style="float: left;"><br><br>
-						<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&funcao=<?php echo $funcao_temp; ?>&teste=<?php echo $_SESSION["teste"]; ?>&corrigir=<?php echo $corrigir; ?>&pagina=0"><?php echo utf8_encode($produto); ?></a></li><br><br>
+						<li class="menu"><a href="principal.php?codigo=<?php echo $linha["projeto_id"]; ?>&funcao=<?php echo $funcao_temp; ?>&teste=<?php echo $_SESSION["teste"]; ?>&corrigir=<?php echo $corrigir; ?>"><?php echo utf8_encode($produto); ?></a></li><br><br>
 					<?php } ?>
 				<?php } ?>
 
