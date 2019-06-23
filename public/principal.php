@@ -83,8 +83,23 @@ if (isset($_GET["codigo"])) {
 				header("location:{$caminho}public/pdq/principal.php");
 			}
 
+				//print_r($_SESSION["formularios_ids"]);
+				//print_r($_SESSION["tipo_avaliacao"]);
+				//print_r($_SESSION["amostra_associada"]);
+				//print_r($_SESSION["sem_amostra_associada"]);
 
-			// Achar amostras dentro do projeto
+				$pagina = $_SESSION["sem_amostra_associada"][$_SESSION["pagina"]];
+				//echo $pagina;
+
+	} else {
+		$_SESSION["pagina"] = $_SESSION["pagina"]+1;
+		//echo $_SESSION["pagina"];
+		//echo count($_SESSION["sem_amostra_associada"]);
+
+		if ($_SESSION["pagina"] >= count($_SESSION["sem_amostra_associada"])) {
+
+
+				// Achar amostras dentro do projeto
 			$consulta = "SELECT * FROM avaliacoes WHERE projeto_id = {$_SESSION["projeto_id"]}";
 			$acesso = mysqli_query($conecta, $consulta);
 			$linha=mysqli_fetch_assoc($acesso);
@@ -117,22 +132,8 @@ if (isset($_GET["codigo"])) {
 			shuffle($_SESSION["amostras"]);
 
 			$_SESSION["amostra"] = $_SESSION["amostras"][$_SESSION["n_amostra"]];
+			
 
-
-				//print_r($_SESSION["formularios_ids"]);
-				//print_r($_SESSION["tipo_avaliacao"]);
-				//print_r($_SESSION["amostra_associada"]);
-				//print_r($_SESSION["sem_amostra_associada"]);
-
-				$pagina = $_SESSION["sem_amostra_associada"][$_SESSION["pagina"]];
-				//echo $pagina;
-
-	} else {
-		$_SESSION["pagina"] = $_SESSION["pagina"]+1;
-		//echo $_SESSION["pagina"];
-		//echo count($_SESSION["sem_amostra_associada"]);
-
-		if ($_SESSION["pagina"] >= count($_SESSION["sem_amostra_associada"])) {
 
 			//$_SESSION["n_amostra"] = $_SESSION["n_amostra"] + 1;
 			//echo "amostra = " . $_SESSION["n_amostra"] . " \n";
