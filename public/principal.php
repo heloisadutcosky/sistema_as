@@ -52,16 +52,16 @@ if (isset($_GET["codigo"])) {
 
 			$formularios_ids = array();
 			$amostra_associada = array();
+			$tipo_avaliacao = array();
 			while($linha = mysqli_fetch_assoc($acesso)) { 
 				$formularios_ids[] = $linha["formulario_id"];
-				$amostra_associada[] = $linha["amostra_associada"];
+				$tipo_avaliacao[] = $linha["amostra_associada"];
 						//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
 			}
 			
 
-			if (in_array("pdq", $_SESSION["tipo_avaliacao"])) {
-				$paginas = array_keys($_SESSION["tipo_avaliacao"], "pdq");
-				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][$paginas[0]];
+			if (in_array("pdq", $tipo_avaliacao) {
+				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][0];
 				header("location:{$caminho}public/pdq/principal.php");
 			}
 
