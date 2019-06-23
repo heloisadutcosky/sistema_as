@@ -66,9 +66,9 @@ if (isset($_GET["codigo"])) {
 			if (in_array("pdq", $tipo_avaliacao)) {
 				//echo array_keys($tipo_avaliacao, "pdq")[0];
 				//echo $_SESSION["formularios_ids"][array_keys($tipo_avaliacao, "pdq")[0]];
-				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][0];
-				//header("location:{$caminho}public/pdq/principal.php");
-			}
+				$_SESSION["formulario_id"] = $_SESSION["formularios_ids"][array_keys($tipo_avaliacao, "pdq")[0]];
+				header("location:{$caminho}public/pdq/principal.php");
+			} else {
 
 				//print_r($_SESSION["formularios_ids"]);
 				//print_r($_SESSION["tipo_avaliacao"]);
@@ -107,8 +107,8 @@ if (isset($_GET["codigo"])) {
 			//print_r($_SESSION["amostras"]);
 
 			//Definir ordem de apresentação
-			print_r($amostra_associada);
-			print_r($formularios_ids);
+			//print_r($amostra_associada);
+			//print_r($formularios_ids);
 
 			$_SESSION["formularios_ids"] = array();
 			$_SESSION["amostras"] = array();
@@ -135,8 +135,8 @@ if (isset($_GET["codigo"])) {
 				}
 			}
 
-			print_r($_SESSION["amostras"]);
-			print_r($_SESSION["formularios_ids"]);
+			//print_r($_SESSION["amostras"]);
+			//print_r($_SESSION["formularios_ids"]);
 	
 		//echo $_SESSION["pagina"];
 	
@@ -145,10 +145,12 @@ if (isset($_GET["codigo"])) {
 		
 
 		if ($_SESSION["amostra"] == 0) {
-			//header("location:{$caminho}public/avaliacao/livre.php");
+			header("location:{$caminho}public/avaliacao/livre.php");
 		} else {
-			//header("location:{$caminho}public/amostra.php");
+			header("location:{$caminho}public/amostra.php");
 		}
+
+	}
 }	
 	 
 ?>
