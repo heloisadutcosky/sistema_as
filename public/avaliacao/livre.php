@@ -192,22 +192,40 @@
 										<p><?php echo utf8_encode($dados_atributos["descricao_conjunto"]); ?></p><br>
 
 										<div style="margin-left: 5px">
-										<?php 							
-										$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND conjunto_atributos = '{$conjunto_atributos}'";
+										<?php 
+
+										$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND conjunto_atributos = '{$conjunto_atributos}' ORDER BY ordem";
 										$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
 
+										$atributos = array();
 										while($dados_atributos = mysqli_fetch_assoc($acesso_atributos)) {
+											$atributos[] = $dados_atributos["atributo_id"];
+										}
+
+										if ($conjunto_atributos = "Afirmações") {
+											shuffle($atributos);
+										}
+
+										foreach ($atributos as $atributo) {
+
+											$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND atributo_id = '{$atributo}'";
+											$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
+											$dados_atributos = mysqli_fetch_assoc($acesso_atributos);
 										?>
 
 
 
 											<?php if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
+
+												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
+
 													<br>
 													<div>
 														<label for="texto"><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></label><br>
 														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 410px">
 													</div>
 													<br><br>
+												</div>
 
 											<?php } ?>
 
@@ -215,8 +233,12 @@
 
 
 
-											<?php if ($dados_atributos["disposicao_pergunta"] == "select") {
-								
+											<?php if ($dados_atributos["disposicao_pergunta"] == "select") { ?>
+
+												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
+
+												<?php
+
 												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); ?>
 
@@ -243,6 +265,8 @@
 													</div>
 												<?php } ?>
 												<br><br>
+
+												</div>
 											<?php } ?>
 
 
@@ -283,12 +307,13 @@
 
 
 												?>
-													<li style="width: <?php echo floor(900/$max_escala-20); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
+													<li style="width: <?php echo floor(900/$max_escala-30); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
 												<?php 
 
 													$opcao = "";
 
 												} ?>
+													<input type="checkbox" style="transform: scale(1.2); margin-left: 10px" required>
 													
 													<input type="hidden" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
 													<br><br>
@@ -302,8 +327,11 @@
 
 
 
-											<?php if ($dados_atributos["disposicao_pergunta"] == "checkbox") {
+											<?php if ($dados_atributos["disposicao_pergunta"] == "checkbox") { ?>
 
+												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
+
+												<?php
 												$opcoes = array();
 												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes);
@@ -331,6 +359,8 @@
 												<?php } ?>
 											<?php } ?>
 									<?php } ?>
+
+											</div>
 								<?php } ?>
 									
 
