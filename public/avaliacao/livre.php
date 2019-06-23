@@ -25,6 +25,10 @@
 				$atributo_completo_eng = $dados["atributo_completo_eng"];
 				$atributo_completo_port = $dados["atributo_completo_port"];
 
+				if (empty($_POST["atributo{$dados["atributo_id"]}"])) {
+							$esquecido[] = $dados["atributo_id"];
+					}
+
 
 				if ($dados["disposicao_pergunta"] == "checkbox") {
 
@@ -88,9 +92,7 @@
 						$nota = $_POST["atributo{$dados["atributo_id"]}"];
 						$resposta = "";
 
-						if (empty($nota) && $dados["disposicao_pergunta"] == "lista") {
-							$esquecido[] = $dados["atributo_id"];
-						}
+						
 					}
 
 				
@@ -111,7 +113,9 @@
 					//echo $alterar;
 				}
 			
-			}
+			} 
+		} else {
+			$esquecido[] = $dados["atributo_id"];
 		}
 	}
 
@@ -265,7 +269,18 @@
 
 											<?php if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
 
+
 												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
+
+												<?php if (isset($esquecido)) {
+													if (in_array($dados_atributos["atributo_id"], $esquecido)) { ?>
+
+														<div style="background-color: #FFE1E1; padding: 1px 10px; width: 870px; margin-left: 5px;">
+														<p style="color: #8B0000"><b>Ops, parece que você esqueceu de responder essa pergunta</b></p>
+														</div>
+													
+												<?php }
+												} ?>
 
 													<br>
 													<div>
@@ -286,6 +301,16 @@
 												<br>
 												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px; margin-bottom: 10px; position: relative;">
 
+												<?php if (isset($esquecido)) {
+													if (in_array($dados_atributos["atributo_id"], $esquecido)) { ?>
+
+														<div style="background-color: #FFE1E1; padding: 1px 10px; width: 870px; margin-left: 5px;">
+														<p style="color: #8B0000"><b>Ops, parece que você esqueceu de responder essa pergunta</b></p>
+														</div>
+													
+												<?php }
+												} ?>
+
 												<?php
 
 												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
@@ -295,7 +320,7 @@
 
 												<div>
 													<select name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 410px; font-size: 110%; background-color: #FFF;">
-														<option value="NA"></option>
+														<option></option>
 														<?php 
 														$outro = "";
 														while ($dados_opcoes = mysqli_fetch_assoc($acesso_opcoes)) { ?>
@@ -338,12 +363,14 @@
 												<?php if (isset($esquecido)) {
 													if (in_array($dados_atributos["atributo_id"], $esquecido)) { ?>
 
+														<div style="background-color: #FFE1E1; padding: 1px 10px; width: 870px; margin-left: 5px;">
 														<p style="color: #8B0000"><b>Ops, parece que você esqueceu de responder essa pergunta</b></p>
+														</div>
 													
 												<?php }
-												}
+												} ?>
 												
-
+												<?php
 												$consulta_opcoes = "SELECT max(escala) as max_escala, min(escala) as min_escala FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); 
 												$dados_opcoes = mysqli_fetch_assoc($acesso_opcoes);
@@ -365,7 +392,7 @@
 
 
 												?>
-													<li style="width: <?php echo floor(800/$max_escala); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
+													<li style="width: <?php echo floor(750/$max_escala); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
 												<?php 
 
 													$opcao = "";
@@ -389,6 +416,16 @@
 
 												<br>
 												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
+
+												<?php if (isset($esquecido)) {
+													if (in_array($dados_atributos["atributo_id"], $esquecido)) { ?>
+
+														<div style="background-color: #FFE1E1; padding: 1px 10px; width: 870px; margin-left: 5px;">
+														<p style="color: #8B0000"><b>Ops, parece que você esqueceu de responder essa pergunta</b></p>
+														</div>
+													
+												<?php }
+												} ?>
 
 												<?php
 												$opcoes = array();
