@@ -126,6 +126,7 @@
 	$atributo = $dados["atributo"];
 	$definicao_atributo = $dados["definicao_atributo"];
 	$disposicao_pergunta = $dados["disposicao_pergunta"];
+	$ordem = $dados["ordem"];
 	$atributo_completo_port = $dados["atributo_completo_port"];
 	$atributo_completo_eng = $dados["atributo_completo_eng"];
 }
@@ -134,6 +135,7 @@ if (isset($_POST["completo"])) {
 	$atributo = "";
 	$definicao_atributo = "";
 	$disposicao_pergunta = "";
+	$ordem = "";
 	$atributo_completo_port = "";
 	$atributo_completo_eng = "";
 }
