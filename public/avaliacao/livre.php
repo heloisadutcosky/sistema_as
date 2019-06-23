@@ -208,7 +208,7 @@
 
 										foreach ($atributos as $atributo) {
 
-											$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND atributo_id = '{$atributo}'";
+											$consulta_atributos = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]} AND atributo_id = {$atributo}";
 											$acesso_atributos = mysqli_query($conecta, $consulta_atributos);
 											$dados_atributos = mysqli_fetch_assoc($acesso_atributos);
 										?>
