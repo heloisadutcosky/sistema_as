@@ -55,7 +55,8 @@ if (isset($_GET["codigo"])) {
 			$tipo_avaliacao = array();
 			while($linha = mysqli_fetch_assoc($acesso)) { 
 				$formularios_ids[] = $linha["formulario_id"];
-				$tipo_avaliacao[] = $linha["amostra_associada"];
+				$amostra_associada[] = $linha["amostra_associada"];
+				$tipo_avaliacao[] = $linha["tipo_avaliacao"];
 						//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
 			}
 			
