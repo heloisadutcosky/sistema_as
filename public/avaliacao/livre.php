@@ -34,11 +34,11 @@
 					while ($linha = mysqli_fetch_assoc($acesso2)) {
 
 						$resposta = utf8_decode($linha["texto"]);
-						print_r($_POST["atributo{$linha["atributo_id"]}"]);
-						echo $linha["texto"];
+						//print_r($_POST["atributo{$linha["atributo_id"]}"]);
+						//echo $linha["texto"];
 						//echo in_array($linha["texto"], array_values($_POST["atributo{$dados["atributo_id"]}"]));
 						$nota = in_array(utf8_encode($linha["texto"]), array_values($_POST["atributo{$dados["atributo_id"]}"])) ? 1 : 0;
-						echo $nota;
+						//echo $nota;
 
 						if(strpos("x".strtolower($linha["texto"]), "outr")) {
 							$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}outro"]);
@@ -88,7 +88,7 @@
 						$nota = $_POST["atributo{$dados["atributo_id"]}"];
 						$resposta = "";
 
-						if (empty($nota)) {
+						if (empty($nota) || $dados["disposicao_pergunta"] == "lista") {
 							$esquecido[] = $dados["atributo_id"];
 						}
 					}
@@ -136,6 +136,8 @@
 				header("location:{$caminho}public/principal.php");
 				
 			}
+		} else {
+
 		}
 	}	
 
@@ -198,7 +200,7 @@
 		  text-decoration: none;
 		  text-align: center;
 
-		  font-size: 100%;
+		  font-size: 105%;
 		  color: #FFF;
 		}
 
@@ -247,7 +249,7 @@
 											$atributos[] = $dados_atributos["atributo_id"];
 										}
 
-										if ($conjunto_atributos == "Afirmações") {
+										if (utf8_encode($conjunto_atributos) == "Afirmações") {
 											shuffle($atributos);
 										}
 
@@ -262,15 +264,15 @@
 
 											<?php if ($dados_atributos["disposicao_pergunta"] == "text") { ?>
 
-												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
+												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: 5px; margin-right: 10px;">
 
 													<br>
 													<div>
 														<label for="texto"><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></label><br>
-														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 410px">
+														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" id="texto" style="width: 880px; height: 40px; font-size: 110%; margin-top: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}"]) ?>"<?php } ?>>
 													</div>
 													<br>
-												</div><br><br>
+												</div><br>
 
 											<?php } ?>
 
@@ -280,7 +282,8 @@
 
 											<?php if ($dados_atributos["disposicao_pergunta"] == "select") { ?>
 
-												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
+												<br>
+												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -5px; margin-right: 10px; margin-bottom: 10px; position: relative;">
 
 												<?php
 
@@ -290,12 +293,19 @@
 												<p><?php echo utf8_encode($dados_atributos["definicao_atributo"]); ?></p>
 
 												<div>
-													<select name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 410px">
+													<select name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" style="width: 410px; font-size: 110%; background-color: #FFF;">
 														<option value="NA"></option>
 														<?php 
 														$outro = "";
 														while ($dados_opcoes = mysqli_fetch_assoc($acesso_opcoes)) { ?>
-															<option value="<?php echo $dados_opcoes["texto"]; ?>"><?php echo utf8_encode($dados_opcoes["texto"]); ?></option>
+															<option value="<?php echo $dados_opcoes["texto"]; ?>"
+																<?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { 
+																			if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["texto"]) {
+																				?>
+																				selected 
+																			<?php } 
+																		} ?>
+																><?php echo utf8_encode($dados_opcoes["texto"]); ?></option>
 														<?php 
 															if(strpos("x".strtolower($dados_opcoes["texto"]), "outr")) {
 																$outro = strtolower($dados_opcoes["texto"]);
@@ -307,12 +317,12 @@
 													<br>
 													<div>
 														<label for="outro">Se <?php echo $outro; ?>, favor indicar qual(is): </label>
-														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 200px">
+														<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 300px; font-size: 110%; margin-left: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}outro"]) ?>"<?php } ?>>
 													</div>
 												<?php } ?>
 												<br>
 
-												</div><br><br>
+												</div>
 											<?php } ?>
 
 
@@ -321,6 +331,7 @@
 
 											<?php if ($dados_atributos["disposicao_pergunta"] == "lista") { ?>
 
+												<br>
 												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
 
 												<?php if (isset($esquecido)) {
@@ -353,18 +364,18 @@
 
 
 												?>
-													<li style="width: <?php echo floor(900/$max_escala-50); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
+													<li style="width: <?php echo floor(850/$max_escala); ?>px; <?php if (!empty($_POST["atributo{$dados_atributos["atributo_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}"] == $dados_opcoes["escala"]) { ?>background-color: #FFE1E1<?php }} ?>" class="atributo<?php echo $dados_atributos["atributo_id"]; ?>" value="<?php echo $dados_opcoes["escala"]; ?>" id="<?php echo $dados_atributos["atributo_id"]; ?>-<?php echo $dados_opcoes["escala"]; ?>" onclick="armazenarValor(this.id)"><?php echo utf8_encode($dados_opcoes["texto"]); ?></li>
 												<?php 
 
 													$opcao = "";
 
 												} ?>
 													
-													
-													<input type="hidden" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
 													<br>
+													<input type="hidden" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}"]) ?>"<?php } ?>>
+													
 
-												</div><br><br>
+												</div>
 									
 											<?php } ?>
 
@@ -375,6 +386,7 @@
 
 											<?php if ($dados_atributos["disposicao_pergunta"] == "checkbox") { ?>
 
+												<br>
 												<div style="background-color: #F8F8F8; padding: 10px; width: 900px; margin-left: -10px; margin-right: 10px;">
 
 												<?php
@@ -396,8 +408,14 @@
 												foreach ($opcoes as $opcao) {
 												?>
 													<div style="padding: 10px">
-														<label for="<?php echo $opcao; ?>" style="margin-right: 20px; float: left; font-size: 115%">
+														<label for="<?php echo $opcao; ?>" style="margin-right: 20px; float: left; font-size: 110%">
 															<input type="checkbox" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>[]" id="<?php echo $opcao; ?>" value="<?php echo utf8_encode($opcao); ?>" style="transform: scale(1.2); ;width: 30px; float: left;"
+															<?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { 
+																	if (in_array(utf8_encode($opcao), $_POST["atributo{$dados_atributos["atributo_id"]}"])) {
+																	?>
+																		checked 
+																	<?php } 
+																} ?>
 											 				/>
 															<?php echo utf8_encode($opcao); ?>
 														</label><br>
@@ -414,15 +432,15 @@
 														<br>
 														<div>
 															<label for="outro">Se <?php echo $outro; ?>, favor indicar qual(is): </label>
-															<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 200px">
+															<input type="text" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>outro" id="outro" style="width: 300px; font-size: 110%; margin-left: 5px" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}outro"]) ?>"<?php } ?>>
 														</div>
 													<?php } ?>
 													<br>
 
 											<?php } ?>
+											</div>
 									<?php } ?>
-
-											</div><br><br>
+											
 								<?php } ?>
 									
 
