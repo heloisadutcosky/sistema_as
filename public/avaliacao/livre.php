@@ -115,7 +115,7 @@
 						$nota = $_POST["atributo{$dados["atributo_id"]}"];
 						$resposta = "";
 
-						if (empty($_POST["atributo{$dados["atributo_id"]}"])) {
+						if ($_POST["atributo{$dados["atributo_id"]}"] == "") {
 							$esquecido[] = $dados["atributo_id"];
 						}
 						
