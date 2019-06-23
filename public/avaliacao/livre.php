@@ -25,12 +25,16 @@
 				$atributo_completo_eng = $dados["atributo_completo_eng"];
 				$atributo_completo_port = $dados["atributo_completo_port"];
 
-				if (empty($_POST["atributo{$dados["atributo_id"]}"]) && $_POST["atributo{$dados["atributo_id"]}"] <> 0 && $dados["disposicao_pergunta"] <> "ordenacao") {
-							$esquecido[] = $dados["atributo_id"];
-					}
+				//if (empty($_POST["atributo{$dados["atributo_id"]}"]) && $dados["disposicao_pergunta"] <> "ordenacao") {
+				//		$esquecido[] = $dados["atributo_id"];
+				//	}
 
 
 				if ($dados["disposicao_pergunta"] == "checkbox" || $dados["disposicao_pergunta"] == "ordenacao") {
+
+					if (empty($_POST["atributo{$dados["atributo_id"]}"])) {
+						$esquecido[] = $dados["atributo_id"];
+					}
 
 					$consulta2 = "SELECT * FROM opcoes WHERE atributo_id = {$dados["atributo_id"]}";
 					$acesso2 = mysqli_query($conecta, $consulta2);
@@ -90,6 +94,10 @@
 
 					if ($dados["disposicao_pergunta"] == "select") {
 
+						if (empty($_POST["atributo{$dados["atributo_id"]}"])) {
+							$esquecido[] = $dados["atributo_id"];
+						}
+
 						$nota = 0;
 						$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}"]);
 
@@ -103,9 +111,13 @@
 						$resposta = utf8_decode($_POST["atributo{$dados["atributo_id"]}"]);
 
 					} else {
+
 						$nota = $_POST["atributo{$dados["atributo_id"]}"];
 						$resposta = "";
 
+						if (empty($_POST["atributo{$dados["atributo_id"]}"]) && $_POST["atributo{$dados["atributo_id"]}"] <> 0) {
+							$esquecido[] = $dados["atributo_id"];
+						}
 						
 					}
 
