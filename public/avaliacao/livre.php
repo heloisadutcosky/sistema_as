@@ -9,6 +9,8 @@
 	//Verificar informações de acesso
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
+	echo {$_SESSION["formulario_id"]};
+
 	if (isset($_POST["completo"])) {
 
 		$consulta = "SELECT * FROM atributos WHERE formulario_id = {$_SESSION["formulario_id"]}";
@@ -131,9 +133,6 @@
 				}
 			
 			} else {
-				unset($_SESSION["pagina"]);
-				unset($_SESSION["formularios_ids"]);
-				unset($_SESSION["amostras"]);
 				header("location:{$caminho}public/principal.php");
 				
 			}
