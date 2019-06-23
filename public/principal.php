@@ -135,8 +135,8 @@ if (isset($_GET["codigo"])) {
 				}
 			}
 
-			//$_SESSION["formularios_ids"] = ksort($_SESSION["formularios_ids"]);
-			//$_SESSION["amostras"] = ksort($_SESSION["amostras"]);
+			ksort($_SESSION["formularios_ids"]);
+			ksort($_SESSION["amostras"]);
 
 			print_r($_SESSION["amostras"]);
 			print_r($_SESSION["formularios_ids"]);
