@@ -60,8 +60,8 @@ if (isset($_GET["codigo"])) {
 						//echo "{$caminho}public/{$_SESSION["tipo_avaliacao"]}/principal.php" . "<br>";
 			}
 			
-			print_r($tipo_avaliacao);
-			echo "aqui:" . in_array("pdq", $tipo_avaliacao);
+			//print_r($tipo_avaliacao);
+			//echo "aqui:" . in_array("pdq", $tipo_avaliacao);
 
 			if (in_array("pdq", $tipo_avaliacao)) {
 				//echo array_keys($tipo_avaliacao, "pdq")[0];
@@ -135,8 +135,8 @@ if (isset($_GET["codigo"])) {
 				}
 			}
 
-			$_SESSION["formularios_ids"] = ksort($_SESSION["formularios_ids"]);
-			$_SESSION["amostras"] = ksort($_SESSION["amostras"]);
+			//$_SESSION["formularios_ids"] = ksort($_SESSION["formularios_ids"]);
+			//$_SESSION["amostras"] = ksort($_SESSION["amostras"]);
 
 			print_r($_SESSION["amostras"]);
 			print_r($_SESSION["formularios_ids"]);
