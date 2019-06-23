@@ -20,12 +20,15 @@
 		$n_escalas = $_POST["n_escalas"]+1;
 	} else if (isset($_POST["n_menos"])) {
 		$n = $_POST["n_menos"];
-		if (!empty($_POST["escala{$n}"])) {
-			$excluir = "DELETE FROM opcoes WHERE atributo_id = {$atributo_id} AND escala = {$_POST["escala{$n}"]}";
+		//if (!empty($_POST["escala{$n}"])) {
+
+			$texto = $_POST["texto{$n}"];
+
+			$excluir = "DELETE FROM opcoes WHERE atributo_id = {$atributo_id} AND escala = {$_POST["escala{$n}"]} AND texto = '{$texto}'";
 			$operacao_excluir = mysqli_query($conecta, $excluir);
 
 			$n_escalas = $_POST["n_escalas"]-1;
-		}
+		//}
 	} else if (isset($_POST["n_escalas"])) { 
 		$n_escalas = $_POST["n_escalas"];
 	} else {
