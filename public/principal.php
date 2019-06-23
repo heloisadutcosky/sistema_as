@@ -109,7 +109,7 @@ if (isset($_GET["codigo"])) {
 			$_SESSION["amostras"] = array();
 
 			$pagina = 0;
-			while ($pagina < count($_SESSION["paginas"])) {
+			while ($pagina < count($formularios_ids)) {
 					if ($amostra_associada[$pagina] == 0) {
 						$_SESSION["formularios_ids"][] = $formularios_ids[$pagina];
 						$_SESSION["amostras"][] = 0;
@@ -121,7 +121,7 @@ if (isset($_GET["codigo"])) {
 
 			foreach ($amostras as $amostra) {
 				$pagina = 0;
-				while ($pagina < count($_SESSION["paginas"])) {
+				while ($pagina < count($formularios_ids)) {
 					if ($amostra_associada[$pagina] == 1) {
 						$_SESSION["formularios_ids"][] = $formularios_ids[$pagina];
 						$_SESSION["amostras"][] = $amostra;
@@ -140,9 +140,9 @@ if (isset($_GET["codigo"])) {
 		
 
 		if ($_SESSION["amostra"] == 0) {
-			//header("location:{$caminho}public/avaliacao/livre.php");
+			header("location:{$caminho}public/avaliacao/livre.php");
 		} else {
-			//header("location:{$caminho}public/amostra.php");
+			header("location:{$caminho}public/amostra.php");
 		}
 }	
 	 
