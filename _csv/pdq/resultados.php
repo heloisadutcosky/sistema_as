@@ -15,7 +15,7 @@ if (isset($_GET["projeto"])) {
 
 	$teste = isset($_GET["dados_teste"]) ? 1 : 0;
 
-		$consulta = "SELECT * FROM tb_resultados WHERE projeto_id = {$_GET["projeto"]} AND {$_GET["formulario"]}";
+		$consulta = "SELECT * FROM tb_resultados WHERE projeto_id = {$_GET["projeto"]}";
 		$acesso = mysqli_query($conecta, $consulta);
 
 		$atributo_id = array();

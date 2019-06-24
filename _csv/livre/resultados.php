@@ -14,34 +14,10 @@ $caminho =  "../../";
 if (isset($_GET["projeto"])) {
 
 	$teste = isset($_GET["dados_teste"]) ? 1 : 0;
-
-		$consulta = "SELECT * FROM tb_resultados WHERE projeto_id = {$_GET["projeto"]} AND {$_GET["formulario"]}";
-		$acesso = mysqli_query($conecta, $consulta);
-
-		$atributo_id = array();
-		$atributo_completo_eng = array();
-		$atributo_completo_port = array();
-		while ($dados = mysqli_fetch_assoc($acesso)) {
-			$atributo_id[] = $dados["atributo_id"];
-			$atributo_completo_eng[] = $dados["atributo_completo_eng"];
-			$atributo_completo_port[] = $dados["atributo_completo_port"];
-		}
-		$atributo_id = array_unique(array_values($atributo_id));
-		$atributo_completo_eng = array_unique(array_values($atributo_completo_eng));
-		$atributo_completo_port = array_unique(array_values($atributo_completo_port));
-
-		if ($_GET["lingua"] == "port") {
-			$atributos = $atributo_completo_port;
-		} else {
-			$atributos = $atributo_completo_eng;
-		}
 		
 
-		$nomes_colunas = array_merge(array('Usuario', 'Amostra', 'Codigo', 'Sessao'), $atributos);
-		$colunas = "";
-		foreach ($atributos as $atributo) {
-			$colunas = $colunas . ", SUM(CASE WHEN r.atributo_completo_{$_GET["lingua"]} = '{$atributo}' THEN nota END)";
-		}
+		$nomes_colunas = array('Usuario', 'Amostra', 'Codigo', 'Sessao', 'Atributo', 'Opcao', 'Resposta');
+		
 
 		// output headers so that the file is downloaded rather than displayed
 		header('Content-Type: text/csv; charset=utf-8');
@@ -58,7 +34,9 @@ if (isset($_GET["projeto"])) {
 		a.amostra_descricao,
 		r.amostra_codigo,
         r.sessao,
-		{$colunas}
+		r.atributo_completo_{$_GET["lingua"]},
+		r.resposta,
+		r.nota
 		FROM tb_resultados AS r 
         LEFT JOIN usuarios AS u
         ON u.user_id = r.user_id

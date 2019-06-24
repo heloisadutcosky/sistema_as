@@ -50,33 +50,29 @@
 
 			<div id="janela" style="width: 630px;">
 				<?php
-					$consulta = "SELECT * FROM avaliacoes";
+					$consulta = "SELECT * FROM tb_projetos";
 					$acesso = mysqli_query($conecta, $consulta);
 				    while($dados = mysqli_fetch_assoc($acesso)) {
+
+				    	$consulta2 = "SELECT * FROM avaliacoes WHERE projeto_id = {$dados["projeto_id"]}";
+				    	$acesso2 = mysqli_query($conecta, $consulta2);
+				    	$linha = mysqli_fetch_assoc($acesso2);
+				    	if ($linha["tipo_avaliacao"] == "pdq") {
+				    		$avaliacao = "pdq";
+				    	} else {
+				    		$avaliacao = "livre";
+				    	}
+
 				?>
 				<ul>
 				    <li style="width:260px;">
 				    	<?php 
-						$consulta2 = "SELECT * FROM tb_projetos WHERE projeto_id = {$dados["projeto_id"]}";
-						$acesso2 = mysqli_query($conecta, $consulta2);
-						$linha = mysqli_fetch_assoc($acesso2);
-
-						$consulta2 = "SELECT * FROM empresas WHERE empresa_id = {$linha["empresa_id"]}";
-						$acesso2 = mysqli_query($conecta, $consulta2);
-						$linha = mysqli_fetch_assoc($acesso2);
-						$avaliacao = $linha["nome_fantasia"];
-
-						$consulta2 = "SELECT * FROM tb_formularios WHERE formulario_id = {$dados["formulario_id"]}";
-						$acesso2 = mysqli_query($conecta, $consulta2);
-						$linha = mysqli_fetch_assoc($acesso2);
-						$avaliacao = $avaliacao . " - " . $linha["nome_formulario"];
-						
-						echo utf8_encode($avaliacao); ?></li>
+						echo utf8_encode($dados["descricao_projeto"]); ?></li>
 					<li style="width: 0px"></li>
 					<li style="width: 0px"></li>
-				    <li style="width:95px;"><a href="<?php echo $caminho; ?>_csv/<?php echo $dados["tipo_avaliacao"]; ?>/formularios.php?projeto=<?php echo $dados["projeto_id"]; ?>&formulario=<?php echo $dados["formulario_id"]; ?>">Formulários</a></li>
-				    <li style="width:185px;">Resultados (<a href="<?php echo $caminho; ?>_csv/<?php echo $dados["tipo_avaliacao"]; ?>/resultados.php?projeto=<?php echo $dados["projeto_id"]; ?>&formulario=<?php echo $dados["formulario_id"]; ?>&lingua=port" style="margin: 0px; padding: 0px">português</a> | <a href="<?php echo $caminho; ?>_csv/<?php echo $dados["tipo_avaliacao"]; ?>/resultados.php?projeto=<?php echo $dados["projeto_id"]; ?>&formulario=<?php echo $dados["formulario_id"]; ?>&lingua=eng" style="margin: 0px; padding: 0px">inglês</a>)</li>
-				    <li style="width:50px;"><a href="<?php echo $caminho; ?>_csv/<?php echo $dados["tipo_avaliacao"]; ?>/resultados.php?projeto=<?php echo $dados["projeto_id"]; ?>&formulario=<?php echo $dados["formulario_id"]; ?>&lingua=eng&dados_teste=1">Teste</a> </li>
+				    <li style="width:95px;"><a href="<?php echo $caminho; ?>_csv/<?php echo $avaliacao; ?>/formularios.php?projeto=<?php echo $dados["projeto_id"]; ?>">Formulários</a></li>
+				    <li style="width:185px;">Resultados (<a href="<?php echo $caminho; ?>_csv/<?php echo $avaliacao; ?>/resultados.php?projeto=<?php echo $dados["projeto_id"]; ?>&lingua=port" style="margin: 0px; padding: 0px">português</a> | <a href="<?php echo $caminho; ?>_csv/<?php echo $avaliacao; ?>/resultados.php?projeto=<?php echo $dados["projeto_id"]; ?>&lingua=eng" style="margin: 0px; padding: 0px">inglês</a>)</li>
+				    <li style="width:50px;"><a href="<?php echo $caminho; ?>_csv/<?php echo $avaliacao; ?>/resultados.php?projeto=<?php echo $dados["projeto_id"]; ?>&lingua=eng&dados_teste=1">Teste</a> </li>
 				</ul>
 				<?php
 				    }
