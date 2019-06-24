@@ -244,6 +244,7 @@
 						<option value="Painelista" <?php if($dados["funcao"] == "Painelista") { ?> selected <?php } ?>>Painelista</option>
 						<option value="Candidato" <?php if($dados["funcao"] == "Candidato") { ?> selected <?php } ?>>Candidato</option>
 						<option value="Administrador" <?php if($dados["funcao"] == "Administrador") { ?> selected <?php } ?>>Administrador</option>
+						<option value="Administrador restrito" <?php if($dados["funcao"] == "Administrador restrito") { ?> selected <?php } ?>>Administrador restrito</option>
 						<option value="Cliente" <?php if($dados["funcao"] == "Cliente") { ?> selected <?php } ?>>Cliente</option>
 					</select><br><br>
 				</div>

@@ -5,8 +5,15 @@
 	// Iniciar sessão
 	session_start();
 
-	//Verificar permissão de acesso (só para administradores)
-	require_once($caminho . "_incluir/verificacao_acesso.php");
+	//Verificar permissão de acesso (só para administradores e administradores especiais)
+	if (isset($_SESSION["user_id"])) {
+			if ($_SESSION["funcao"] <> "Administrador" && $_SESSION["funcao"] <> "Administrador restrito") {
+				header("location:{$caminho}public/principal.php");
+			}
+		} else {
+			header("location:{$caminho}login.php");
+		}
+
 
 	//Estabelecer conexão a base de dados
 	require_once($caminho . "conexao/conexao.php");
