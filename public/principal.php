@@ -143,8 +143,8 @@ if (isset($_GET["codigo"])) {
 			}
 
 
-			//print_r($_SESSION["formularios_ids"]);
-			//print_r($_SESSION["amostras"]);
+			print_r($_SESSION["formularios_ids"]);
+			print_r($_SESSION["amostras"]);
 
 			//print_r($_SESSION["amostras"]);
 			//print_r($_SESSION["formularios_ids"]);
