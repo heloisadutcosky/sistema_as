@@ -32,9 +32,6 @@
 
 				if ($dados["disposicao_pergunta"] == "checkbox" || $dados["disposicao_pergunta"] == "ordenacao") {
 
-					if (empty($_POST["atributo{$dados["atributo_id"]}"])) {
-						$esquecido[] = $dados["atributo_id"];
-					}
 
 					$consulta2 = "SELECT * FROM opcoes WHERE atributo_id = {$dados["atributo_id"]}";
 					$acesso2 = mysqli_query($conecta, $consulta2);
@@ -42,6 +39,11 @@
 					while ($linha = mysqli_fetch_assoc($acesso2)) {
 
 						if ($dados["disposicao_pergunta"] == "checkbox") {
+
+							if (empty($_POST["atributo{$dados["atributo_id"]}"])) {
+								$esquecido[] = $dados["atributo_id"];
+							}
+
 							$resposta = utf8_decode($linha["texto"]);
 							//print_r($_POST["atributo{$linha["atributo_id"]}"]);
 							//echo $linha["texto"];

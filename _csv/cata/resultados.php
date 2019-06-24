@@ -54,10 +54,10 @@ if (isset($_GET["projeto"])) {
 		fputcsv($output, $nomes_colunas);
 
 		// fetch the data
-		$consulta = "SELECT u.iniciais, 
+		$consulta = "SELECT u.cpf, 
 		a.amostra_descricao,
 		r.amostra_codigo,
-        r.sessao
+        r.sessao,
 		{$colunas}
 		FROM tb_resultados AS r 
         LEFT JOIN usuarios AS u
