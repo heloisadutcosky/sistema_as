@@ -124,21 +124,27 @@ if (isset($_GET["codigo"])) {
 
 			shuffle($amostras);
 
-			$amostras_form = array();
 			$pagina = 0;
+			$amostra = 0;
 			while ($pagina < count($formularios_ids)) {
 
 				if ($amostra_associada[$pagina] == 0) {
 					$_SESSION["formularios_ids"][] = $formularios_ids[$pagina];
 					$_SESSION["amostras"][] = 0;
 				} else {
-					$amostra = 0;
-					while ($amostra < count($form_amostra)) {
-						$_SESSION["formularios_ids"][] = $form_amostra[$amostra];
-						$_SESSION["amostras"][] = $amostras[$pagina];
-						$amostra = $amostra + 1;
+					
+					while ($amostra < count($amostras)) {
+						$form = 0;
+
+						while ($form < count($form_amostra)) {
+							$_SESSION["formularios_ids"][] = $form_amostra[$form];
+							$_SESSION["amostras"][] = $amostras[$amostra];
+							$form = $form + 1;
+						}
+						$amostra = $amostra+1;
 					}
 				}
+
 				$pagina = $pagina +1;
 			}
 
@@ -156,9 +162,9 @@ if (isset($_GET["codigo"])) {
 		
 
 		if ($_SESSION["amostra"] == 0) {
-			//header("location:{$caminho}public/avaliacao/livre.php");
+			header("location:{$caminho}public/avaliacao/livre.php");
 		} else {
-			//header("location:{$caminho}public/amostra.php");
+			header("location:{$caminho}public/amostra.php");
 		}
 
 	}
