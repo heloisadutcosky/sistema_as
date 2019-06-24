@@ -69,7 +69,7 @@ if (isset($_GET["projeto"])) {
 		GROUP BY r.user_id, u.iniciais, r.sessao, r.amostra_codigo, a.amostra_descricao";
 		$acesso = mysqli_query($conecta, $consulta);
 
-		echo $consulta;
+		//echo $consulta;
 		
 		// loop over the rows, outputting them
 		while ($row = mysqli_fetch_assoc($acesso)) {
