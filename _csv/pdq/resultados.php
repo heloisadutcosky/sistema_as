@@ -37,7 +37,7 @@ if (isset($_GET["projeto"])) {
 		}
 		
 
-		$nomes_colunas = array_merge(array('Usuario', 'Amostra', 'Codigo', 'Sessao'), $atributos);
+		$nomes_colunas = array_merge(array('ID Usuario', 'Usuario', 'Amostra', 'Codigo', 'Sessao'), $atributos);
 		$colunas = "";
 		foreach ($atributos as $atributo) {
 			$colunas = $colunas . ", SUM(CASE WHEN r.atributo_completo_{$_GET["lingua"]} = '{$atributo}' THEN nota END)";
@@ -54,7 +54,8 @@ if (isset($_GET["projeto"])) {
 		fputcsv($output, $nomes_colunas);
 
 		// fetch the data
-		$consulta = "SELECT u.iniciais, 
+		$consulta = "SELECT r.user_id,
+		u.iniciais, 
 		a.amostra_descricao,
 		r.amostra_codigo,
         r.sessao
@@ -64,9 +65,11 @@ if (isset($_GET["projeto"])) {
         ON u.user_id = r.user_id
         LEFT JOIN tb_amostras AS a
 		ON (a.amostra_codigo = r.amostra_codigo AND a.projeto_id = r.projeto_id)
-		WHERE r.projeto_id = {$_GET["projeto"]} AND r.formulario_id = {$_GET["formulario"]} AND r.teste = {$teste}
+		WHERE r.projeto_id = {$_GET["projeto"]} AND r.teste = {$teste}
 		GROUP BY r.user_id, u.iniciais, r.sessao, r.amostra_codigo, a.amostra_descricao";
 		$acesso = mysqli_query($conecta, $consulta);
+
+		echo $consulta;
 		
 		// loop over the rows, outputting them
 		while ($row = mysqli_fetch_assoc($acesso)) {
