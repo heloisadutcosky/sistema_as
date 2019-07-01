@@ -57,7 +57,11 @@
 			if (isset($_POST["nome"])) { 
 				$nome = utf8_decode($_POST["nome"]);
 				$sexo = $_POST["sexo"];
-				$nascimento = date("Y-m-d", strtotime($_POST["nascimento"]));
+				$dia = $_POST["dia"] < 10 ? "0" . $_POST["dia"] : $_POST["dia"];
+				$nascimento = $dia . "/" . $_POST["mes"] . "/" . $_POST["ano"];
+				echo $nascimento;
+				$nascimento = date("Y-m-d", strtotime($nascimento));
+				echo $nascimento;
 				$escolaridade = utf8_decode($_POST["escolaridade"]);
 				$email = $_POST["email"];
 				$telefone = $_POST["telefone"];
@@ -120,18 +124,63 @@
 				<input type="text" id="cpf" name="cpf" placeholder="Insira seu CPF (somente números)" required style="width: 250px"><br>
 			</div>
 
-			<div style="float: left; margin-right: 30px;">
-					<label for="nascimento">Data de nascimento: </label>
-					<input type="datetime" id="nascimento" name="nascimento" placeholder="dd/mm/aaaa" required style="width: 250px">
+				
+			<div>
+				<p>Data de nascimento</p>
+				<div style="float: left; margin-right: 20px;">
+					<label for="dia">Dia: </label>
+					<select id="dia" name="dia" style="width: 60px">
+						<?php 
+						$i = 1;
+						while ($i < 32) {
+						?>
+						<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+						<?php 
+						$i = $i + 1;
+						} ?>
+					</select>
 				</div>
 
-				<div>
+				<div style="float: left; margin-right: 20px;">
+					<label for="mes">Mês: </label>			
+					<select id="mes" name="mes" style="width: 330px">
+							<option value="01" selected>janeiro</option>
+							<option value="02">fevereiro</option>
+							<option value="03">março</option>
+							<option value="04">abril</option>
+							<option value="05">maio</option>
+							<option value="06">junho</option>
+							<option value="07">julho</option>
+							<option value="08">agosto</option>
+							<option value="09">setembro</option>
+							<option value="10">outubro</option>
+							<option value="11">novembro</option>
+							<option value="12">dezembro</option>
+					</select>
+				</div>
+
+				<div style="float: left; margin-right: 20px;">
+					<label for="ano">Ano: </label>
+					<select id="ano" name="ano" style="width: 80px">
+						<?php 
+						$i = 1930;
+						while ($i < 2020) {
+						?>
+						<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+						<?php 
+						$i = $i + 1;
+						} ?>
+					</select>
+				</div>
+			</div><br><br><br><br>
+
+				<div style="float: left; margin-right: 40px;">
 					<label for="sexo">Sexo: </label>			
 					<select list="sexos" id="sexo" name="sexo" selected="<?php echo $dados["sexo"] ?>" style="width: 250px">
 							<option value="Feminino" selected>Feminino</option>
 							<option value="Masculino">Masculino</option>
 					</select>
-				</div><br>
+				</div>
 
 				<div>
 					<label for="escolaridade">Escolaridade: </label>

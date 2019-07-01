@@ -9,6 +9,8 @@
 	//Verificar informações de acesso
 	require_once($caminho . "_incluir/verificacao_usuario.php");
 
+	$_SESSION["sessao"] = isset($_SESSION["sessao"]) ? $_SESSION["sessao"] : 1;
+
 	//echo {$_SESSION["formulario_id"]};
 
 	if (isset($_POST["completo"])) {
@@ -165,7 +167,7 @@
 				}
 			
 			} else {
-				header("location:{$caminho}public/principal.php");
+				header("location:{$caminho}logout.php");
 				
 			}
 		} 
@@ -523,6 +525,10 @@
 												} ?>
 
 												<?php
+												$consulta_opcoes = "SELECT * FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
+												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); 
+												$linhas = mysqli_num_rows($acesso_opcoes);
+
 												$consulta_opcoes = "SELECT max(escala) as max_escala, min(escala) as min_escala FROM opcoes WHERE atributo_id = {$dados_atributos["atributo_id"]}";
 												$acesso_opcoes = mysqli_query($conecta, $consulta_opcoes); 
 												$dados_opcoes = mysqli_fetch_assoc($acesso_opcoes);
@@ -554,7 +560,17 @@
 														<div style="width: <?php echo $largura; ?>px; background-color: #BD5555; padding: 2px 10px;">
 															<p style="color: #FFF"><?php echo $dados_opcoes["texto"]; ?></p>
 														</div>
-														<input type="number" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>_<?php echo $dados_opcoes["opcao_id"]; ?>" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>_<?php echo $dados_opcoes["opcao_id"]; ?>" style="width: 50px; margin-top: 10px; margin-left: <?php echo 5+($largura-50)/2; ?>px; position: relative; font-size: 105%;" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}_{$dados_opcoes["opcao_id"]}"])) { ?>value="<?php echo($_POST["atributo{$dados_atributos["atributo_id"]}_{$dados_opcoes["opcao_id"]}"]); ?>"<?php } ?>>
+														<select type="number" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>_<?php echo $dados_opcoes["opcao_id"]; ?>" id="atributo<?php echo $dados_atributos["atributo_id"]; ?>_<?php echo $dados_opcoes["opcao_id"]; ?>" style="width: 50px; margin-top: 10px; margin-left: <?php echo 5+($largura-50)/2; ?>px; position: relative; font-size: 105%;">
+															<?php
+															$j = 1;
+															while ($j <= $linhas) {
+															?>
+															<option value="<?php echo $j; ?>" <?php if (isset($_POST["atributo{$dados_atributos["atributo_id"]}_{$dados_opcoes["opcao_id"]}"])) { if ($_POST["atributo{$dados_atributos["atributo_id"]}_{$dados_opcoes["opcao_id"]}"] == $j) { ?>selected <?php } } ?>><?php echo $j; ?></option>
+															<?php 
+																$j = $j + 1;
+															} 
+															?>
+														</select>
 
 														<input type="hidden" name="atributo<?php echo $dados_atributos["atributo_id"]; ?>">
 													</div>

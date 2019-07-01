@@ -49,7 +49,9 @@ if (isset($_GET["projeto"])) {
         LEFT JOIN tb_amostras AS a
 		ON (a.amostra_codigo = r.amostra_codigo AND a.projeto_id = r.projeto_id)
 		WHERE r.projeto_id = {$_GET["projeto"]} AND r.teste = {$teste}
-		GROUP BY r.user_id, u.cpf, r.sessao, r.amostra_codigo, a.amostra_descricao, r.atributo_completo_{$_GET["lingua"]}, r.resposta, r.nota";
+		GROUP BY r.user_id, u.cpf, r.sessao, r.amostra_codigo, a.amostra_descricao, r.atributo_completo_{$_GET["lingua"]}, r.resposta, r.nota
+		ORDER BY r.user_id, r.amostra_codigo, r.atributo_completo_{$_GET["lingua"]}
+		";
 		$acesso = mysqli_query($conecta, $consulta);
 
 		//echo $consulta;
