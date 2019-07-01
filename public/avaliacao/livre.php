@@ -167,6 +167,7 @@
 				}
 			
 			} else {
+				session_destroy();
 				header("location:{$caminho}logout.php");
 				
 			}
